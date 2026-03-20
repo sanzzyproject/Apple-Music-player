@@ -5,10 +5,12 @@ import { Track, usePlayerStore } from '@/lib/store';
 import { Loader2, History, Cast, User, Play } from 'lucide-react';
 import Image from 'next/image';
 import { HorizontalScroll } from '@/components/HorizontalScroll';
+import { getHighResImage } from '@/lib/utils';
 
 export default function Home() {
-  const [heroTrack, setHeroTrack] = useState<Track | null>(null);
+  const [heroTracks, setHeroTracks] = useState<Track[]>([]);
   const [communityTracks, setCommunityTracks] = useState<Track[]>([]);
+  const [artists, setArtists] = useState<Track[]>([]);
   const [categories, setCategories] = useState<{ title: string; tracks: Track[] }[]>([]);
   const [loading, setLoading] = useState(true);
   const { playTrack } = usePlayerStore();
@@ -20,17 +22,23 @@ export default function Home() {
       try {
         const resHero = await fetch(`/api/search?q=dave+how+i+met+my+ex`);
         const dataHero = await resHero.json();
-        if (dataHero && dataHero.length > 0) setHeroTrack(dataHero[0]);
+        if (dataHero) setHeroTracks(dataHero.slice(0, 3));
 
         const resComm = await fetch(`/api/search?q=indie+pop+hits`);
         const dataComm = await resComm.json();
         if (dataComm) setCommunityTracks(dataComm.slice(0, 4));
+
+        const resArtists = await fetch(`/api/search?q=top+indonesian+artists`);
+        const dataArtists = await resArtists.json();
+        if (dataArtists) setArtists(dataArtists.slice(0, 6));
 
         const queries = [
           { title: 'Trending Now', q: 'lagu indonesia hits terbaru' },
           { title: 'New Releases', q: 'lagu pop indonesia rilis terbaru' },
           { title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update' },
           { title: 'Viral on TikTok', q: 'lagu fyp tiktok viral' },
+          { title: 'For Eid Getaways', q: 'lagu lebaran idul fitri' },
+          { title: 'Surrender to the Beat', q: 'lagu edm jedag jedug' },
         ];
 
         const results = await Promise.all(
@@ -79,32 +87,35 @@ export default function Home() {
         </div>
       ) : (
         <div className="space-y-10">
-          {heroTrack && (
-            <div className="px-4">
-              <div 
-                className="relative w-full aspect-[4/5] sm:aspect-video rounded-3xl overflow-hidden cursor-pointer group shadow-2xl"
-                onClick={() => playTrack(heroTrack, [heroTrack], 'similar')}
-              >
-                <Image 
-                  src={heroTrack.thumbnails?.[heroTrack.thumbnails.length - 1]?.url || 'https://picsum.photos/seed/hero/800/800'} 
-                  alt={heroTrack.name} 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute top-4 left-4 right-4">
-                  <h2 className="text-2xl font-bold text-white drop-shadow-lg">{heroTrack.name}</h2>
-                  <p className="text-white/80 font-medium drop-shadow-md">
-                    {Array.isArray(heroTrack.artist) ? heroTrack.artist.map(a => a.name).join(', ') : heroTrack.artist?.name}
-                  </p>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                  <p className="text-sm text-white/60 truncate pr-4">Sounds like Raindance • Dave, Tems</p>
-                  <div className="w-12 h-12 bg-[#FA243C] rounded-full flex items-center justify-center shadow-lg shadow-[#FA243C]/30 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <Play className="w-6 h-6 text-white ml-1 fill-current" />
+          {heroTracks.length > 0 && (
+            <div className="flex overflow-x-auto no-scrollbar gap-4 px-4 snap-x snap-mandatory">
+              {heroTracks.map((track) => (
+                <div 
+                  key={track.videoId}
+                  className="relative w-[85vw] sm:w-[400px] shrink-0 aspect-[4/5] sm:aspect-video rounded-3xl overflow-hidden cursor-pointer group shadow-2xl snap-center"
+                  onClick={() => playTrack(track, heroTracks, 'similar')}
+                >
+                  <Image 
+                    src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 800)} 
+                    alt={track.name} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  <div className="absolute top-4 left-4 right-4">
+                    <h2 className="text-2xl font-bold text-white drop-shadow-lg">{track.name}</h2>
+                    <p className="text-white/80 font-medium drop-shadow-md">
+                      {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name}
+                    </p>
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                    <p className="text-sm text-white/60 truncate pr-4">Sounds like Raindance • Dave, Tems</p>
+                    <div className="w-12 h-12 bg-[#FA243C] rounded-full flex items-center justify-center shadow-lg shadow-[#FA243C]/30 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <Play className="w-6 h-6 text-white ml-1 fill-current" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           )}
 
@@ -120,7 +131,7 @@ export default function Home() {
                       onClick={() => playTrack(track, communityTracks, 'similar')}
                     >
                       <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
-                        <Image src={track.thumbnails?.[0]?.url || 'https://picsum.photos/seed/track/100/100'} alt={track.name} fill className="object-cover" />
+                        <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill className="object-cover" />
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <Play className="w-6 h-6 text-white fill-current" />
                         </div>
@@ -134,6 +145,35 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {artists.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-white mb-4 px-4">Tetap mendengarkan</h2>
+              <div className="flex overflow-x-auto no-scrollbar gap-6 px-4 pb-4">
+                {artists.map((artist) => {
+                  const artistName = Array.isArray(artist.artist) ? artist.artist.map(a => a.name).join(', ') : artist.artist?.name || 'Artist';
+                  return (
+                    <div
+                      key={artist.videoId}
+                      className="flex flex-col items-center gap-3 cursor-pointer group shrink-0"
+                      onClick={() => playTrack(artist, artists, 'similar')}
+                    >
+                      <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <Image src={getHighResImage(artist.thumbnails?.[artist.thumbnails.length - 1]?.url, 400)} alt={artistName} fill className="object-cover" />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <Play className="w-8 h-8 text-white fill-current" />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm font-medium text-white line-clamp-1">{artistName}</div>
+                        <div className="text-xs text-white/50">Artis</div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

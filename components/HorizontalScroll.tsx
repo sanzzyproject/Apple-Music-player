@@ -2,6 +2,7 @@
 
 import { Track, usePlayerStore } from '@/lib/store';
 import Image from 'next/image';
+import { getHighResImage } from '@/lib/utils';
 
 export function HorizontalScroll({ title, tracks }: { title: string; tracks: Track[] }) {
   const { playTrack } = usePlayerStore();
@@ -11,7 +12,7 @@ export function HorizontalScroll({ title, tracks }: { title: string; tracks: Tra
       <h2 className="text-xl font-bold text-white mb-4 px-4">{title}</h2>
       <div className="flex overflow-x-auto no-scrollbar gap-4 px-4 pb-4">
         {tracks.map((track) => {
-          const thumbnail = track.thumbnails?.[track.thumbnails.length - 1]?.url || 'https://picsum.photos/seed/music/300/300';
+          const thumbnail = getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 400);
           const artistName = Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name || 'Unknown Artist';
 
           return (

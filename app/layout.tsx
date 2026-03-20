@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css'; // Global styles
 import { BottomNav } from '@/components/BottomNav';
 import { Player } from '@/components/Player';
+import { AddToPlaylistModal } from '@/components/AddToPlaylistModal';
 
 export const metadata: Metadata = {
   title: 'Apple Music Clone',
@@ -15,6 +16,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         {children}
         <Player />
         <BottomNav />
+        <AddToPlaylistModal />
       </body>
     </html>
   );

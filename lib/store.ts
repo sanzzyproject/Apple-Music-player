@@ -18,6 +18,7 @@ interface PlayerState {
   progress: number;
   duration: number;
   playContext: 'playlist' | 'similar';
+  trackToAdd: Track | null;
   
   playTrack: (track: Track, queue?: Track[], context?: 'playlist' | 'similar') => void;
   playNext: () => Promise<void>;
@@ -29,6 +30,7 @@ interface PlayerState {
   setDuration: (duration: number) => void;
   setVolume: (volume: number) => void;
   addToQueue: (track: Track) => void;
+  setTrackToAdd: (track: Track | null) => void;
 }
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
@@ -41,6 +43,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   progress: 0,
   duration: 0,
   playContext: 'similar',
+  trackToAdd: null,
 
   playTrack: (track, queue, context = 'similar') => {
     set({
@@ -114,4 +117,5 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   setDuration: (duration) => set({ duration }),
   setVolume: (volume) => set({ volume }),
   addToQueue: (track) => set((state) => ({ queue: [...state.queue, track] })),
+  setTrackToAdd: (track) => set({ trackToAdd: track }),
 }));

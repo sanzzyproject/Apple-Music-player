@@ -6,7 +6,7 @@ import { db } from '@/lib/db';
 import YouTube from 'react-youtube';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Maximize2, MoreVertical, Cast } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getHighResImage } from '@/lib/utils';
 import Image from 'next/image';
 
 export function Player() {
@@ -111,7 +111,7 @@ export function Player() {
 
   if (!currentTrack) return null;
 
-  const thumbnail = currentTrack.thumbnails?.[currentTrack.thumbnails.length - 1]?.url || 'https://picsum.photos/seed/music/500/500';
+  const thumbnail = getHighResImage(currentTrack.thumbnails?.[currentTrack.thumbnails.length - 1]?.url, 800);
   const artistName = Array.isArray(currentTrack.artist) ? currentTrack.artist.map(a => a.name).join(', ') : currentTrack.artist?.name || 'Unknown Artist';
 
   return (

@@ -3,12 +3,13 @@
 import { Track, usePlayerStore } from '@/lib/store';
 import { MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import { getHighResImage } from '@/lib/utils';
 
 export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
-  const { playTrack, currentTrack, isPlaying } = usePlayerStore();
+  const { playTrack, currentTrack, isPlaying, setTrackToAdd } = usePlayerStore();
   const isCurrent = currentTrack?.videoId === track.videoId;
 
-  const thumbnail = track.thumbnails?.[0]?.url || 'https://picsum.photos/seed/music/100/100';
+  const thumbnail = getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 200);
   const artistName = Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name || 'Unknown Artist';
 
   return (
@@ -34,7 +35,13 @@ export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
         </div>
         <div className="text-sm text-gray-400 truncate">{artistName}</div>
       </div>
-      <button className="p-2 text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity">
+      <button 
+        className="p-2 text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        onClick={(e) => {
+          e.stopPropagation();
+          setTrackToAdd(track);
+        }}
+      >
         <MoreHorizontal className="w-5 h-5" />
       </button>
     </div>

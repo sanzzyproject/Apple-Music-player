@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { db } from '@/lib/db';
 import { Track } from '@/lib/store';
 import { TrackItem } from '@/components/TrackItem';
@@ -9,6 +10,7 @@ import Image from 'next/image';
 import { usePlayerStore } from '@/lib/store';
 
 export default function Library() {
+  const router = useRouter();
   const [likedSongs, setLikedSongs] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState('Daftar putar');
@@ -149,7 +151,11 @@ export default function Library() {
           </button>
 
           {playlists.map((pl) => (
-            <div key={pl.id} className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors group">
+            <div 
+              key={pl.id} 
+              className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors group"
+              onClick={() => router.push(`/playlist/${pl.id}`)}
+            >
               <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0">
                 <Image src={pl.img} alt={pl.name} fill className="object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
