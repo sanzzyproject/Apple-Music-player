@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { HorizontalScroll } from '@/components/HorizontalScroll';
 import { getHighResImage } from '@/lib/utils';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 
 export default function Home() {
   const [heroTracks, setHeroTracks] = useState<Track[]>([]);
@@ -66,7 +67,9 @@ export default function Home() {
       <div className="flex items-center justify-between px-4 mb-6">
         <h1 className="text-2xl font-bold text-white">Beranda</h1>
         <div className="flex items-center gap-4 text-white/80">
-          <History className="w-6 h-6" />
+          <Link href="/history" className="hover:text-white transition-colors">
+            <History className="w-6 h-6" />
+          </Link>
           <Cast className="w-6 h-6" />
           <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
             <User className="w-5 h-5 text-white" />

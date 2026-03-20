@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface Track {
   videoId: string;
@@ -6,6 +7,11 @@ export interface Track {
   artist: { name: string } | { name: string }[];
   thumbnails: { url: string; width: number; height: number }[];
   duration?: number;
+}
+
+export interface HistoryItem {
+  track: Track;
+  playedAt: number;
 }
 
 interface PlayerState {
@@ -19,6 +25,8 @@ interface PlayerState {
   duration: number;
   playContext: 'playlist' | 'similar';
   trackToAdd: Track | null;
+  history: HistoryItem[];
+  playCounts: Record<string, number>;
   
   playTrack: (track: Track, queue?: Track[], context?: 'playlist' | 'similar') => void;
   playNext: () => Promise<void>;
@@ -33,89 +41,149 @@ interface PlayerState {
   setTrackToAdd: (track: Track | null) => void;
 }
 
-export const usePlayerStore = create<PlayerState>((set, get) => ({
-  currentTrack: null,
-  queue: [],
-  queueIndex: -1,
-  isPlaying: false,
-  isExpanded: false,
-  volume: 100,
-  progress: 0,
-  duration: 0,
-  playContext: 'similar',
-  trackToAdd: null,
-
-  playTrack: (track, queue, context = 'similar') => {
-    set({
-      currentTrack: track,
-      isPlaying: true,
-      queue: queue || [track],
-      queueIndex: queue ? queue.findIndex((t) => t.videoId === track.videoId) : 0,
+export const usePlayerStore = create<PlayerState>()(
+  persist(
+    (set, get) => ({
+      currentTrack: null,
+      queue: [],
+      queueIndex: -1,
+      isPlaying: false,
+      isExpanded: false,
+      volume: 100,
       progress: 0,
-      playContext: context,
-    });
-  },
+      duration: 0,
+      playContext: 'similar',
+      trackToAdd: null,
+      history: [],
+      playCounts: {},
 
-  playNext: async () => {
-    const { queue, queueIndex, playContext, currentTrack } = get();
-    if (queueIndex < queue.length - 1) {
-      const nextIndex = queueIndex + 1;
-      set({
-        currentTrack: queue[nextIndex],
-        queueIndex: nextIndex,
-        isPlaying: true,
-        progress: 0,
-      });
-    } else {
-      if (playContext === 'similar' && currentTrack) {
-        try {
-          const res = await fetch(`/api/upnext?id=${currentTrack.videoId}`);
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            const nextTracks = data.filter((t: any) => t.videoId !== currentTrack.videoId);
-            if (nextTracks.length > 0) {
-              const nextTrack = nextTracks[0];
-              set({
-                queue: [...queue, ...nextTracks],
-                currentTrack: nextTrack,
-                queueIndex: queueIndex + 1,
-                isPlaying: true,
-                progress: 0,
-              });
-              return;
+      playTrack: (track, queue, context = 'similar') => {
+        const state = get();
+        const newHistoryItem = { track, playedAt: Date.now() };
+        
+        const filteredHistory = state.history.filter(h => h.track.videoId !== track.videoId);
+        const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 500);
+        
+        const newPlayCounts = { ...state.playCounts };
+        newPlayCounts[track.videoId] = (newPlayCounts[track.videoId] || 0) + 1;
+
+        set({
+          currentTrack: track,
+          isPlaying: true,
+          queue: queue || [track],
+          queueIndex: queue ? queue.findIndex((t) => t.videoId === track.videoId) : 0,
+          progress: 0,
+          playContext: context,
+          history: newHistory,
+          playCounts: newPlayCounts,
+        });
+      },
+
+      playNext: async () => {
+        const { queue, queueIndex, playContext, currentTrack } = get();
+        if (queueIndex < queue.length - 1) {
+          const nextIndex = queueIndex + 1;
+          const nextTrack = queue[nextIndex];
+          
+          const state = get();
+          const newHistoryItem = { track: nextTrack, playedAt: Date.now() };
+          const filteredHistory = state.history.filter(h => h.track.videoId !== nextTrack.videoId);
+          const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 500);
+          
+          const newPlayCounts = { ...state.playCounts };
+          newPlayCounts[nextTrack.videoId] = (newPlayCounts[nextTrack.videoId] || 0) + 1;
+
+          set({
+            currentTrack: nextTrack,
+            queueIndex: nextIndex,
+            isPlaying: true,
+            progress: 0,
+            history: newHistory,
+            playCounts: newPlayCounts,
+          });
+        } else {
+          if (playContext === 'similar' && currentTrack) {
+            try {
+              const res = await fetch(`/api/upnext?id=${currentTrack.videoId}`);
+              const data = await res.json();
+              if (Array.isArray(data) && data.length > 0) {
+                const nextTracks = data.filter((t: any) => t.videoId !== currentTrack.videoId);
+                if (nextTracks.length > 0) {
+                  const nextTrack = nextTracks[0];
+                  
+                  const state = get();
+                  const newHistoryItem = { track: nextTrack, playedAt: Date.now() };
+                  const filteredHistory = state.history.filter(h => h.track.videoId !== nextTrack.videoId);
+                  const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 500);
+                  
+                  const newPlayCounts = { ...state.playCounts };
+                  newPlayCounts[nextTrack.videoId] = (newPlayCounts[nextTrack.videoId] || 0) + 1;
+
+                  set({
+                    queue: [...queue, ...nextTracks],
+                    currentTrack: nextTrack,
+                    queueIndex: queueIndex + 1,
+                    isPlaying: true,
+                    progress: 0,
+                    history: newHistory,
+                    playCounts: newPlayCounts,
+                  });
+                  return;
+                }
+              }
+            } catch (e) {
+              console.error(e);
             }
           }
-        } catch (e) {
-          console.error(e);
+          set({ isPlaying: false, progress: 0 });
         }
-      }
-      set({ isPlaying: false, progress: 0 });
-    }
-  },
+      },
 
-  playPrev: () => {
-    const { queue, queueIndex, progress } = get();
-    if (progress > 3) {
-      set({ progress: 0 });
-      return;
-    }
-    if (queueIndex > 0) {
-      const prevIndex = queueIndex - 1;
-      set({
-        currentTrack: queue[prevIndex],
-        queueIndex: prevIndex,
-        isPlaying: true,
-        progress: 0,
-      });
-    }
-  },
+      playPrev: () => {
+        const { queue, queueIndex, progress } = get();
+        if (progress > 3) {
+          set({ progress: 0 });
+          return;
+        }
+        if (queueIndex > 0) {
+          const prevIndex = queueIndex - 1;
+          const prevTrack = queue[prevIndex];
+          
+          const state = get();
+          const newHistoryItem = { track: prevTrack, playedAt: Date.now() };
+          const filteredHistory = state.history.filter(h => h.track.videoId !== prevTrack.videoId);
+          const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 500);
+          
+          const newPlayCounts = { ...state.playCounts };
+          newPlayCounts[prevTrack.videoId] = (newPlayCounts[prevTrack.videoId] || 0) + 1;
 
-  togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
-  setPlaying: (playing) => set({ isPlaying: playing }),
-  setExpanded: (expanded) => set({ isExpanded: expanded }),
-  setProgress: (progress) => set({ progress }),
-  setDuration: (duration) => set({ duration }),
-  setVolume: (volume) => set({ volume }),
-  addToQueue: (track) => set((state) => ({ queue: [...state.queue, track] })),
-  setTrackToAdd: (track) => set({ trackToAdd: track }),
-}));
+          set({
+            currentTrack: prevTrack,
+            queueIndex: prevIndex,
+            isPlaying: true,
+            progress: 0,
+            history: newHistory,
+            playCounts: newPlayCounts,
+          });
+        }
+      },
+
+      togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
+      setPlaying: (playing) => set({ isPlaying: playing }),
+      setExpanded: (expanded) => set({ isExpanded: expanded }),
+      setProgress: (progress) => set({ progress }),
+      setDuration: (duration) => set({ duration }),
+      setVolume: (volume) => set({ volume }),
+      addToQueue: (track) => set((state) => ({ queue: [...state.queue, track] })),
+      setTrackToAdd: (track) => set({ trackToAdd: track }),
+    }),
+    {
+      name: 'player-storage',
+      partialize: (state) => ({ 
+        history: state.history, 
+        playCounts: state.playCounts,
+        volume: state.volume
+      }),
+    }
+  )
+);

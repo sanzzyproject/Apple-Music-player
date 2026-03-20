@@ -118,7 +118,10 @@ export default function Library() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors">
+          <div 
+            onClick={() => router.push('/top50')}
+            className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors"
+          >
             <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
@@ -127,12 +130,15 @@ export default function Library() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors">
+          <div 
+            onClick={() => router.push('/history')}
+            className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors"
+          >
             <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
               <Clock className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-white font-medium">Tersimpan di Cache</h3>
+              <h3 className="text-white font-medium">Riwayat / Tersimpan di Cache</h3>
             </div>
           </div>
 
