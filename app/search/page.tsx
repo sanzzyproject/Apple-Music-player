@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Track } from '@/lib/store';
 import { TrackItem } from '@/components/TrackItem';
 import { Search as SearchIcon, Loader2 } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export default function Search() {
   const [query, setQuery] = useState('');
@@ -37,19 +38,25 @@ export default function Search() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] pt-12 px-4 pb-32">
-      <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6">
+      <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6 snap-x snap-mandatory scroll-smooth">
         {tabs.map((tab) => (
-          <button
+          <motion.button
             key={tab}
+            initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setActiveTab(tab)}
-            className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border ${
+            className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border snap-center ${
               activeTab === tab 
                 ? 'bg-white/20 text-white border-white/20' 
                 : 'bg-transparent text-white/70 border-white/10 hover:bg-white/5'
             }`}
           >
             {tab}
-          </button>
+          </motion.button>
         ))}
       </div>
 
