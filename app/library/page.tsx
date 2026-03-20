@@ -4,18 +4,24 @@ import { useState, useEffect } from 'react';
 import { db } from '@/lib/db';
 import { Track } from '@/lib/store';
 import { TrackItem } from '@/components/TrackItem';
-import { Heart, Plus, ListMusic, Trash2 } from 'lucide-react';
+import { Heart, Plus, ListMusic, Trash2, Play, MoreVertical, Download, TrendingUp, Clock, UploadCloud } from 'lucide-react';
 import Image from 'next/image';
 import { usePlayerStore } from '@/lib/store';
 
 export default function Library() {
   const [likedSongs, setLikedSongs] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'liked' | 'playlists'>('liked');
+  const [activeTab, setActiveTab] = useState('Daftar putar');
   const [showCreate, setShowCreate] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [newPlaylistImg, setNewPlaylistImg] = useState('');
   const { playTrack } = usePlayerStore();
+
+  const tabs = ['Daftar putar', 'Lagu', 'Album', 'Artis', 'Podcasts'];
+
+  useEffect(() => {
+    loadLibrary();
+  }, []);
 
   const loadLibrary = async () => {
     const liked = await db.getLikedSongs();
@@ -23,20 +29,6 @@ export default function Library() {
     setLikedSongs(liked);
     setPlaylists(pl);
   };
-
-  useEffect(() => {
-    let mounted = true;
-    const fetchLib = async () => {
-      const liked = await db.getLikedSongs();
-      const pl = await db.getPlaylists();
-      if (mounted) {
-        setLikedSongs(liked);
-        setPlaylists(pl);
-      }
-    };
-    fetchLib();
-    return () => { mounted = false; };
-  }, []);
 
   const handleCreatePlaylist = async () => {
     if (!newPlaylistName.trim()) return;
@@ -70,94 +62,146 @@ export default function Library() {
   };
 
   return (
-    <main className="min-h-screen bg-black pt-12 px-4 pb-24">
-      <h1 className="text-3xl font-bold text-white tracking-tight mb-6">Library</h1>
-      
-      <div className="flex gap-4 mb-8 border-b border-white/10 pb-4">
-        <button
-          onClick={() => setActiveTab('liked')}
-          className={`text-lg font-semibold transition-colors ${activeTab === 'liked' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
-        >
-          Liked Songs
+    <main className="min-h-screen bg-[#0A0A0A] pt-12 px-4 pb-32">
+      <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border ${
+              activeTab === tab 
+                ? 'bg-white/20 text-white border-white/20' 
+                : 'bg-transparent text-white/70 border-white/10 hover:bg-white/5'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex justify-between items-center mb-6 text-white/80 text-sm">
+        <button className="flex items-center gap-2">
+          Tanggal ditambahkan <span className="text-xs">↓</span>
         </button>
-        <button
-          onClick={() => setActiveTab('playlists')}
-          className={`text-lg font-semibold transition-colors ${activeTab === 'playlists' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
-        >
-          Playlists
+        <button>
+          <ListMusic className="w-5 h-5" />
         </button>
       </div>
 
-      {activeTab === 'liked' && (
+      {activeTab === 'Daftar putar' && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors" onClick={() => setActiveTab('Lagu')}>
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+              <Heart className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">Disukai</h3>
+              <p className="text-white/50 text-sm">{likedSongs.length} lagu</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors">
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+              <Download className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">Diunduh</h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors">
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">Teratas Saya 50</h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors">
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+              <Clock className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">Tersimpan di Cache</h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors">
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+              <UploadCloud className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">Diunggah</h3>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setShowCreate(true)}
+            className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors w-full text-left mt-4"
+          >
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+              <Plus className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-medium">Buat playlist baru</h3>
+            </div>
+          </button>
+
+          {playlists.map((pl) => (
+            <div key={pl.id} className="flex items-center gap-4 p-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors group">
+              <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0">
+                <Image src={pl.img} alt={pl.name} fill className="object-cover" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (pl.tracks.length > 0) playTrack(pl.tracks[0], pl.tracks, 'playlist');
+                    }}
+                    className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:scale-105 transition-transform"
+                  >
+                    <Play className="w-4 h-4 text-white ml-0.5 fill-current" />
+                  </button>
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-white font-medium truncate">{pl.name}</h3>
+                <p className="text-white/50 text-sm">{pl.tracks.length} lagu</p>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeletePlaylist(pl.id);
+                }}
+                className="p-2 text-white/50 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {activeTab === 'Lagu' && (
         <div className="space-y-4">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Heart className="w-10 h-10 text-white fill-current" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-white">Liked Songs</h2>
-              <p className="text-gray-400">{likedSongs.length} songs</p>
-              {likedSongs.length > 0 && (
-                <button
-                  onClick={() => playTrack(likedSongs[0], likedSongs)}
-                  className="mt-2 text-sm bg-white text-black px-4 py-1.5 rounded-full font-semibold hover:scale-105 transition-transform"
-                >
-                  Play All
-                </button>
-              )}
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-white">Lagu Disukai</h2>
+            {likedSongs.length > 0 && (
+              <button
+                onClick={() => playTrack(likedSongs[0], likedSongs, 'playlist')}
+                className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:scale-105 transition-transform"
+              >
+                <Play className="w-5 h-5 fill-current ml-0.5" />
+              </button>
+            )}
           </div>
           <div className="space-y-1">
             {likedSongs.map((track) => (
               <TrackItem key={track.videoId} track={track} queue={likedSongs} />
             ))}
             {likedSongs.length === 0 && (
-              <div className="text-center text-gray-500 py-12">No liked songs yet.</div>
+              <div className="text-center text-white/50 py-12">Belum ada lagu yang disukai.</div>
             )}
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'playlists' && (
-        <div className="space-y-4">
-          <button
-            onClick={() => setShowCreate(true)}
-            className="flex items-center gap-4 w-full p-4 bg-[#1C1C1E] rounded-xl hover:bg-white/10 transition-colors"
-          >
-            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
-              <Plus className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-lg font-medium text-white">New Playlist</span>
-          </button>
-
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            {playlists.map((pl) => (
-              <div key={pl.id} className="bg-[#1C1C1E] rounded-xl p-4 group relative">
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-3">
-                  <Image src={pl.img} alt={pl.name} fill className="object-cover" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button
-                      onClick={() => {
-                        if (pl.tracks.length > 0) playTrack(pl.tracks[0], pl.tracks);
-                      }}
-                      className="w-12 h-12 bg-[#FA243C] rounded-full flex items-center justify-center hover:scale-105 transition-transform"
-                    >
-                      <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <h3 className="font-bold text-white truncate">{pl.name}</h3>
-                <p className="text-sm text-gray-400">{pl.tracks.length} songs</p>
-                <button
-                  onClick={() => handleDeletePlaylist(pl.id)}
-                  className="absolute top-6 right-6 p-2 bg-black/50 rounded-full text-white/50 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
           </div>
         </div>
       )}
@@ -187,7 +231,7 @@ export default function Library() {
               value={newPlaylistName}
               onChange={(e) => setNewPlaylistName(e.target.value)}
               placeholder="Playlist Name"
-              className="w-full bg-black text-white rounded-xl py-3 px-4 mb-6 focus:outline-none focus:ring-2 focus:ring-[#FA243C] border border-white/10"
+              className="w-full bg-black text-white rounded-xl py-3 px-4 mb-6 focus:outline-none focus:ring-1 focus:ring-white/30 border border-white/10"
             />
 
             <div className="flex gap-3">
@@ -200,7 +244,7 @@ export default function Library() {
               <button
                 onClick={handleCreatePlaylist}
                 disabled={!newPlaylistName.trim()}
-                className="flex-1 py-3 rounded-xl font-semibold text-white bg-[#FA243C] hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 py-3 rounded-xl font-semibold text-black bg-white hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Create
               </button>

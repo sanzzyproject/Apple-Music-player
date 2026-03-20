@@ -15,14 +15,10 @@ export async function GET(request: Request) {
       await ytmusic.initialize();
       initialized = true;
     }
-    const song = await ytmusic.getSong(id) as any;
-    if (song && song.lyricsId) {
-      const lyrics = await ytmusic.getLyrics(song.lyricsId);
-      return NextResponse.json({ lyrics });
-    }
-    return NextResponse.json({ lyrics: null });
+    const upNext = await ytmusic.getUpNexts(id);
+    return NextResponse.json(upNext);
   } catch (error) {
-    console.error('Lyrics error:', error);
+    console.error('UpNext error:', error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

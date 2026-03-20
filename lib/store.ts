@@ -17,9 +17,10 @@ interface PlayerState {
   volume: number;
   progress: number;
   duration: number;
+  playContext: 'playlist' | 'similar';
   
-  playTrack: (track: Track, queue?: Track[]) => void;
-  playNext: () => void;
+  playTrack: (track: Track, queue?: Track[], context?: 'playlist' | 'similar') => void;
+  playNext: () => Promise<void>;
   playPrev: () => void;
   togglePlay: () => void;
   setPlaying: (playing: boolean) => void;
@@ -39,19 +40,21 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   volume: 100,
   progress: 0,
   duration: 0,
+  playContext: 'similar',
 
-  playTrack: (track, queue) => {
+  playTrack: (track, queue, context = 'similar') => {
     set({
       currentTrack: track,
       isPlaying: true,
       queue: queue || [track],
       queueIndex: queue ? queue.findIndex((t) => t.videoId === track.videoId) : 0,
       progress: 0,
+      playContext: context,
     });
   },
 
-  playNext: () => {
-    const { queue, queueIndex } = get();
+  playNext: async () => {
+    const { queue, queueIndex, playContext, currentTrack } = get();
     if (queueIndex < queue.length - 1) {
       const nextIndex = queueIndex + 1;
       set({
@@ -61,6 +64,28 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
         progress: 0,
       });
     } else {
+      if (playContext === 'similar' && currentTrack) {
+        try {
+          const res = await fetch(`/api/upnext?id=${currentTrack.videoId}`);
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const nextTracks = data.filter((t: any) => t.videoId !== currentTrack.videoId);
+            if (nextTracks.length > 0) {
+              const nextTrack = nextTracks[0];
+              set({
+                queue: [...queue, ...nextTracks],
+                currentTrack: nextTrack,
+                queueIndex: queueIndex + 1,
+                isPlaying: true,
+                progress: 0,
+              });
+              return;
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
       set({ isPlaying: false, progress: 0 });
     }
   },
@@ -68,7 +93,6 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   playPrev: () => {
     const { queue, queueIndex, progress } = get();
     if (progress > 3) {
-      // If played for more than 3 seconds, restart track
       set({ progress: 0 });
       return;
     }

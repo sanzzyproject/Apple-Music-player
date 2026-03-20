@@ -9,15 +9,15 @@ export function BottomNav() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Home', href: '/', icon: Home },
-    { name: 'Search', href: '/search', icon: Search },
-    { name: 'Library', href: '/library', icon: Library },
+    { name: 'Beranda', href: '/', icon: Home },
+    { name: 'Mencari', href: '/search', icon: Search },
+    { name: 'Pustaka', href: '/library', icon: Library },
     { name: 'Developer', href: '/developer', icon: User },
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-xl border-t border-white/10 pb-safe">
-      <div className="flex justify-around items-center h-16 px-4">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#121212] border-t border-white/5 pb-safe">
+      <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -25,11 +25,13 @@ export function BottomNav() {
               key={item.name}
               href={item.href}
               className={cn(
-                'flex flex-col items-center justify-center w-full h-full space-y-1',
-                isActive ? 'text-[#FA243C]' : 'text-gray-500 hover:text-gray-300'
+                'flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors',
+                isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
               )}
             >
-              <item.icon className="w-6 h-6" strokeWidth={isActive ? 2.5 : 2} />
+              <div className={cn("p-1 rounded-full transition-all", isActive && "bg-white/10")}>
+                <item.icon className={cn("w-6 h-6", isActive && "fill-current")} strokeWidth={isActive ? 2.5 : 2} />
+              </div>
               <span className="text-[10px] font-medium">{item.name}</span>
             </Link>
           );
