@@ -15,9 +15,12 @@ export async function GET(request: Request) {
       await ytmusic.initialize();
       initialized = true;
     }
-    const results = await ytmusic.search(query);
-    const songs = results.filter((item: any) => item.type === 'SONG' || item.type === 'VIDEO');
-    return NextResponse.json(songs);
+    const [songs, videos] = await Promise.all([
+      ytmusic.searchSongs(query),
+      ytmusic.searchVideos(query)
+    ]);
+    const results = [...songs, ...videos];
+    return NextResponse.json(results);
   } catch (error) {
     console.error('Search error:', error);
     return NextResponse.json({ error: String(error) }, { status: 500 });

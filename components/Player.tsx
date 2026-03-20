@@ -5,7 +5,7 @@ import { usePlayerStore } from '@/lib/store';
 import { db } from '@/lib/db';
 import YouTube from 'react-youtube';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Maximize2, MoreVertical, Cast } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Maximize2, MoreVertical, Cast, ListPlus } from 'lucide-react';
 import { cn, getHighResImage } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -23,6 +23,7 @@ export function Player() {
     setDuration,
     playNext,
     playPrev,
+    setTrackToAdd,
   } = usePlayerStore();
 
   const [isLiked, setIsLiked] = useState(false);
@@ -76,9 +77,12 @@ export function Player() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isPlaying && playerRef.current) {
-      interval = setInterval(() => {
-        setProgress(playerRef.current.getCurrentTime() || 0);
+    if (isPlaying) {
+      interval = setInterval(async () => {
+        if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
+          const time = await playerRef.current.getCurrentTime();
+          setProgress(time || 0);
+        }
       }, 1000);
     }
     return () => clearInterval(interval);
@@ -249,8 +253,11 @@ export function Player() {
                     <h2 className="text-2xl font-bold text-white truncate">{currentTrack.name}</h2>
                     <p className="text-lg text-white/60 truncate">{artistName}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={handleLike} className="p-2 text-white">
+                  <div className="flex items-center gap-4">
+                    <button onClick={() => setTrackToAdd(currentTrack)} className="p-2 text-white/80 hover:text-white transition">
+                      <ListPlus className="w-7 h-7" />
+                    </button>
+                    <button onClick={handleLike} className="p-2 text-white transition">
                       <Heart className={cn("w-7 h-7", isLiked && "fill-white")} />
                     </button>
                   </div>
