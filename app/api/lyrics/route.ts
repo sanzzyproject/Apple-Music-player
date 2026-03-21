@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
   
-  if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
+  if (!id || id.length !== 11) return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
   
   try {
     if (!initialized) {
@@ -21,7 +21,10 @@ export async function GET(request: Request) {
       return NextResponse.json({ lyrics });
     }
     return NextResponse.json({ lyrics: null });
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.message?.includes('Invalid videoId')) {
+      return NextResponse.json({ lyrics: null });
+    }
     console.error('Lyrics error:', error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
