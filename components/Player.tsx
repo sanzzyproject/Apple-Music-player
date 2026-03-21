@@ -59,15 +59,17 @@ export function Player() {
     }
   };
 
-  const onReady = (event: any) => {
+  const onReady = async (event: any) => {
     playerRef.current = event.target;
-    setDuration(event.target.getDuration() || 0);
+    const duration = await event.target.getDuration();
+    setDuration(duration || 0);
   };
 
-  const onStateChange = (event: any) => {
+  const onStateChange = async (event: any) => {
     if (event.data === YouTube.PlayerState.PLAYING) {
       setPlaying(true);
-      setDuration(event.target.getDuration() || 0);
+      const duration = await event.target.getDuration();
+      setDuration(duration || 0);
     } else if (event.data === YouTube.PlayerState.PAUSED) {
       setPlaying(false);
     } else if (event.data === YouTube.PlayerState.ENDED) {

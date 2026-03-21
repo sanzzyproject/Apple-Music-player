@@ -16,8 +16,11 @@ export async function GET(request: Request) {
       initialized = true;
     }
     const upNext = await ytmusic.getUpNexts(id);
-    return NextResponse.json(upNext);
-  } catch (error) {
+    return NextResponse.json(upNext || []);
+  } catch (error: any) {
+    if (error?.message?.includes('Invalid videoId')) {
+      return NextResponse.json([]);
+    }
     console.error('UpNext error:', error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
