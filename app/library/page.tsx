@@ -22,16 +22,16 @@ export default function Library() {
 
   const tabs = ['Daftar putar', 'Lagu', 'Album', 'Artis', 'Podcasts'];
 
-  useEffect(() => {
-    loadLibrary();
-  }, []);
-
   const loadLibrary = async () => {
     const liked = await db.getLikedSongs();
     const pl = await db.getPlaylists();
     setLikedSongs(liked);
     setPlaylists(pl);
   };
+
+  useEffect(() => {
+    loadLibrary();
+  }, []);
 
   const handleCreatePlaylist = async () => {
     if (!newPlaylistName.trim()) return;

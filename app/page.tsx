@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Track, usePlayerStore } from '@/lib/store';
-import { Loader2, History, Cast, User, Play } from 'lucide-react';
+import { Loader2, History, Cast, User, Play, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { HorizontalScroll } from '@/components/HorizontalScroll';
 import { getHighResImage } from '@/lib/utils';
@@ -11,6 +11,8 @@ import Link from 'next/link';
 
 export default function Home() {
   const [heroTracks, setHeroTracks] = useState<Track[]>([]);
+  const [speedDialTracks, setSpeedDialTracks] = useState<Track[]>([]);
+  const [quickPicksTracks, setQuickPicksTracks] = useState<Track[]>([]);
   const [communityTracks, setCommunityTracks] = useState<Track[]>([]);
   const [artists, setArtists] = useState<Track[]>([]);
   const [categories, setCategories] = useState<{ title: string; tracks: Track[] }[]>([]);
@@ -25,6 +27,14 @@ export default function Home() {
         const resHero = await fetch(`/api/search?q=dave+how+i+met+my+ex`);
         const dataHero = await resHero.json();
         if (dataHero) setHeroTracks(dataHero.slice(0, 3));
+
+        const resSpeedDial = await fetch(`/api/search?q=top+hits+2024`);
+        const dataSpeedDial = await resSpeedDial.json();
+        if (dataSpeedDial) setSpeedDialTracks(dataSpeedDial.slice(0, 45));
+
+        const resQuickPicks = await fetch(`/api/search?q=viral+hits+indonesia`);
+        const dataQuickPicks = await resQuickPicks.json();
+        if (dataQuickPicks) setQuickPicksTracks(dataQuickPicks.slice(0, 20));
 
         const resComm = await fetch(`/api/search?q=indie+pop+hits`);
         const dataComm = await resComm.json();
@@ -135,6 +145,94 @@ export default function Home() {
                   </div>
                 </motion.div>
               ))}
+            </div>
+          )}
+
+          {speedDialTracks.length > 0 && (
+            <div className="px-4">
+              <h2 className="text-2xl font-bold text-white mb-4">Speed dial</h2>
+              <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory scroll-smooth pb-4">
+                {Array.from({ length: Math.ceil(speedDialTracks.length / 9) }).map((_, i) => {
+                  const chunk = speedDialTracks.slice(i * 9, i * 9 + 9);
+                  return (
+                    <motion.div 
+                      key={i}
+                      initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
+                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                      viewport={{ once: false, amount: 0.4 }}
+                      transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+                      className="w-[85vw] sm:w-[400px] shrink-0 snap-center grid grid-cols-3 gap-2"
+                    >
+                      {chunk.map((track) => (
+                        <div 
+                          key={track.videoId}
+                          className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
+                          onClick={() => playTrack(track, speedDialTracks, 'similar')}
+                        >
+                          <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill className="object-cover" />
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <p className="text-white text-xs font-medium truncate drop-shadow-md">{track.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {quickPicksTracks.length > 0 && (
+            <div className="px-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">Pilihan cepat</h2>
+                <button 
+                  className="text-sm font-medium text-white/80 hover:text-white border border-white/20 rounded-full px-4 py-1.5 transition-colors"
+                  onClick={() => playTrack(quickPicksTracks[0], quickPicksTracks, 'similar')}
+                >
+                  Putar semua
+                </button>
+              </div>
+              <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory scroll-smooth pb-4">
+                {Array.from({ length: Math.ceil(quickPicksTracks.length / 4) }).map((_, i) => {
+                  const chunk = quickPicksTracks.slice(i * 4, i * 4 + 4);
+                  return (
+                    <motion.div 
+                      key={i}
+                      initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
+                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                      viewport={{ once: false, amount: 0.4 }}
+                      transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+                      className="w-[85vw] sm:w-[400px] shrink-0 snap-center flex flex-col gap-3"
+                    >
+                      {chunk.map((track) => (
+                        <div 
+                          key={track.videoId}
+                          className="flex items-center gap-3 cursor-pointer group hover:bg-white/5 p-2 -mx-2 rounded-xl transition-colors"
+                          onClick={() => playTrack(track, quickPicksTracks, 'similar')}
+                        >
+                          <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
+                            <Image src={getHighResImage(track.thumbnails?.[0]?.url, 100)} alt={track.name} fill className="object-cover" />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Play className="w-5 h-5 text-white fill-current" />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-white font-medium truncate text-base">{track.name}</h3>
+                            <p className="text-white/60 text-sm truncate">
+                              {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name}
+                            </p>
+                          </div>
+                          <button className="p-2 text-white/60 hover:text-white transition-colors">
+                            <MoreVertical className="w-5 h-5" />
+                          </button>
+                        </div>
+                      ))}
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           )}
 

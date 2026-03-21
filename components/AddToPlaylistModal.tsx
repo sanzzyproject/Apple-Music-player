@@ -20,16 +20,16 @@ export function AddToPlaylistModal() {
   const [isCreating, setIsCreating] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');
 
+  const loadPlaylists = async () => {
+    const data = await db.getPlaylists();
+    setPlaylists(data as Playlist[]);
+  };
+
   useEffect(() => {
     if (trackToAdd) {
       loadPlaylists();
     }
   }, [trackToAdd]);
-
-  const loadPlaylists = async () => {
-    const data = await db.getPlaylists();
-    setPlaylists(data as Playlist[]);
-  };
 
   const handleAddToPlaylist = async (playlist: Playlist) => {
     if (!trackToAdd) return;
