@@ -84,14 +84,8 @@ export default function Search() {
       {!query && (
         <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6 px-4 snap-x snap-mandatory scroll-smooth">
           {tabs.map((tab) => (
-            <motion.button
+            <button
               key={tab}
-              initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-              whileInView={{ opacity: 1, scale: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.4 }}
-              transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab(tab)}
               className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border snap-center ${
                 activeTab === tab 
@@ -100,7 +94,7 @@ export default function Search() {
               }`}
             >
               {tab}
-            </motion.button>
+            </button>
           ))}
         </div>
       )}

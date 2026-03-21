@@ -17,9 +17,39 @@ export default function Home() {
   const [artists, setArtists] = useState<Track[]>([]);
   const [categories, setCategories] = useState<{ title: string; tracks: Track[] }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [filterData, setFilterData] = useState<{ title: string; tracks: Track[] }[]>([]);
+  const [loadingFilter, setLoadingFilter] = useState(false);
   const { playTrack } = usePlayerStore();
 
   const pills = ['Relax', 'Commute', 'Sad', 'Energize', 'Feel good', 'Workout', 'Focus'];
+
+  useEffect(() => {
+    if (!activeFilter) return;
+    const fetchFilterData = async () => {
+      setLoadingFilter(true);
+      try {
+        const queries = [
+          { title: `Feeling ${activeFilter.toLowerCase()}`, q: `${activeFilter} mood songs` },
+          { title: `${activeFilter} hits`, q: `top ${activeFilter} songs` },
+          { title: `More like ${activeFilter}`, q: `best ${activeFilter} tracks` },
+        ];
+        const results = await Promise.all(
+          queries.map(async ({ title, q }) => {
+            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            return { title, tracks: data.slice(0, 10) };
+          })
+        );
+        setFilterData(results);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoadingFilter(false);
+      }
+    };
+    fetchFilterData();
+  }, [activeFilter]);
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -89,24 +119,49 @@ export default function Home() {
 
       <div className="flex overflow-x-auto no-scrollbar gap-3 px-4 mb-8 snap-x snap-mandatory scroll-smooth">
         {pills.map((pill) => (
-          <motion.button 
+          <button 
             key={pill} 
-            initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-            whileInView={{ opacity: 1, scale: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.4 }}
-            transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="whitespace-nowrap px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-medium transition-colors border border-white/5 snap-center"
+            onClick={() => setActiveFilter(activeFilter === pill ? null : pill)}
+            className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border snap-center ${
+              activeFilter === pill 
+                ? 'bg-white text-black border-white' 
+                : 'bg-white/10 hover:bg-white/20 text-white border-white/5'
+            }`}
           >
             {pill}
-          </motion.button>
+          </button>
         ))}
       </div>
 
-      {loading ? (
+      {loading || (activeFilter && loadingFilter) ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="w-8 h-8 text-[#FA243C] animate-spin" />
+        </div>
+      ) : activeFilter ? (
+        <div className="space-y-10">
+          {filterData.map((cat, i) => (
+            <HorizontalScroll key={i} title={cat.title} tracks={cat.tracks} />
+          ))}
+          
+          <div className="px-4 mb-8">
+            <h2 className="text-xl font-bold text-white mb-4">Suasana Hati dan Genre</h2>
+            <div className="grid grid-cols-2 gap-3">
+              {pills.map((p, idx) => {
+                const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500', 'bg-pink-500', 'bg-indigo-500'];
+                const color = colors[idx % colors.length];
+                return (
+                  <button
+                    key={p}
+                    onClick={() => setActiveFilter(p)}
+                    className="relative overflow-hidden bg-white/5 hover:bg-white/10 text-white font-medium py-4 px-4 rounded-xl text-left transition-colors border border-white/5"
+                  >
+                    <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${color}`} />
+                    <span className="ml-2">{p}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       ) : (
         <div className="space-y-10">
@@ -115,13 +170,11 @@ export default function Home() {
               {heroTracks.map((track) => (
                 <motion.div 
                   key={track.videoId}
-                  initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-                  whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                  viewport={{ once: false, amount: 0.4 }}
-                  transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="relative w-[85vw] sm:w-[400px] shrink-0 aspect-[4/5] sm:aspect-video rounded-3xl overflow-hidden cursor-pointer group shadow-2xl snap-center"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="relative w-[85vw] sm:w-[400px] shrink-0 aspect-[4/5] sm:aspect-video rounded-3xl overflow-hidden cursor-pointer group shadow-2xl snap-center hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
                   onClick={() => playTrack(track, heroTracks, 'similar')}
                 >
                   <Image 
@@ -157,16 +210,16 @@ export default function Home() {
                   return (
                     <motion.div 
                       key={i}
-                      initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      viewport={{ once: false, amount: 0.4 }}
-                      transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-[85vw] sm:w-[400px] shrink-0 snap-center grid grid-cols-3 gap-2"
                     >
                       {chunk.map((track) => (
                         <div 
                           key={track.videoId}
-                          className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
+                          className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
                           onClick={() => playTrack(track, speedDialTracks, 'similar')}
                         >
                           <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill className="object-cover" />
@@ -200,16 +253,16 @@ export default function Home() {
                   return (
                     <motion.div 
                       key={i}
-                      initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      viewport={{ once: false, amount: 0.4 }}
-                      transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-[85vw] sm:w-[400px] shrink-0 snap-center flex flex-col gap-3"
                     >
                       {chunk.map((track) => (
                         <div 
                           key={track.videoId}
-                          className="flex items-center gap-3 cursor-pointer group hover:bg-white/5 p-2 -mx-2 rounded-xl transition-colors"
+                          className="flex items-center gap-3 cursor-pointer group hover:bg-white/5 p-2 -mx-2 rounded-xl active:scale-[0.98] transition-all duration-200"
                           onClick={() => playTrack(track, quickPicksTracks, 'similar')}
                         >
                           <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
@@ -245,19 +298,17 @@ export default function Home() {
                   return (
                     <motion.div 
                       key={i}
-                      initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      viewport={{ once: false, amount: 0.4 }}
-                      transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-[85vw] sm:w-[400px] shrink-0 bg-[#1C1C1E]/60 backdrop-blur-md rounded-3xl p-4 border border-white/5 snap-center shadow-xl"
                     >
                       <div className="space-y-3">
                         {chunk.map((track) => (
-                          <motion.div 
+                          <div 
                             key={track.videoId} 
-                            whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.1)' }}
-                            whileTap={{ scale: 0.98 }}
-                            className="flex items-center gap-4 p-2 rounded-xl cursor-pointer transition-colors group"
+                            className="flex items-center gap-4 p-2 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 active:scale-95 group"
                             onClick={() => playTrack(track, communityTracks, 'similar')}
                           >
                             <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
@@ -272,7 +323,7 @@ export default function Home() {
                                 {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name}
                               </p>
                             </div>
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
                     </motion.div>
@@ -291,13 +342,11 @@ export default function Home() {
                   return (
                     <motion.div
                       key={artist.videoId}
-                      initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      viewport={{ once: false, amount: 0.4 }}
-                      transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-3 cursor-pointer group shrink-0 snap-center"
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="flex flex-col items-center gap-3 cursor-pointer group shrink-0 snap-center hover:scale-105 active:scale-95 transition-transform duration-200"
                       onClick={() => playTrack(artist, artists, 'similar')}
                     >
                       <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg transition-transform duration-300">

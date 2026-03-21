@@ -19,13 +19,11 @@ export function HorizontalScroll({ title, tracks }: { title: string; tracks: Tra
           return (
             <motion.div
               key={track.videoId}
-              initial={{ opacity: 0.5, scale: 0.9, x: 20 }}
-              whileInView={{ opacity: 1, scale: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.4 }}
-              transition={{ duration: 0.5, type: "spring", bounce: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex-none w-36 cursor-pointer group snap-center"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="flex-none w-36 cursor-pointer group snap-center hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
               onClick={() => playTrack(track, tracks)}
             >
               <div className="relative w-36 h-36 rounded-xl overflow-hidden mb-2 shadow-lg transition-transform duration-300">
