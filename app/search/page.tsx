@@ -7,6 +7,8 @@ import { Search as SearchIcon, Loader2, ArrowLeft, X, ArrowUpLeft } from 'lucide
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 
+import { SearchSkeleton } from '@/components/SearchSkeleton';
+
 export default function Search() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Track[]>([]);
@@ -122,9 +124,7 @@ export default function Search() {
 
       <div className="px-4">
         {loading ? (
-          <div className="flex items-center justify-center h-32">
-            <Loader2 className="w-8 h-8 text-white/50 animate-spin" />
-          </div>
+          <SearchSkeleton />
         ) : results.length > 0 ? (
           <div className="space-y-1 border-t border-white/10 pt-4">
             {results.map((track) => (

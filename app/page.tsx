@@ -9,6 +9,8 @@ import { getHighResImage } from '@/lib/utils';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
+import { HomeSkeleton } from '@/components/HomeSkeleton';
+
 export default function Home() {
   const [heroTracks, setHeroTracks] = useState<Track[]>([]);
   const [speedDialTracks, setSpeedDialTracks] = useState<Track[]>([]);
@@ -134,9 +136,7 @@ export default function Home() {
       </div>
 
       {loading || (activeFilter && loadingFilter) ? (
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 text-[#FA243C] animate-spin" />
-        </div>
+        <HomeSkeleton />
       ) : activeFilter ? (
         <div className="space-y-10">
           {filterData.map((cat, i) => (

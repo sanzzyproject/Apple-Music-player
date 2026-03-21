@@ -7,6 +7,7 @@ export interface Track {
   artist: { name: string } | { name: string }[];
   thumbnails: { url: string; width: number; height: number }[];
   duration?: number;
+  isExplicit?: boolean;
 }
 
 export interface HistoryItem {

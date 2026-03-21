@@ -147,42 +147,50 @@ export function Player() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-[64px] left-0 right-0 z-50 bg-[#212121] border-b border-black flex items-center px-4 py-2 cursor-pointer"
+            className="fixed bottom-[80px] left-4 right-4 z-50 bg-[#1C1C1E]/95 backdrop-blur-md rounded-full flex items-center p-2 pr-4 cursor-pointer shadow-2xl border border-white/10"
             onClick={() => setExpanded(true)}
           >
-            <div className="relative w-10 h-10 rounded overflow-hidden shrink-0">
-              <Image src={thumbnail} alt={currentTrack.name} fill className="object-cover" />
+            {/* Circular Album Art with Progress */}
+            <div className="relative w-12 h-12 shrink-0 mr-3">
+              <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4" />
+                <circle 
+                  cx="50" cy="50" r="46" fill="none" stroke="#A78BFA" strokeWidth="4" 
+                  strokeDasharray={`${2 * Math.PI * 46}`}
+                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - (duration > 0 ? progress / duration : 0))}`}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000 ease-linear"
+                />
+              </svg>
+              <div className="absolute inset-1 rounded-full overflow-hidden">
+                <Image src={thumbnail} alt={currentTrack.name} fill className="object-cover" />
+              </div>
             </div>
-            <div className="ml-3 flex-1 min-w-0 flex flex-col justify-center">
-              <div className="text-white text-sm font-medium truncate">{currentTrack.name}</div>
-              <div className="text-gray-400 text-xs truncate">{artistName}</div>
+
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
+              <div className="text-white text-sm font-semibold truncate">{currentTrack.name}</div>
+              <div className="text-white/60 text-xs truncate flex items-center gap-1">
+                {currentTrack.isExplicit && <span className="bg-white/20 text-[8px] px-1 rounded-sm text-white">E</span>}
+                {artistName}
+              </div>
             </div>
-            <div className="flex items-center gap-4 ml-2 shrink-0">
+
+            <div className="flex items-center gap-2 shrink-0 ml-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   togglePlay();
                 }}
-                className="text-white"
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               >
-                {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current" />}
+                {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  playNext();
-                }}
-                className="text-white"
+                onClick={handleLike}
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               >
-                <SkipForward className="w-6 h-6 fill-current" />
+                <Heart className={`w-5 h-5 ${isLiked ? 'fill-[#FA243C] text-[#FA243C]' : ''}`} />
               </button>
-            </div>
-            {/* Mini Progress Bar */}
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10">
-              <div 
-                className="h-full bg-white" 
-                style={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
-              />
             </div>
           </motion.div>
         )}
