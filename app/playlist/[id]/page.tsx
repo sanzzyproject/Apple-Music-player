@@ -68,7 +68,7 @@ export default function PlaylistPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pb-24">
+    <main className="min-h-screen bg-[#0A0A0A] pb-20">
       <div className="sticky top-0 z-10 bg-[#0A0A0A]/80 backdrop-blur-md px-4 py-4 flex items-center gap-4">
         <button onClick={() => router.back()} className="text-white">
           <ArrowLeft className="w-6 h-6" />

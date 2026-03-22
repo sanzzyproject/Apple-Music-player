@@ -3,6 +3,7 @@ import './globals.css'; // Global styles
 import { BottomNav } from '@/components/BottomNav';
 import { Player } from '@/components/Player';
 import { AddToPlaylistModal } from '@/components/AddToPlaylistModal';
+import { PWARegister } from '@/components/PWARegister';
 
 export const metadata: Metadata = {
   title: 'Music App',
@@ -18,6 +19,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <body className="bg-black text-white antialiased pb-24" suppressHydrationWarning>
+        <PWARegister />
         {children}
         <Player />
         <BottomNav />

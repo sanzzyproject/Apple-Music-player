@@ -45,7 +45,7 @@ export default function Top50Page() {
     : 'https://picsum.photos/seed/top50/800/800';
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pb-24">
+    <main className="min-h-screen bg-[#0A0A0A] pb-20">
       <div className="sticky top-0 z-10 bg-[#0A0A0A]/90 backdrop-blur-md pt-12 pb-4 px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button onClick={() => router.back()} className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">

@@ -108,7 +108,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-24">
+    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-20">
       <div className="flex items-center justify-between px-4 mb-6">
         <h1 className="text-2xl font-bold text-white">Beranda</h1>
         <div className="flex items-center gap-4 text-white/80">

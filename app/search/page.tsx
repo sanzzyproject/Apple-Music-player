@@ -12,6 +12,7 @@ import { SearchSkeleton } from '@/components/SearchSkeleton';
 export default function Search() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Track[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Semua');
   const [isFocused, setIsFocused] = useState(false);
@@ -19,19 +20,27 @@ export default function Search() {
 
   const tabs = ['Semua', 'Lagu', 'Video', 'Album', 'Artis', 'Daftar putar'];
 
-  const getSuggestions = (q: string) => {
-    if (!q) return [];
-    return [
-      `${q} pandang`,
-      `${q} pandang tenxi`,
-      `${q} pandang dj`,
-      `${q} pandang remix`,
-      `${q}`,
-      `${q.replace(' ', '-')} pandang`
-    ];
-  };
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!query.trim()) {
+        setSuggestions([]);
+        return;
+      }
+      try {
+        const res = await fetch(`/api/suggest?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        setSuggestions(data.slice(0, 8));
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const suggestions = getSuggestions(query);
+    const delayDebounceFn = setTimeout(() => {
+      fetchSuggestions();
+    }, 200);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -56,7 +65,7 @@ export default function Search() {
   }, [query, activeTab]);
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-24">
+    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-20">
       <div className="px-4 mb-4 flex items-center gap-3">
         <button onClick={() => router.back()} className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6" />
