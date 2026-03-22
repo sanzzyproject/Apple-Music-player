@@ -65,7 +65,7 @@ export default function Library() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 px-4 pb-32">
+    <main className="min-h-screen bg-[#0A0A0A] pt-12 px-4 pb-24">
       <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6 snap-x snap-mandatory scroll-smooth">
         {tabs.map((tab) => (
           <motion.button

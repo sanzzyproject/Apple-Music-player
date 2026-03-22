@@ -1,12 +1,17 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import './globals.css'; // Global styles
 import { BottomNav } from '@/components/BottomNav';
 import { Player } from '@/components/Player';
 import { AddToPlaylistModal } from '@/components/AddToPlaylistModal';
 
 export const metadata: Metadata = {
-  title: 'Apple Music Clone',
-  description: 'Modern Apple Music Clone by SANN404 FORUM',
+  title: 'Music App',
+  description: 'Platform streaming musik modern',
+  manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0A0A0A',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

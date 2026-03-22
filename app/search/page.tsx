@@ -56,7 +56,7 @@ export default function Search() {
   }, [query, activeTab]);
 
   return (
-    <main className="min-h-screen bg-[#121212] pt-12 pb-32">
+    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-24">
       <div className="px-4 mb-4 flex items-center gap-3">
         <button onClick={() => router.back()} className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6" />

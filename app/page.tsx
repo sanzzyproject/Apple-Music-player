@@ -24,7 +24,7 @@ export default function Home() {
   const [loadingFilter, setLoadingFilter] = useState(false);
   const { playTrack } = usePlayerStore();
 
-  const pills = ['Relax', 'Commute', 'Sad', 'Energize', 'Feel good', 'Workout', 'Focus'];
+  const pills = ['Chill', 'Focus', 'Commute', 'Gaming', 'Energize', 'Party', 'Feel good', 'Romance', 'Workout', 'Sleep', 'Sad', 'Happy', 'Nostalgia', 'Acoustic', 'Pop', 'Rock'];
 
   useEffect(() => {
     if (!activeFilter) return;
@@ -83,6 +83,9 @@ export default function Home() {
           { title: 'Viral on TikTok', q: 'lagu fyp tiktok viral' },
           { title: 'For Eid Getaways', q: 'lagu lebaran idul fitri' },
           { title: 'Surrender to the Beat', q: 'lagu edm jedag jedug' },
+          { title: 'Fun throwbacks', q: 'lagu nostalgia 2000an indonesia' },
+          { title: 'Feel-good rock', q: 'lagu rock indonesia terbaik' },
+          { title: 'Acoustic Chill', q: 'lagu akustik cafe santai' },
         ];
 
         const results = await Promise.all(
@@ -105,7 +108,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-32">
+    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-24">
       <div className="flex items-center justify-between px-4 mb-6">
         <h1 className="text-2xl font-bold text-white">Beranda</h1>
         <div className="flex items-center gap-4 text-white/80">
@@ -145,21 +148,16 @@ export default function Home() {
           
           <div className="px-4 mb-8">
             <h2 className="text-xl font-bold text-white mb-4">Suasana Hati dan Genre</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {pills.map((p, idx) => {
-                const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500', 'bg-pink-500', 'bg-indigo-500'];
-                const color = colors[idx % colors.length];
-                return (
-                  <button
-                    key={p}
-                    onClick={() => setActiveFilter(p)}
-                    className="relative overflow-hidden bg-white/5 hover:bg-white/10 text-white font-medium py-4 px-4 rounded-xl text-left transition-colors border border-white/5"
-                  >
-                    <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${color}`} />
-                    <span className="ml-2">{p}</span>
-                  </button>
-                );
-              })}
+            <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto no-scrollbar pb-4 snap-x snap-mandatory">
+              {pills.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setActiveFilter(p)}
+                  className="bg-[#1C1C1E] hover:bg-white/10 text-white font-medium py-3 px-4 rounded-lg text-left transition-colors border border-white/5 min-w-[160px] snap-center"
+                >
+                  <span className="text-sm">{p}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>

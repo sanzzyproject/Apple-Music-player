@@ -16,7 +16,7 @@ export function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#121212] border-t border-white/5 pb-safe">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#0A0A0A] border-t border-white/5 pb-safe">
       <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -29,7 +29,7 @@ export function BottomNav() {
                 isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
               )}
             >
-              <div className={cn("p-1 rounded-full transition-all", isActive && "bg-white/10")}>
+              <div className={cn("px-4 py-1 rounded-full transition-all", isActive && "bg-white text-black")}>
                 <item.icon className={cn("w-6 h-6", isActive && "fill-current")} strokeWidth={isActive ? 2.5 : 2} />
               </div>
               <span className="text-[10px] font-medium">{item.name}</span>
