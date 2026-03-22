@@ -30,6 +30,7 @@ export default function Library() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadLibrary();
   }, []);
 
@@ -65,7 +66,7 @@ export default function Library() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 px-4 pb-20">
+    <main className="min-h-screen bg-[#0A0A0A] pt-6 px-4 pb-24">
       <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6 snap-x snap-mandatory scroll-smooth">
         {tabs.map((tab) => (
           <motion.button

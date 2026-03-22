@@ -22,24 +22,22 @@ export default function Search() {
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (!query.trim()) {
+      if (query.trim()) {
+        try {
+          const res = await fetch(`/api/suggest?q=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          setSuggestions(data);
+        } catch (error) {
+          console.error('Error fetching suggestions:', error);
+          setSuggestions([]);
+        }
+      } else {
         setSuggestions([]);
-        return;
-      }
-      try {
-        const res = await fetch(`/api/suggest?q=${encodeURIComponent(query)}`);
-        const data = await res.json();
-        setSuggestions(data.slice(0, 8));
-      } catch (error) {
-        console.error(error);
       }
     };
-
-    const delayDebounceFn = setTimeout(() => {
-      fetchSuggestions();
-    }, 200);
-
-    return () => clearTimeout(delayDebounceFn);
+    
+    const debounceTimer = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(debounceTimer);
   }, [query]);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ export default function Search() {
   }, [query, activeTab]);
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-20">
+    <main className="min-h-screen bg-[#0A0A0A] pt-6 pb-24">
       <div className="px-4 mb-4 flex items-center gap-3">
         <button onClick={() => router.back()} className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6" />

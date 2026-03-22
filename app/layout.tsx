@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: 'Music App',
   description: 'Platform streaming musik modern',
   manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Music App',
+  },
 };
 
 export const viewport: Viewport = {

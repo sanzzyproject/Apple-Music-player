@@ -31,7 +31,13 @@ export function usePWAInstall() {
 
   const installPWA = async () => {
     if (!deferredPrompt) {
-      alert('Aplikasi sudah diinstal atau browser Anda tidak mendukung instalasi PWA.');
+      // Check if it's iOS
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      if (isIOS) {
+        alert('Untuk menginstal di iOS: Ketuk tombol Share (Bagikan) di bawah, lalu pilih "Add to Home Screen" (Tambahkan ke Layar Utama).');
+      } else {
+        alert('Aplikasi sudah diinstal atau browser Anda tidak mendukung instalasi PWA otomatis. Anda bisa menginstalnya melalui menu browser (Tambahkan ke Layar Utama).');
+      }
       return;
     }
 

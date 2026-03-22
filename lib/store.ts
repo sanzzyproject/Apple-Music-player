@@ -58,7 +58,24 @@ export const usePlayerStore = create<PlayerState>()(
       history: [],
       playCounts: {},
 
-      playTrack: (track, queue, context = 'similar') => {
+      playTrack: (rawTrack, rawQueue, context = 'similar') => {
+        const track = {
+          videoId: rawTrack.videoId,
+          name: rawTrack.name,
+          artist: rawTrack.artist,
+          thumbnails: rawTrack.thumbnails,
+          duration: rawTrack.duration,
+          isExplicit: rawTrack.isExplicit,
+        };
+        const queue = rawQueue ? rawQueue.map(t => ({
+          videoId: t.videoId,
+          name: t.name,
+          artist: t.artist,
+          thumbnails: t.thumbnails,
+          duration: t.duration,
+          isExplicit: t.isExplicit,
+        })) : undefined;
+
         const state = get();
         const newHistoryItem = { track, playedAt: Date.now() };
         
@@ -175,8 +192,28 @@ export const usePlayerStore = create<PlayerState>()(
       setProgress: (progress) => set({ progress }),
       setDuration: (duration) => set({ duration }),
       setVolume: (volume) => set({ volume }),
-      addToQueue: (track) => set((state) => ({ queue: [...state.queue, track] })),
-      setTrackToAdd: (track) => set({ trackToAdd: track }),
+      addToQueue: (rawTrack) => {
+        const track = {
+          videoId: rawTrack.videoId,
+          name: rawTrack.name,
+          artist: rawTrack.artist,
+          thumbnails: rawTrack.thumbnails,
+          duration: rawTrack.duration,
+          isExplicit: rawTrack.isExplicit,
+        };
+        set((state) => ({ queue: [...state.queue, track] }));
+      },
+      setTrackToAdd: (rawTrack) => {
+        const track = rawTrack ? {
+          videoId: rawTrack.videoId,
+          name: rawTrack.name,
+          artist: rawTrack.artist,
+          thumbnails: rawTrack.thumbnails,
+          duration: rawTrack.duration,
+          isExplicit: rawTrack.isExplicit,
+        } : null;
+        set({ trackToAdd: track });
+      },
     }),
     {
       name: 'player-storage',

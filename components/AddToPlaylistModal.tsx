@@ -27,6 +27,7 @@ export function AddToPlaylistModal() {
 
   useEffect(() => {
     if (trackToAdd) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadPlaylists();
     }
   }, [trackToAdd]);

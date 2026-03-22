@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowLeft, Globe, Instagram, Twitter, Coffee, Download, Tv } from 'lucide-react';
+import { ArrowLeft, Globe, Instagram, Twitter, Coffee, Download, Tv, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -11,8 +11,8 @@ export default function DeveloperPage() {
   const { isInstallable, installPWA } = usePWAInstall();
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pb-20">
-      <div className="sticky top-0 z-10 bg-[#0A0A0A]/90 backdrop-blur-md pt-12 pb-4 px-4 flex items-center gap-4">
+    <main className="min-h-screen bg-[#0A0A0A] pb-24">
+      <div className="sticky top-0 z-10 bg-[#0A0A0A]/90 backdrop-blur-md pt-6 pb-4 px-4 flex items-center gap-4">
         <button onClick={() => router.back()} className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6" />
         </button>
@@ -41,7 +41,14 @@ export default function DeveloperPage() {
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-8">SANN404 FORUM</h2>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <h2 className="text-2xl font-bold text-white">SANN404 FORUM</h2>
+            <CheckCircle2 className="w-6 h-6 text-blue-500 fill-blue-500/20" />
+          </div>
+
+          <p className="text-white/60 text-sm leading-relaxed max-w-sm mb-6">
+            Platform streaming musik modern gratis tanpa iklan. Nikmati jutaan lagu, buat daftar putar Anda sendiri, dan temukan musik baru setiap hari dengan kualitas audio premium tanpa batasan.
+          </p>
 
           {/* Social Links Grid */}
           <div className="grid grid-cols-4 gap-3 w-full max-w-sm mb-4">

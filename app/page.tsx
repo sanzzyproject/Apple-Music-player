@@ -108,8 +108,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pt-12 pb-20">
-      <div className="flex items-center justify-between px-4 mb-6">
+    <main className="min-h-screen bg-[#0A0A0A] pt-6 pb-24">
+      <div className="flex items-center justify-between px-4 mb-4">
         <h1 className="text-2xl font-bold text-white">Beranda</h1>
         <div className="flex items-center gap-4 text-white/80">
           <Link href="/history" className="hover:text-white transition-colors">
@@ -122,7 +122,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex overflow-x-auto no-scrollbar gap-3 px-4 mb-8 snap-x snap-mandatory scroll-smooth">
+      <div className="flex overflow-x-auto no-scrollbar gap-3 px-4 mb-4 snap-x snap-mandatory scroll-smooth">
         {pills.map((pill) => (
           <button 
             key={pill} 
