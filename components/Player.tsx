@@ -23,6 +23,7 @@ export function Player() {
   const playNext = usePlayerStore((state) => state.playNext);
   const playPrev = usePlayerStore((state) => state.playPrev);
   const setTrackToAdd = usePlayerStore((state) => state.setTrackToAdd);
+  const dominantColor = usePlayerStore((state) => state.dominantColor);
 
   const [isLiked, setIsLiked] = useState(false);
   const [lyrics, setLyrics] = useState<{ text: string }[] | null>(null);
@@ -159,30 +160,41 @@ export function Player() {
             className="fixed bottom-[80px] left-4 right-4 z-50 bg-[#1C1C1E]/95 backdrop-blur-md rounded-full flex items-center p-2 pr-4 cursor-pointer shadow-2xl border border-white/10"
             onClick={() => setExpanded(true)}
           >
-            {/* Circular Album Art with Progress */}
-            <div className="relative w-12 h-12 shrink-0 mr-3">
-              <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4" />
-                <circle 
-                  cx="50" cy="50" r="46" fill="none" stroke="#A78BFA" strokeWidth="4" 
-                  strokeDasharray={`${2 * Math.PI * 46}`}
-                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - (duration > 0 ? progress / duration : 0))}`}
-                  strokeLinecap="round"
-                  className="transition-all duration-1000 ease-linear"
-                />
-              </svg>
-              <div className="absolute inset-1 rounded-full overflow-hidden">
-                <Image src={thumbnail} alt={currentTrack.name} fill sizes="(max-width: 640px) 100vw, 500px" className="object-cover" />
-              </div>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentTrack.videoId}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center flex-1 min-w-0"
+              >
+                {/* Circular Album Art with Progress */}
+                <div className="relative w-12 h-12 shrink-0 mr-3">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4" />
+                    <circle 
+                      cx="50" cy="50" r="46" fill="none" stroke="#A78BFA" strokeWidth="4" 
+                      strokeDasharray={`${2 * Math.PI * 46}`}
+                      strokeDashoffset={`${2 * Math.PI * 46 * (1 - (duration > 0 ? progress / duration : 0))}`}
+                      strokeLinecap="round"
+                      className="transition-all duration-1000 ease-linear"
+                    />
+                  </svg>
+                  <div className="absolute inset-1 rounded-full overflow-hidden">
+                    <Image src={thumbnail} alt={currentTrack.name} fill sizes="(max-width: 640px) 100vw, 500px" className="object-cover" />
+                  </div>
+                </div>
 
-            <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <div className="text-white text-sm font-semibold truncate">{currentTrack.name}</div>
-              <div className="text-white/60 text-xs truncate flex items-center gap-1">
-                {currentTrack.isExplicit && <span className="bg-white/20 text-[8px] px-1 rounded-sm text-white">E</span>}
-                {artistName}
-              </div>
-            </div>
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <div className="text-white text-sm font-semibold truncate">{currentTrack.name}</div>
+                  <div className="text-white/60 text-xs truncate flex items-center gap-1">
+                    {currentTrack.isExplicit && <span className="bg-white/20 text-[8px] px-1 rounded-sm text-white">E</span>}
+                    {artistName}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
 
             <div className="flex items-center gap-2 shrink-0 ml-2">
               <button
@@ -213,15 +225,13 @@ export function Player() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[100] bg-[#121212] flex flex-col"
+            className="fixed inset-0 z-[100] flex flex-col"
+            style={{
+              background: dominantColor 
+                ? `linear-gradient(to bottom, color-mix(in srgb, ${dominantColor} 40%, #121212) 0%, #121212 100%)`
+                : '#121212'
+            }}
           >
-            {/* Blurred Background */}
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-20 blur-3xl scale-110"
-              style={{ backgroundImage: `url(${thumbnail})` }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#121212] opacity-80" />
-
             <div className="relative z-10 flex flex-col h-full p-6 pb-8">
               {/* Header */}
               <div className="flex justify-between items-center mb-8">
@@ -255,23 +265,37 @@ export function Player() {
                     )}
                   </div>
                 ) : (
-                  <motion.div
-                    className="w-full aspect-square rounded-xl overflow-hidden shadow-2xl mx-auto max-w-[360px]"
-                    animate={{ scale: isPlaying ? 1 : 0.95 }}
-                    transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-                  >
-                    <Image src={thumbnail} alt={currentTrack.name} width={500} height={500} className="w-full h-full object-cover" />
-                  </motion.div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentTrack.videoId}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: isPlaying ? 1 : 0.95 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+                      className="w-full aspect-square rounded-xl overflow-hidden shadow-2xl mx-auto max-w-[360px]"
+                    >
+                      <Image src={thumbnail} alt={currentTrack.name} width={500} height={500} className="w-full h-full object-cover" />
+                    </motion.div>
+                  </AnimatePresence>
                 )}
               </div>
 
               {/* Controls Area */}
               <div className="mt-8">
                 <div className="flex justify-between items-center mb-6">
-                  <div className="min-w-0 flex-1 pr-4">
-                    <h2 className="text-2xl font-bold text-white truncate">{currentTrack.name}</h2>
-                    <p className="text-lg text-white/60 truncate">{artistName}</p>
-                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.div 
+                      key={currentTrack.videoId}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className="min-w-0 flex-1 pr-4"
+                    >
+                      <h2 className="text-2xl font-bold text-white truncate">{currentTrack.name}</h2>
+                      <p className="text-lg text-white/60 truncate">{artistName}</p>
+                    </motion.div>
+                  </AnimatePresence>
                   <div className="flex items-center gap-4">
                     <button onClick={() => setTrackToAdd(currentTrack)} className="p-2 text-white/80 hover:text-white transition">
                       <ListPlus className="w-7 h-7" />

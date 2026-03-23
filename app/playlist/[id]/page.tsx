@@ -42,12 +42,12 @@ export default function PlaylistPage() {
   }, [params.id]);
 
   if (loading) {
-    return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">Memuat...</div>;
+    return <div className="min-h-screen flex items-center justify-center text-white">Memuat...</div>;
   }
 
   if (!playlist) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center text-white">
+      <div className="min-h-screen flex flex-col items-center justify-center text-white">
         <p className="mb-4">Playlist tidak ditemukan</p>
         <button onClick={() => router.back()} className="text-[#FA243C]">Kembali</button>
       </div>
@@ -68,8 +68,8 @@ export default function PlaylistPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] pb-20">
-      <div className="sticky top-0 z-10 bg-[#0A0A0A]/80 backdrop-blur-md px-4 py-4 flex items-center gap-4">
+    <main className="min-h-screen pb-20">
+      <div className="sticky top-0 z-10 bg-black/50 backdrop-blur-md px-4 py-4 flex items-center gap-4">
         <button onClick={() => router.back()} className="text-white">
           <ArrowLeft className="w-6 h-6" />
         </button>

@@ -4,6 +4,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { Player } from '@/components/Player';
 import { AddToPlaylistModal } from '@/components/AddToPlaylistModal';
 import { PWARegister } from '@/components/PWARegister';
+import { BackgroundProvider } from '@/components/BackgroundProvider';
 
 export const metadata: Metadata = {
   title: 'Music App',
@@ -26,7 +27,8 @@ export const viewport: Viewport = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body className="bg-black text-white antialiased pb-24" suppressHydrationWarning>
+      <body className="text-white antialiased pb-24 min-h-screen" suppressHydrationWarning>
+        <BackgroundProvider />
         <PWARegister />
         {children}
         <Player />

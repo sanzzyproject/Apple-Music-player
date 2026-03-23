@@ -28,6 +28,7 @@ interface PlayerState {
   trackToAdd: Track | null;
   history: HistoryItem[];
   playCounts: Record<string, number>;
+  dominantColor: string | null;
   
   playTrack: (track: Track, queue?: Track[], context?: 'playlist' | 'similar') => void;
   playNext: () => Promise<void>;
@@ -40,6 +41,7 @@ interface PlayerState {
   setVolume: (volume: number) => void;
   addToQueue: (track: Track) => void;
   setTrackToAdd: (track: Track | null) => void;
+  setDominantColor: (color: string | null) => void;
 }
 
 export const usePlayerStore = create<PlayerState>()(
@@ -57,6 +59,7 @@ export const usePlayerStore = create<PlayerState>()(
       trackToAdd: null,
       history: [],
       playCounts: {},
+      dominantColor: null,
 
       playTrack: (rawTrack, rawQueue, context = 'similar') => {
         const track = {
@@ -214,6 +217,7 @@ export const usePlayerStore = create<PlayerState>()(
         } : null;
         set({ trackToAdd: track });
       },
+      setDominantColor: (color) => set({ dominantColor: color }),
     }),
     {
       name: 'player-storage',
