@@ -15,7 +15,8 @@ interface Playlist {
 }
 
 export function AddToPlaylistModal() {
-  const { trackToAdd, setTrackToAdd } = usePlayerStore();
+  const trackToAdd = usePlayerStore((state) => state.trackToAdd);
+  const setTrackToAdd = usePlayerStore((state) => state.setTrackToAdd);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');

@@ -18,7 +18,7 @@ export default function Library() {
   const [showCreate, setShowCreate] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');
   const [newPlaylistImg, setNewPlaylistImg] = useState('');
-  const { playTrack } = usePlayerStore();
+  const playTrack = usePlayerStore((state) => state.playTrack);
 
   const tabs = ['Daftar putar', 'Lagu', 'Album', 'Artis', 'Podcasts'];
 
@@ -171,7 +171,7 @@ export default function Library() {
               onClick={() => router.push(`/playlist/${pl.id}`)}
             >
               <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0">
-                <Image src={pl.img} alt={pl.name} fill className="object-cover" />
+                <Image src={pl.img} alt={pl.name} fill sizes="144px" className="object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
                     onClick={(e) => {
@@ -235,7 +235,7 @@ export default function Library() {
             <div className="flex justify-center mb-6">
               <label className="relative w-32 h-32 rounded-xl overflow-hidden cursor-pointer group bg-white/5 flex items-center justify-center border border-dashed border-white/20 hover:border-white/50 transition-colors">
                 {newPlaylistImg ? (
-                  <Image src={newPlaylistImg} alt="Preview" fill className="object-cover" />
+                  <Image src={newPlaylistImg} alt="Preview" fill sizes="144px" className="object-cover" />
                 ) : (
                   <ListMusic className="w-8 h-8 text-white/50" />
                 )}

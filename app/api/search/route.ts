@@ -20,7 +20,11 @@ export async function GET(request: Request) {
       ytmusic.searchVideos(query)
     ]);
     const results = [...songs, ...videos];
-    return NextResponse.json(results);
+    return NextResponse.json(results, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
   } catch (error) {
     console.error('Search error:', error);
     return NextResponse.json({ error: String(error) }, { status: 500 });

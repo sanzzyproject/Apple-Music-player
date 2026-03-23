@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'Music App',
   },
+  icons: {
+    apple: 'https://f.top4top.io/p_3733w0g4e0.jpg',
+  },
 };
 
 export const viewport: Viewport = {

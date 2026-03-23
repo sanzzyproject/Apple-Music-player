@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { usePlayerStore } from '@/lib/store';
 import { db } from '@/lib/db';
 import YouTube from 'react-youtube';
@@ -10,30 +10,39 @@ import { cn, getHighResImage } from '@/lib/utils';
 import Image from 'next/image';
 
 export function Player() {
-  const {
-    currentTrack,
-    isPlaying,
-    isExpanded,
-    progress,
-    duration,
-    togglePlay,
-    setPlaying,
-    setExpanded,
-    setProgress,
-    setDuration,
-    playNext,
-    playPrev,
-    setTrackToAdd,
-  } = usePlayerStore();
+  const currentTrack = usePlayerStore((state) => state.currentTrack);
+  const isPlaying = usePlayerStore((state) => state.isPlaying);
+  const isExpanded = usePlayerStore((state) => state.isExpanded);
+  const progress = usePlayerStore((state) => state.progress);
+  const duration = usePlayerStore((state) => state.duration);
+  const togglePlay = usePlayerStore((state) => state.togglePlay);
+  const setPlaying = usePlayerStore((state) => state.setPlaying);
+  const setExpanded = usePlayerStore((state) => state.setExpanded);
+  const setProgress = usePlayerStore((state) => state.setProgress);
+  const setDuration = usePlayerStore((state) => state.setDuration);
+  const playNext = usePlayerStore((state) => state.playNext);
+  const playPrev = usePlayerStore((state) => state.playPrev);
+  const setTrackToAdd = usePlayerStore((state) => state.setTrackToAdd);
 
   const [isLiked, setIsLiked] = useState(false);
   const [lyrics, setLyrics] = useState<{ text: string }[] | null>(null);
   const [showLyrics, setShowLyrics] = useState(false);
   const playerRef = useRef<any>(null);
 
+  // Reset lyrics when track changes
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLyrics(null);
+  }, [currentTrack?.videoId]);
+
   useEffect(() => {
     if (currentTrack) {
       db.isLiked(currentTrack.videoId).then(setIsLiked);
+    }
+  }, [currentTrack]);
+
+  useEffect(() => {
+    if (currentTrack && showLyrics && !lyrics) {
       fetch(`/api/lyrics?id=${currentTrack.videoId}`)
         .then((res) => res.json())
         .then((data) => {
@@ -45,9 +54,9 @@ export function Player() {
         })
         .catch(() => setLyrics(null));
     }
-  }, [currentTrack]);
+  }, [currentTrack, showLyrics, lyrics]);
 
-  const handleLike = async (e?: React.MouseEvent) => {
+  const handleLike = useCallback(async (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (!currentTrack) return;
     if (isLiked) {
@@ -57,15 +66,15 @@ export function Player() {
       await db.addLikedSong(currentTrack);
       setIsLiked(true);
     }
-  };
+  }, [currentTrack, isLiked]);
 
-  const onReady = async (event: any) => {
+  const onReady = useCallback(async (event: any) => {
     playerRef.current = event.target;
     const duration = await event.target.getDuration();
     setDuration(duration || 0);
-  };
+  }, [setDuration]);
 
-  const onStateChange = async (event: any) => {
+  const onStateChange = useCallback(async (event: any) => {
     if (event.data === YouTube.PlayerState.PLAYING) {
       setPlaying(true);
       const duration = await event.target.getDuration();
@@ -75,7 +84,7 @@ export function Player() {
     } else if (event.data === YouTube.PlayerState.ENDED) {
       playNext();
     }
-  };
+  }, [setPlaying, setDuration, playNext]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -163,7 +172,7 @@ export function Player() {
                 />
               </svg>
               <div className="absolute inset-1 rounded-full overflow-hidden">
-                <Image src={thumbnail} alt={currentTrack.name} fill className="object-cover" />
+                <Image src={thumbnail} alt={currentTrack.name} fill sizes="(max-width: 640px) 100vw, 500px" className="object-cover" />
               </div>
             </div>
 

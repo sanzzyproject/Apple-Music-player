@@ -11,6 +11,8 @@ import Link from 'next/link';
 
 import { HomeSkeleton } from '@/components/HomeSkeleton';
 
+const pills = ['Chill', 'Focus', 'Commute', 'Gaming', 'Energize', 'Party', 'Feel good', 'Romance', 'Workout', 'Sleep', 'Sad', 'Happy', 'Nostalgia', 'Acoustic', 'Pop', 'Rock'];
+
 export default function Home() {
   const [heroTracks, setHeroTracks] = useState<Track[]>([]);
   const [speedDialTracks, setSpeedDialTracks] = useState<Track[]>([]);
@@ -22,9 +24,7 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [filterData, setFilterData] = useState<{ title: string; tracks: Track[] }[]>([]);
   const [loadingFilter, setLoadingFilter] = useState(false);
-  const { playTrack } = usePlayerStore();
-
-  const pills = ['Chill', 'Focus', 'Commute', 'Gaming', 'Energize', 'Party', 'Feel good', 'Romance', 'Workout', 'Sleep', 'Sad', 'Happy', 'Nostalgia', 'Acoustic', 'Pop', 'Rock'];
+  const playTrack = usePlayerStore((state) => state.playTrack);
 
   useEffect(() => {
     if (!activeFilter) return;
@@ -56,47 +56,44 @@ export default function Home() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const resHero = await fetch(`/api/search?q=dave+how+i+met+my+ex`);
-        const dataHero = await resHero.json();
-        if (dataHero) setHeroTracks(dataHero.slice(0, 3));
-
-        const resSpeedDial = await fetch(`/api/search?q=top+hits+2024`);
-        const dataSpeedDial = await resSpeedDial.json();
-        if (dataSpeedDial) setSpeedDialTracks(dataSpeedDial.slice(0, 45));
-
-        const resQuickPicks = await fetch(`/api/search?q=viral+hits+indonesia`);
-        const dataQuickPicks = await resQuickPicks.json();
-        if (dataQuickPicks) setQuickPicksTracks(dataQuickPicks.slice(0, 20));
-
-        const resComm = await fetch(`/api/search?q=indie+pop+hits`);
-        const dataComm = await resComm.json();
-        if (dataComm) setCommunityTracks(dataComm.slice(0, 20));
-
-        const resArtists = await fetch(`/api/search?q=top+indonesian+artists`);
-        const dataArtists = await resArtists.json();
-        if (dataArtists) setArtists(dataArtists.slice(0, 6));
-
         const queries = [
-          { title: 'Trending Now', q: 'lagu indonesia hits terbaru' },
-          { title: 'New Releases', q: 'lagu pop indonesia rilis terbaru' },
-          { title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update' },
-          { title: 'Viral on TikTok', q: 'lagu fyp tiktok viral' },
-          { title: 'For Eid Getaways', q: 'lagu lebaran idul fitri' },
-          { title: 'Surrender to the Beat', q: 'lagu edm jedag jedug' },
-          { title: 'Fun throwbacks', q: 'lagu nostalgia 2000an indonesia' },
-          { title: 'Feel-good rock', q: 'lagu rock indonesia terbaik' },
-          { title: 'Acoustic Chill', q: 'lagu akustik cafe santai' },
+          { key: 'hero', q: 'dave how i met my ex' },
+          { key: 'speedDial', q: 'top hits 2024' },
+          { key: 'quickPicks', q: 'viral hits indonesia' },
+          { key: 'community', q: 'indie pop hits' },
+          { key: 'artists', q: 'top indonesian artists' },
+          { key: 'cat0', title: 'Trending Now', q: 'lagu indonesia hits terbaru' },
+          { key: 'cat1', title: 'New Releases', q: 'lagu pop indonesia rilis terbaru' },
+          { key: 'cat2', title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update' },
+          { key: 'cat3', title: 'Viral on TikTok', q: 'lagu fyp tiktok viral' },
+          { key: 'cat4', title: 'For Eid Getaways', q: 'lagu lebaran idul fitri' },
+          { key: 'cat5', title: 'Surrender to the Beat', q: 'lagu edm jedag jedug' },
+          { key: 'cat6', title: 'Fun throwbacks', q: 'lagu nostalgia 2000an indonesia' },
+          { key: 'cat7', title: 'Feel-good rock', q: 'lagu rock indonesia terbaik' },
+          { key: 'cat8', title: 'Acoustic Chill', q: 'lagu akustik cafe santai' },
         ];
 
         const results = await Promise.all(
-          queries.map(async ({ title, q }) => {
+          queries.map(async ({ key, title, q }) => {
             const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
             const data = await res.json();
-            return { title, tracks: data.slice(0, 10) };
+            return { key, title, data };
           })
         );
 
-        setCategories(results);
+        const cats: { title: string; tracks: Track[] }[] = [];
+
+        results.forEach(({ key, title, data }) => {
+          if (!data) return;
+          if (key === 'hero') setHeroTracks(data.slice(0, 3));
+          else if (key === 'speedDial') setSpeedDialTracks(data.slice(0, 45));
+          else if (key === 'quickPicks') setQuickPicksTracks(data.slice(0, 20));
+          else if (key === 'community') setCommunityTracks(data.slice(0, 20));
+          else if (key === 'artists') setArtists(data.slice(0, 6));
+          else if (key.startsWith('cat') && title) cats.push({ title, tracks: data.slice(0, 10) });
+        });
+
+        setCategories(cats);
       } catch (error) {
         console.error('Failed to fetch home data:', error);
       } finally {
@@ -116,8 +113,8 @@ export default function Home() {
             <History className="w-6 h-6" />
           </Link>
           <Cast className="w-6 h-6" />
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-            <User className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center relative">
+            <Image src="https://f.top4top.io/p_3733w0g4e0.jpg" alt="Developer Profile" fill sizes="32px" className="object-cover" />
           </div>
         </div>
       </div>
@@ -179,6 +176,7 @@ export default function Home() {
                     src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 800)} 
                     alt={track.name} 
                     fill 
+                    sizes="(max-width: 640px) 85vw, 400px"
                     className="object-cover group-hover:scale-105 transition-transform duration-700" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
@@ -220,7 +218,7 @@ export default function Home() {
                           className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
                           onClick={() => playTrack(track, speedDialTracks, 'similar')}
                         >
-                          <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill className="object-cover" />
+                          <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill sizes="64px" className="object-cover" />
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
                           <div className="absolute bottom-2 left-2 right-2">
                             <p className="text-white text-xs font-medium truncate drop-shadow-md">{track.name}</p>
@@ -264,7 +262,7 @@ export default function Home() {
                           onClick={() => playTrack(track, quickPicksTracks, 'similar')}
                         >
                           <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
-                            <Image src={getHighResImage(track.thumbnails?.[0]?.url, 100)} alt={track.name} fill className="object-cover" />
+                            <Image src={getHighResImage(track.thumbnails?.[0]?.url, 100)} alt={track.name} fill sizes="48px" className="object-cover" />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <Play className="w-5 h-5 text-white fill-current" />
                             </div>
@@ -310,7 +308,7 @@ export default function Home() {
                             onClick={() => playTrack(track, communityTracks, 'similar')}
                           >
                             <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
-                              <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill className="object-cover" />
+                              <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill sizes="56px" className="object-cover" />
                               <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Play className="w-6 h-6 text-white fill-current" />
                               </div>
@@ -348,7 +346,7 @@ export default function Home() {
                       onClick={() => playTrack(artist, artists, 'similar')}
                     >
                       <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg transition-transform duration-300">
-                        <Image src={getHighResImage(artist.thumbnails?.[artist.thumbnails.length - 1]?.url, 400)} alt={artistName} fill className="object-cover" />
+                        <Image src={getHighResImage(artist.thumbnails?.[artist.thumbnails.length - 1]?.url, 400)} alt={artistName} fill sizes="144px" className="object-cover" />
                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <Play className="w-8 h-8 text-white fill-current" />
                         </div>

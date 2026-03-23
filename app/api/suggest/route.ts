@@ -11,7 +11,11 @@ export async function GET(request: Request) {
   try {
     const res = await fetch(`http://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=${encodeURIComponent(q)}`);
     const data = await res.json();
-    return NextResponse.json(data[1] || []);
+    return NextResponse.json(data[1] || [], {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
   } catch (error) {
     console.error('Error fetching suggestions:', error);
     return NextResponse.json([]);

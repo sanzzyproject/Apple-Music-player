@@ -6,7 +6,10 @@ import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
 
 export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
-  const { playTrack, currentTrack, isPlaying, setTrackToAdd } = usePlayerStore();
+  const playTrack = usePlayerStore((state) => state.playTrack);
+  const currentTrack = usePlayerStore((state) => state.currentTrack);
+  const isPlaying = usePlayerStore((state) => state.isPlaying);
+  const setTrackToAdd = usePlayerStore((state) => state.setTrackToAdd);
   const isCurrent = currentTrack?.videoId === track.videoId;
 
   const thumbnail = getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 200);
@@ -18,7 +21,7 @@ export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
       onClick={() => playTrack(track, queue)}
     >
       <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
-        <Image src={thumbnail} alt={track.name} fill className="object-cover" />
+        <Image src={thumbnail} alt={track.name} fill sizes="48px" className="object-cover" />
         {isCurrent && isPlaying && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
             <div className="flex gap-0.5 items-end h-3">

@@ -9,7 +9,9 @@ import { useEffect, useState } from 'react';
 
 export default function Top50Page() {
   const router = useRouter();
-  const { history, playCounts, playTrack } = usePlayerStore();
+  const history = usePlayerStore((state) => state.history);
+  const playCounts = usePlayerStore((state) => state.playCounts);
+  const playTrack = usePlayerStore((state) => state.playTrack);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function Top50Page() {
 
       <div className="flex flex-col items-center px-4 mt-4 mb-8">
         <div className="relative w-64 h-64 rounded-xl overflow-hidden shadow-2xl mb-6">
-          <Image src={coverImage} alt="Teratas Saya 50" fill className="object-cover" />
+          <Image src={coverImage} alt="Teratas Saya 50" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
         </div>
         <h2 className="text-2xl font-bold text-white mb-2">Teratas Saya 50</h2>
         <p className="text-white/60 text-sm mb-6">

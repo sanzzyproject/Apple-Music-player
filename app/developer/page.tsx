@@ -36,6 +36,7 @@ export default function DeveloperPage() {
                 src="https://f.top4top.io/p_3733w0g4e0.jpg" 
                 alt="SANN404 FORUM" 
                 fill 
+                sizes="192px"
                 className="object-cover"
               />
             </div>

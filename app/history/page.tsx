@@ -9,7 +9,8 @@ import { useEffect, useState } from 'react';
 
 export default function HistoryPage() {
   const router = useRouter();
-  const { history, playTrack } = usePlayerStore();
+  const history = usePlayerStore((state) => state.history);
+  const playTrack = usePlayerStore((state) => state.playTrack);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function HistoryPage() {
         onClick={() => playTrack(track, history.map(h => h.track))}
       >
         <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
-          <Image src={thumbnail} alt={track.name} fill className="object-cover" />
+          <Image src={thumbnail} alt={track.name} fill sizes="56px" className="object-cover" />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-white font-medium truncate text-base">{track.name}</h3>

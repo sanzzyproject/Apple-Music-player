@@ -40,27 +40,25 @@ export default function Search() {
     return () => clearTimeout(debounceTimer);
   }, [query]);
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
-      if (query.trim()) {
-        setLoading(true);
-        try {
-          // In a real app, you'd pass the tab type to the API
-          const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-          const data = await res.json();
-          setResults(data);
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setResults([]);
-      }
-    }, 500);
+  const handleSearch = async (searchQuery: string) => {
+    if (!searchQuery.trim()) return;
+    setLoading(true);
+    setIsFocused(false);
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+      const data = await res.json();
+      setResults(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [query, activeTab]);
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearch(query);
+  };
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] pt-6 pb-24">
@@ -68,7 +66,7 @@ export default function Search() {
         <button onClick={() => router.back()} className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <div className="relative flex-1">
+        <form onSubmit={onSubmit} className="relative flex-1">
           <input
             type="text"
             value={query}
@@ -81,13 +79,17 @@ export default function Search() {
           />
           {query && (
             <button 
-              onClick={() => setQuery('')}
+              type="button"
+              onClick={() => {
+                setQuery('');
+                setResults([]);
+              }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
             >
               <X className="w-5 h-5" />
             </button>
           )}
-        </div>
+        </form>
       </div>
 
       {!query && (
@@ -116,7 +118,7 @@ export default function Search() {
               className="flex items-center justify-between px-4 py-3 hover:bg-white/5 cursor-pointer transition-colors"
               onClick={() => {
                 setQuery(suggestion);
-                setIsFocused(false);
+                handleSearch(suggestion);
               }}
             >
               <div className="flex items-center gap-4">

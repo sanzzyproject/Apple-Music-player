@@ -18,9 +18,17 @@ export async function GET(request: Request) {
     const song = await ytmusic.getSong(id) as any;
     if (song && song.lyricsId) {
       const lyrics = await ytmusic.getLyrics(song.lyricsId);
-      return NextResponse.json({ lyrics });
+      return NextResponse.json({ lyrics }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        },
+      });
     }
-    return NextResponse.json({ lyrics: null });
+    return NextResponse.json({ lyrics: null }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
   } catch (error: any) {
     if (error?.message?.includes('Invalid videoId')) {
       return NextResponse.json({ lyrics: null });

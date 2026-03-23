@@ -20,7 +20,7 @@ export default function PlaylistPage() {
   const router = useRouter();
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
   const [loading, setLoading] = useState(true);
-  const { playTrack } = usePlayerStore();
+  const playTrack = usePlayerStore((state) => state.playTrack);
 
   useEffect(() => {
     const loadPlaylist = async () => {
@@ -78,7 +78,7 @@ export default function PlaylistPage() {
       <div className="px-4 pt-4 pb-8 flex flex-col items-center text-center">
         <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl overflow-hidden shadow-2xl mb-6 relative bg-white/5 flex items-center justify-center">
           {playlist.img ? (
-            <Image src={playlist.img} alt={playlist.name} fill className="object-cover" />
+            <Image src={playlist.img} alt={playlist.name} fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
           ) : (
             <Music className="w-20 h-20 text-white/20" />
           )}
