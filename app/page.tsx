@@ -218,7 +218,7 @@ export default function Home() {
                           className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
                           onClick={() => playTrack(track, speedDialTracks, 'similar')}
                         >
-                          <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill sizes="64px" className="object-cover" />
+                          <Image src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 200)} alt={track.name} fill sizes="64px" className="object-cover" />
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
                           <div className="absolute bottom-2 left-2 right-2">
                             <p className="text-white text-xs font-medium truncate drop-shadow-md">{track.name}</p>
@@ -262,7 +262,7 @@ export default function Home() {
                           onClick={() => playTrack(track, quickPicksTracks, 'similar')}
                         >
                           <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
-                            <Image src={getHighResImage(track.thumbnails?.[0]?.url, 100)} alt={track.name} fill sizes="48px" className="object-cover" />
+                            <Image src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 100)} alt={track.name} fill sizes="48px" className="object-cover" />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <Play className="w-5 h-5 text-white fill-current" />
                             </div>
@@ -308,7 +308,7 @@ export default function Home() {
                             onClick={() => playTrack(track, communityTracks, 'similar')}
                           >
                             <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
-                              <Image src={getHighResImage(track.thumbnails?.[0]?.url, 200)} alt={track.name} fill sizes="56px" className="object-cover" />
+                              <Image src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 200)} alt={track.name} fill sizes="56px" className="object-cover" />
                               <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Play className="w-6 h-6 text-white fill-current" />
                               </div>

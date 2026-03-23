@@ -7,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getHighResImage(url: string | undefined, size = 800) {
   if (!url) return `https://picsum.photos/seed/music/${size}/${size}`;
-  if (url.includes('googleusercontent.com') || url.includes('ytimg.com')) {
-    return url.replace(/=w\d+-h\d+/, `=w${size}-h${size}`).replace(/hqdefault/, 'maxresdefault');
+  if (url.includes('googleusercontent.com') || url.includes('ytimg.com') || url.includes('ggpht.com')) {
+    return url.replace(/=w\d+-h\d+/, `=w${size}-h${size}`);
   }
   return url;
 }
