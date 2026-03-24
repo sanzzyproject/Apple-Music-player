@@ -13,6 +13,7 @@ export default function ArtistPage() {
   const router = useRouter();
   const [artist, setArtist] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isBioExpanded, setIsBioExpanded] = useState(false);
   const playTrack = usePlayerStore((state) => state.playTrack);
 
   useEffect(() => {
@@ -107,10 +108,15 @@ export default function ArtistPage() {
           <h2 className="text-lg font-bold text-white mb-2">Tentang</h2>
           <div className="text-white/70 text-sm">
             <p className="mb-1">Artist • {artist.name}</p>
-            <p className="line-clamp-3">
-              Listen to {artist.name} on this platform. Explore top songs, albums, singles, and more.
+            <p className={isBioExpanded ? "" : "line-clamp-3"}>
+              Dengarkan karya-karya terbaik dari {artist.name} di platform ini. Jelajahi berbagai lagu populer, album terbaru, single, dan video musik yang telah dirilis. {artist.name} telah memberikan kontribusi besar dalam industri musik dan terus menghibur para penggemarnya dengan karya-karya yang luar biasa. Temukan juga artis-artis serupa dan playlist yang menampilkan lagu-lagu hits dari {artist.name}.
             </p>
-            <button className="text-white mt-2 text-xs font-medium">Tampilkan lebih banyak</button>
+            <button 
+              onClick={() => setIsBioExpanded(!isBioExpanded)}
+              className="text-white mt-2 text-xs font-medium"
+            >
+              {isBioExpanded ? "Tampilkan lebih sedikit" : "Tampilkan lebih banyak"}
+            </button>
           </div>
         </section>
 
@@ -119,13 +125,10 @@ export default function ArtistPage() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-white">Top songs</h2>
-              <button className="text-white/70 hover:text-white">
-                <ArrowLeft className="w-5 h-5 rotate-180" />
-              </button>
             </div>
-            <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory pb-4">
-              {artist.topSongs.map((song: any, index: number) => (
-                <div key={`song-${song.videoId}-${index}`} className="w-[85vw] max-w-[400px] shrink-0 snap-start">
+            <div className="flex flex-col gap-2">
+              {artist.topSongs.slice(0, 5).map((song: any, index: number) => (
+                <div key={`song-${song.videoId}-${index}`} className="w-full">
                   <TrackItem track={song} queue={artist.topSongs} />
                 </div>
               ))}
@@ -139,7 +142,11 @@ export default function ArtistPage() {
             <h2 className="text-2xl font-bold text-white mb-4">Albums</h2>
             <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory pb-4">
               {artist.topAlbums.map((album: any, index: number) => (
-                <div key={`album-${album.albumId}-${index}`} className="w-40 shrink-0 snap-start group cursor-pointer">
+                <div 
+                  key={`album-${album.albumId}-${index}`} 
+                  className="w-40 shrink-0 snap-start group cursor-pointer"
+                  onClick={() => router.push(`/album/${album.albumId}`)}
+                >
                   <div className="relative aspect-square rounded-lg overflow-hidden mb-3">
                     <Image 
                       src={getHighResImage(album.thumbnails?.[album.thumbnails.length - 1]?.url, 400) || '/placeholder.png'} 
@@ -172,7 +179,11 @@ export default function ArtistPage() {
             </div>
             <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory pb-4">
               {artist.topSingles.map((single: any, index: number) => (
-                <div key={`single-${single.albumId}-${index}`} className="w-40 shrink-0 snap-start group cursor-pointer">
+                <div 
+                  key={`single-${single.albumId}-${index}`} 
+                  className="w-40 shrink-0 snap-start group cursor-pointer"
+                  onClick={() => router.push(`/album/${single.albumId}`)}
+                >
                   <div className="relative aspect-square rounded-lg overflow-hidden mb-3">
                     <Image 
                       src={getHighResImage(single.thumbnails?.[single.thumbnails.length - 1]?.url, 400) || '/placeholder.png'} 
@@ -237,7 +248,11 @@ export default function ArtistPage() {
             <h2 className="text-2xl font-bold text-white mb-4">Featured on</h2>
             <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory pb-4">
               {artist.featuredOn.map((playlist: any, index: number) => (
-                <div key={`playlist-${playlist.playlistId}-${index}`} className="w-40 shrink-0 snap-start group cursor-pointer">
+                <div 
+                  key={`playlist-${playlist.playlistId}-${index}`} 
+                  className="w-40 shrink-0 snap-start group cursor-pointer"
+                  onClick={() => router.push(`/playlist/${playlist.playlistId}`)}
+                >
                   <div className="relative aspect-square rounded-lg overflow-hidden mb-3">
                     <Image 
                       src={getHighResImage(playlist.thumbnails?.[playlist.thumbnails.length - 1]?.url, 400) || '/placeholder.png'} 

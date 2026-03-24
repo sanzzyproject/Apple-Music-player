@@ -30,6 +30,18 @@ export default function PlaylistPage() {
         const data = await db.getPlaylist(id);
         if (data) {
           setPlaylist(data as Playlist);
+        } else {
+          // Try fetching from YouTube Music API
+          const res = await fetch(`/api/ytplaylist?id=${id}`);
+          if (res.ok) {
+            const ytData = await res.json();
+            setPlaylist({
+              id: ytData.playlistId,
+              name: ytData.name,
+              img: ytData.thumbnails?.[ytData.thumbnails.length - 1]?.url || '',
+              tracks: ytData.videos || []
+            });
+          }
         }
       } catch (error) {
         console.error('Failed to load playlist:', error);
