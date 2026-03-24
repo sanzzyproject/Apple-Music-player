@@ -162,9 +162,9 @@ export default function Home() {
         <div className="space-y-10">
           {heroTracks.length > 0 && (
             <div className="flex overflow-x-auto no-scrollbar gap-4 px-4 snap-x snap-mandatory scroll-smooth pb-4">
-              {heroTracks.map((track) => (
+              {heroTracks.map((track, i) => (
                 <motion.div 
-                  key={track.videoId}
+                  key={`hero-${track.videoId}-${i}`}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.1 }}
@@ -205,16 +205,16 @@ export default function Home() {
                   const chunk = speedDialTracks.slice(i * 9, i * 9 + 9);
                   return (
                     <motion.div 
-                      key={i}
+                      key={`speeddial-chunk-${i}`}
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, amount: 0.1 }}
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-[85vw] sm:w-[400px] shrink-0 snap-center grid grid-cols-3 gap-2"
                     >
-                      {chunk.map((track) => (
+                      {chunk.map((track, j) => (
                         <div 
-                          key={track.videoId}
+                          key={`speeddial-${track.videoId}-${j}`}
                           className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
                           onClick={() => playTrack(track, speedDialTracks, 'similar')}
                         >
@@ -248,16 +248,16 @@ export default function Home() {
                   const chunk = quickPicksTracks.slice(i * 4, i * 4 + 4);
                   return (
                     <motion.div 
-                      key={i}
+                      key={`quickpicks-chunk-${i}`}
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, amount: 0.1 }}
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-[85vw] sm:w-[400px] shrink-0 snap-center flex flex-col gap-3"
                     >
-                      {chunk.map((track) => (
+                      {chunk.map((track, j) => (
                         <div 
-                          key={track.videoId}
+                          key={`quickpicks-${track.videoId}-${j}`}
                           className="flex items-center gap-3 cursor-pointer group hover:bg-white/5 p-2 -mx-2 rounded-xl active:scale-[0.98] transition-all duration-200"
                           onClick={() => playTrack(track, quickPicksTracks, 'similar')}
                         >
@@ -293,7 +293,7 @@ export default function Home() {
                   const chunk = communityTracks.slice(i * 4, i * 4 + 4);
                   return (
                     <motion.div 
-                      key={i}
+                      key={`community-chunk-${i}`}
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, amount: 0.1 }}
@@ -301,9 +301,9 @@ export default function Home() {
                       className="w-[85vw] sm:w-[400px] shrink-0 bg-[#1C1C1E]/60 backdrop-blur-md rounded-3xl p-4 border border-white/5 snap-center shadow-xl"
                     >
                       <div className="space-y-3">
-                        {chunk.map((track) => (
+                        {chunk.map((track, j) => (
                           <div 
-                            key={track.videoId} 
+                            key={`community-${track.videoId}-${j}`} 
                             className="flex items-center gap-4 p-2 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 active:scale-95 group"
                             onClick={() => playTrack(track, communityTracks, 'similar')}
                           >
@@ -337,7 +337,7 @@ export default function Home() {
                   const artistName = Array.isArray(artist.artist) ? artist.artist.map(a => a.name).join(', ') : artist.artist?.name || 'Artist';
                   return (
                     <motion.div
-                      key={artist.videoId}
+                      key={`artist-${artist.videoId}-${i}`}
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, amount: 0.1 }}

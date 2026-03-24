@@ -18,7 +18,7 @@ export function HorizontalScroll({ title, tracks }: { title: string; tracks: Tra
 
           return (
             <motion.div
-              key={track.videoId}
+              key={`${track.videoId}-${i}`}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.1 }}

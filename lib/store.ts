@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 export interface Track {
   videoId: string;
   name: string;
-  artist: { name: string } | { name: string }[];
+  artist: { name: string; artistId?: string } | { name: string; artistId?: string }[];
   thumbnails: { url: string; width: number; height: number }[];
   duration?: number;
   isExplicit?: boolean;

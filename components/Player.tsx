@@ -5,11 +5,13 @@ import { usePlayerStore } from '@/lib/store';
 import { db } from '@/lib/db';
 import YouTube from 'react-youtube';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Maximize2, MoreVertical, Cast, ListPlus } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Maximize2, MoreVertical, Cast, ListPlus, User } from 'lucide-react';
 import { cn, getHighResImage } from '@/lib/utils';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export function Player() {
+  const router = useRouter();
   const currentTrack = usePlayerStore((state) => state.currentTrack);
   const isPlaying = usePlayerStore((state) => state.isPlaying);
   const isExpanded = usePlayerStore((state) => state.isExpanded);
@@ -357,9 +359,20 @@ export function Player() {
                     <Mic2 className="w-5 h-5" />
                     <span className="text-[10px] uppercase tracking-wider">Lyrics</span>
                   </button>
-                  <button className="text-white/80 hover:text-white transition flex flex-col items-center gap-1">
-                    <Maximize2 className="w-5 h-5" />
-                    <span className="text-[10px] uppercase tracking-wider">Related</span>
+                  <button 
+                    onClick={() => {
+                      const artistId = Array.isArray(currentTrack.artist) 
+                        ? currentTrack.artist[0]?.artistId 
+                        : currentTrack.artist?.artistId;
+                      if (artistId) {
+                        setExpanded(false);
+                        router.push(`/artist/${artistId}`);
+                      }
+                    }}
+                    className="text-white/80 hover:text-white transition flex flex-col items-center gap-1"
+                  >
+                    <User className="w-5 h-5" />
+                    <span className="text-[10px] uppercase tracking-wider">Lihat Artis</span>
                   </button>
                 </div>
               </div>

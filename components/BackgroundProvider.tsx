@@ -41,7 +41,7 @@ export function BackgroundProvider() {
     return () => {
       fac.destroy();
     };
-  }, [currentTrack?.videoId, setDominantColor]);
+  }, [currentTrack?.videoId, currentTrack?.thumbnails, setDominantColor]);
 
   return (
     <div className="fixed inset-0 -z-50 bg-[#0A0A0A] overflow-hidden pointer-events-none">

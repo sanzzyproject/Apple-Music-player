@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Track } from '@/lib/store';
 import { TrackItem } from '@/components/TrackItem';
+import { ArtistItem } from '@/components/ArtistItem';
 import { Search as SearchIcon, Loader2, ArrowLeft, X, ArrowUpLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
@@ -11,7 +12,7 @@ import { SearchSkeleton } from '@/components/SearchSkeleton';
 
 export default function Search() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Track[]>([]);
+  const [results, setResults] = useState<any[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Semua');
@@ -92,23 +93,21 @@ export default function Search() {
         </form>
       </div>
 
-      {!query && (
-        <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6 px-4 snap-x snap-mandatory scroll-smooth">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border snap-center ${
-                activeTab === tab 
-                  ? 'bg-white/20 text-white border-white/20' 
-                  : 'bg-transparent text-white/70 border-white/10 hover:bg-white/5'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="flex overflow-x-auto no-scrollbar gap-3 mb-6 px-4 snap-x snap-mandatory scroll-smooth">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-colors border snap-center ${
+              activeTab === tab 
+                ? 'bg-white/20 text-white border-white/20' 
+                : 'bg-transparent text-white/70 border-white/10 hover:bg-white/5'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
       {query && isFocused && (
         <div className="mb-6">
@@ -136,8 +135,16 @@ export default function Search() {
           <SearchSkeleton />
         ) : results.length > 0 ? (
           <div className="space-y-1 border-t border-white/10 pt-4">
-            {results.map((track) => (
-              <TrackItem key={track.videoId} track={track} queue={results} />
+            {results.filter(item => {
+              if (activeTab === 'Semua') return true;
+              if (activeTab === 'Lagu') return item.type === 'SONG';
+              if (activeTab === 'Video') return item.type === 'VIDEO';
+              if (activeTab === 'Artis') return item.type === 'ARTIST';
+              return false;
+            }).map((item, index) => (
+              item.type === 'ARTIST' 
+                ? <ArtistItem key={`artist-${item.artistId}-${index}`} artist={item} />
+                : <TrackItem key={`track-${item.videoId}-${index}`} track={item} queue={results.filter(r => r.type !== 'ARTIST')} />
             ))}
           </div>
         ) : query ? (
