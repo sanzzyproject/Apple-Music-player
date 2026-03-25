@@ -39,13 +39,14 @@ export default function Home() {
           { title: `${activeFilter} hits`, q: `top ${activeFilter} songs` },
           { title: `More like ${activeFilter}`, q: `best ${activeFilter} tracks` },
         ];
-        const results = await Promise.all(
-          queries.map(async ({ title, q }) => {
-            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-            const data = await res.json();
-            return { title, tracks: data.slice(0, 10) };
-          })
-        );
+        
+        const results = [];
+        for (const { title, q } of queries) {
+          const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&type=song`);
+          const data = await res.json();
+          results.push({ title, tracks: data.slice(0, 10) });
+        }
+        
         setFilterData(results);
       } catch (error) {
         console.error(error);
@@ -63,17 +64,17 @@ export default function Home() {
         const recentHistory = history.slice(0, 5);
         
         const queries: { key: string; title?: string; q: string; type?: string }[] = [
-          { key: 'hero', q: 'dave how i met my ex' },
-          { key: 'speedDial', q: 'top hits 2024' },
-          { key: 'quickPicks', q: 'viral hits indonesia' },
+          { key: 'hero', q: 'dave how i met my ex', type: 'song' },
+          { key: 'speedDial', q: 'top hits 2024', type: 'song' },
+          { key: 'quickPicks', q: 'viral hits indonesia', type: 'song' },
           { key: 'community', q: 'chill playlists', type: 'playlist' },
-          { key: 'artists', q: 'top indonesian artists' },
+          { key: 'artists', q: 'top indonesian artists', type: 'artist' },
         ];
 
         // Add personalized queries based on subscribed artists
         if (subscribedArtists.length > 0) {
           const randomArtist = subscribedArtists[Math.floor(Math.random() * subscribedArtists.length)];
-          queries.push({ key: 'cat_sub', title: `Dari Artis Favoritmu: ${randomArtist.name}`, q: `${randomArtist.name} best songs` });
+          queries.push({ key: 'cat_sub', title: `Dari Artis Favoritmu: ${randomArtist.name}`, q: `${randomArtist.name} best songs`, type: 'song' });
           queries[0].q = `${randomArtist.name} hits`; // Update hero
           queries[1].q = `More like ${randomArtist.name}`; // Update speedDial
         }
@@ -86,41 +87,47 @@ export default function Home() {
             : randomHistory.track.artist?.name;
             
           if (artistName) {
-            queries.push({ key: 'cat_hist', title: `Karena kamu mendengarkan ${artistName}`, q: `${artistName} similar songs` });
+            queries.push({ key: 'cat_hist', title: `Karena kamu mendengarkan ${artistName}`, q: `${artistName} similar songs`, type: 'song' });
             queries[2].q = `${artistName} radio`; // Update quickPicks
           }
         }
 
         // Add default categories
         const defaultCategories = [
-          { key: 'cat0', title: 'Trending Now', q: 'lagu indonesia hits terbaru' },
-          { key: 'cat1', title: 'New Releases', q: 'lagu pop indonesia rilis terbaru' },
-          { key: 'cat2', title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update' },
-          { key: 'cat3', title: 'Viral on TikTok', q: 'lagu fyp tiktok viral' },
-          { key: 'cat4', title: 'For Eid Getaways', q: 'lagu lebaran idul fitri' },
-          { key: 'cat5', title: 'Surrender to the Beat', q: 'lagu edm jedag jedug' },
-          { key: 'cat6', title: 'Fun throwbacks', q: 'lagu nostalgia 2000an indonesia' },
-          { key: 'cat7', title: 'Feel-good rock', q: 'lagu rock indonesia terbaik' },
-          { key: 'cat8', title: 'Acoustic Chill', q: 'lagu akustik cafe santai' },
+          { key: 'cat0', title: 'Trending Now', q: 'lagu indonesia hits terbaru', type: 'song' },
+          { key: 'cat1', title: 'New Releases', q: 'lagu pop indonesia rilis terbaru', type: 'song' },
+          { key: 'cat2', title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update', type: 'song' },
+          { key: 'cat3', title: 'Viral on TikTok', q: 'lagu fyp tiktok viral', type: 'song' },
+          { key: 'cat4', title: 'For Eid Getaways', q: 'lagu lebaran idul fitri', type: 'song' },
+          { key: 'cat5', title: 'Surrender to the Beat', q: 'lagu edm jedag jedug', type: 'song' },
+          { key: 'cat6', title: 'Fun throwbacks', q: 'lagu nostalgia 2000an indonesia', type: 'song' },
+          { key: 'cat7', title: 'Feel-good rock', q: 'lagu rock indonesia terbaik', type: 'song' },
+          { key: 'cat8', title: 'Acoustic Chill', q: 'lagu akustik cafe santai', type: 'song' },
         ];
         
         queries.push(...defaultCategories);
 
-        const results = await Promise.all(
-          queries.map(async ({ key, title, q, type }) => {
-            try {
-              const url = type 
-                ? `/api/search?q=${encodeURIComponent(q)}&type=${type}`
-                : `/api/search?q=${encodeURIComponent(q)}`;
-              const res = await fetch(url);
-              if (!res.ok) return { key, title, data: [] };
-              const data = await res.json();
-              return { key, title, data };
-            } catch (e) {
-              return { key, title, data: [] };
-            }
-          })
-        );
+        // Process in chunks of 3 to avoid 403 errors from too many parallel requests
+        const results = [];
+        for (let i = 0; i < queries.length; i += 3) {
+          const chunk = queries.slice(i, i + 3);
+          const chunkResults = await Promise.all(
+            chunk.map(async ({ key, title, q, type }) => {
+              try {
+                const url = type 
+                  ? `/api/search?q=${encodeURIComponent(q)}&type=${type}`
+                  : `/api/search?q=${encodeURIComponent(q)}`;
+                const res = await fetch(url);
+                if (!res.ok) return { key, title, data: [] };
+                const data = await res.json();
+                return { key, title, data };
+              } catch (e) {
+                return { key, title, data: [] };
+              }
+            })
+          );
+          results.push(...chunkResults);
+        }
 
         const cats: { title: string; tracks: Track[] }[] = [];
 
@@ -338,7 +345,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-[#81B29A] mb-4">From the community</h2>
               <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory scroll-smooth pb-4">
                 {communityPlaylists.map((playlist, i) => {
-                  const id = playlist.playlistId || playlist.id || playlist.videoId;
+                  const id = playlist.playlistId;
                   if (!id) return null;
                   return <CommunityPlaylistCard key={`community-playlist-${id}-${i}`} playlistId={id} />;
                 })}

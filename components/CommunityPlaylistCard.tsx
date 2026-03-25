@@ -25,7 +25,10 @@ export function CommunityPlaylistCard({ playlistId }: { playlistId: string }) {
         const res = await fetch(`/api/ytplaylist?id=${playlistId}`);
         if (res.ok) {
           const data = await res.json();
-          setPlaylist(data);
+          setPlaylist({
+            ...data,
+            videos: data.videos || data.songs || []
+          });
         }
       } catch (error) {
         console.error('Failed to fetch playlist:', error);
@@ -36,10 +39,14 @@ export function CommunityPlaylistCard({ playlistId }: { playlistId: string }) {
     fetchPlaylist();
   }, [playlistId]);
 
-  if (loading || !playlist) {
+  if (loading) {
     return (
       <div className="w-[320px] h-[420px] bg-[#1C1C1E] rounded-3xl animate-pulse shrink-0 snap-center" />
     );
+  }
+
+  if (!playlist) {
+    return null;
   }
 
   const handlePlay = (e: React.MouseEvent) => {

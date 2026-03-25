@@ -36,10 +36,10 @@ export default function PlaylistPage() {
           if (res.ok) {
             const ytData = await res.json();
             setPlaylist({
-              id: ytData.playlistId,
-              name: ytData.name,
+              id: ytData.playlistId || ytData.id || id,
+              name: ytData.name || ytData.title || 'Playlist',
               img: ytData.thumbnails?.[ytData.thumbnails.length - 1]?.url || '',
-              tracks: ytData.videos || []
+              tracks: ytData.videos || ytData.songs || []
             });
           }
         }

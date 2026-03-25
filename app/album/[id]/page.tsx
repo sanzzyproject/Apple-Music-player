@@ -13,8 +13,12 @@ async function getAlbumDetails(id: string) {
     await ytmusic.initialize();
     const album = await ytmusic.getAlbum(id);
     return album;
-  } catch (error) {
-    console.error('Error fetching album:', error);
+  } catch (error: any) {
+    if (error?.isAxiosError && error?.response?.status === 400) {
+      // Suppress 400 errors as they just mean the ID is invalid
+      return null;
+    }
+    console.error('Error fetching album:', error?.message || error);
     return null;
   }
 }

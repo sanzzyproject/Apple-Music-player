@@ -31,13 +31,12 @@ export async function GET(request: Request) {
     });
   } catch (error: any) {
     if (error?.name === 'ZodError') {
-      console.error('Lyrics ZodError:', error.issues);
       return NextResponse.json({ lyrics: null });
     }
-    if (error?.message?.includes('Invalid videoId')) {
+    if (error?.message?.includes('Invalid videoId') || (error?.isAxiosError && error?.response?.status === 400)) {
       return NextResponse.json({ lyrics: null });
     }
-    console.error('Lyrics error:', error);
+    console.error(`Lyrics error for id ${id}:`, error?.message || error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

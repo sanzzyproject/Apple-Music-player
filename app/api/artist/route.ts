@@ -23,10 +23,12 @@ export async function GET(request: Request) {
     });
   } catch (error: any) {
     if (error?.name === 'ZodError') {
-      console.error('Artist ZodError:', error.issues);
       return NextResponse.json({ error: 'ZodError', details: error.issues }, { status: 500 });
     }
-    console.error('Artist error:', error);
+    if (error?.isAxiosError && error?.response?.status === 400) {
+      return NextResponse.json({ error: 'Invalid artist ID' }, { status: 400 });
+    }
+    console.error(`Artist error for id ${id}:`, error?.message || error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

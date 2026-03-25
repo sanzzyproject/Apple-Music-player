@@ -2,25 +2,34 @@ import { NextResponse } from 'next/server';
 import YTMusic from 'ytmusic-api';
 
 const ytmusic = new YTMusic();
+let initialized = false;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
-  if (!id) {
-    return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+  if (!id || id === 'undefined' || id === 'null') {
+    return NextResponse.json({ error: 'Missing or invalid id' }, { status: 400 });
   }
 
   try {
-    await ytmusic.initialize();
+    if (!initialized) {
+      await ytmusic.initialize();
+      initialized = true;
+    }
     try {
       const playlist = await ytmusic.getPlaylist(id);
-      return NextResponse.json(playlist);
+      return NextResponse.json({
+        ...playlist,
+        videos: (playlist as any).videos || (playlist as any).songs || []
+      });
     } catch (e: any) {
       if (e?.name === 'ZodError') {
-        console.error('getPlaylist ZodError:', e.issues);
+        // Suppress ZodError logs
+      } else if (e?.message?.includes('split')) {
+        // Suppress known split error for invalid playlist IDs
       } else {
-        console.log('getPlaylist failed, trying getAlbum', e);
+        console.log(`getPlaylist failed for id ${id}, trying getAlbum`);
       }
       
       const album = await ytmusic.getAlbum(id);
@@ -41,10 +50,15 @@ export async function GET(request: Request) {
     }
   } catch (error: any) {
     if (error?.name === 'ZodError') {
-      console.error('getAlbum ZodError:', error.issues);
       return NextResponse.json({ error: 'ZodError', details: error.issues }, { status: 500 });
     }
-    console.error('Error fetching playlist/album:', error);
+    
+    // Suppress 400 errors as they just mean the ID is invalid
+    if (error?.isAxiosError && error?.response?.status === 400) {
+      return NextResponse.json({ error: 'Invalid playlist/album ID' }, { status: 400 });
+    }
+    
+    console.error(`Error fetching playlist/album for id ${id}:`, error?.message || error);
     return NextResponse.json({ error: 'Failed to fetch playlist' }, { status: 500 });
   }
 }

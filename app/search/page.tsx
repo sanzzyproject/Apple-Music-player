@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { Track } from '@/lib/store';
+import { db, RecentSearch } from '@/lib/db';
 import { TrackItem } from '@/components/TrackItem';
 import { ArtistItem } from '@/components/ArtistItem';
-import { Search as SearchIcon, Loader2, ArrowLeft, X, ArrowUpLeft } from 'lucide-react';
+import { Search as SearchIcon, Loader2, ArrowLeft, X, ArrowUpLeft, History } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 
@@ -14,12 +15,21 @@ export default function Search() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Semua');
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
 
   const tabs = ['Semua', 'Lagu', 'Video', 'Album', 'Artis', 'Daftar putar'];
+
+  useEffect(() => {
+    const loadRecentSearches = async () => {
+      const searches = await db.getRecentSearches();
+      setRecentSearches(searches);
+    };
+    loadRecentSearches();
+  }, []);
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -45,6 +55,12 @@ export default function Search() {
     if (!searchQuery.trim()) return;
     setLoading(true);
     setIsFocused(false);
+    
+    // Save to recent searches
+    await db.addRecentSearch(searchQuery);
+    const searches = await db.getRecentSearches();
+    setRecentSearches(searches);
+
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
       const data = await res.json();
@@ -59,6 +75,13 @@ export default function Search() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSearch(query);
+  };
+
+  const handleRemoveRecentSearch = async (e: React.MouseEvent, queryToRemove: string) => {
+    e.stopPropagation();
+    await db.removeRecentSearch(queryToRemove);
+    const searches = await db.getRecentSearches();
+    setRecentSearches(searches);
   };
 
   return (
@@ -130,6 +153,44 @@ export default function Search() {
         </div>
       )}
 
+      {!query && !loading && results.length === 0 && recentSearches.length > 0 && (
+        <div className="mb-6">
+          {recentSearches.map((search, index) => (
+            <div 
+              key={`recent-${index}`}
+              className="flex items-center justify-between px-4 py-3 hover:bg-white/5 cursor-pointer transition-colors"
+              onClick={() => {
+                setQuery(search.query);
+                handleSearch(search.query);
+              }}
+            >
+              <div className="flex items-center gap-4">
+                <History className="w-6 h-6 text-white/50" />
+                <span className="text-white text-base">{search.query}</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={(e) => handleRemoveRecentSearch(e, search.query)}
+                  className="text-white/50 hover:text-white p-1"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setQuery(search.query);
+                    setIsFocused(true);
+                  }}
+                  className="text-white/50 hover:text-white p-1"
+                >
+                  <ArrowUpLeft className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="px-4">
         {loading ? (
           <SearchSkeleton />
@@ -152,12 +213,12 @@ export default function Search() {
             <SearchIcon className="w-16 h-16 mb-4 opacity-20" />
             <p>Tidak ada hasil yang ditemukan</p>
           </div>
-        ) : (
+        ) : recentSearches.length === 0 ? (
           <div className="flex flex-col items-center justify-center mt-20 text-white/50">
             <SearchIcon className="w-16 h-16 mb-4 opacity-20" />
             <p>Cari lagu, album, atau artis</p>
           </div>
-        )}
+        ) : null}
       </div>
     </main>
   );
