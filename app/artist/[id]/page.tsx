@@ -7,6 +7,7 @@ import { ArrowLeft, Share2, Play, Radio, MoreVertical } from 'lucide-react';
 import { getHighResImage } from '@/lib/utils';
 import { TrackItem } from '@/components/TrackItem';
 import { usePlayerStore } from '@/lib/store';
+import { db } from '@/lib/db';
 
 export default function ArtistPage() {
   const params = useParams();
@@ -14,6 +15,7 @@ export default function ArtistPage() {
   const [artist, setArtist] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isBioExpanded, setIsBioExpanded] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const playTrack = usePlayerStore((state) => state.playTrack);
 
   useEffect(() => {
@@ -22,6 +24,11 @@ export default function ArtistPage() {
         const res = await fetch(`/api/artist?id=${params.id}`);
         const data = await res.json();
         setArtist(data);
+        
+        if (data && data.artistId) {
+          const subscribed = await db.isSubscribed(data.artistId);
+          setIsSubscribed(subscribed);
+        }
       } catch (error) {
         console.error('Failed to fetch artist:', error);
       } finally {
@@ -32,6 +39,23 @@ export default function ArtistPage() {
       fetchArtist();
     }
   }, [params.id]);
+
+  const handleSubscribe = async () => {
+    if (!artist) return;
+    
+    if (isSubscribed) {
+      await db.removeSubscribedArtist(artist.artistId);
+      setIsSubscribed(false);
+    } else {
+      await db.addSubscribedArtist({
+        artistId: artist.artistId,
+        name: artist.name,
+        thumbnails: artist.thumbnails || [],
+        subscribedAt: Date.now()
+      });
+      setIsSubscribed(true);
+    }
+  };
 
   if (loading) {
     return (
@@ -81,8 +105,15 @@ export default function ArtistPage() {
         <div className="absolute bottom-0 left-0 p-6 w-full">
           <h1 className="text-5xl font-bold text-white mb-6">{artist.name}</h1>
           <div className="flex items-center gap-3">
-            <button className="px-6 py-2 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition">
-              Subscribe
+            <button 
+              onClick={handleSubscribe}
+              className={`px-6 py-2 rounded-full border font-medium transition ${
+                isSubscribed 
+                  ? 'bg-white text-black border-white hover:bg-white/90' 
+                  : 'border-white/30 text-white hover:bg-white/10'
+              }`}
+            >
+              {isSubscribed ? 'Subscribed' : 'Subscribe'}
             </button>
             <button className="px-6 py-2 rounded-full border border-white/30 text-white font-medium flex items-center gap-2 hover:bg-white/10 transition">
               <Radio className="w-4 h-4" />

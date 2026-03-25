@@ -16,8 +16,13 @@ export async function GET(request: Request) {
     try {
       const playlist = await ytmusic.getPlaylist(id);
       return NextResponse.json(playlist);
-    } catch (e) {
-      console.log('getPlaylist failed, trying getAlbum', e);
+    } catch (e: any) {
+      if (e?.name === 'ZodError') {
+        console.error('getPlaylist ZodError:', e.issues);
+      } else {
+        console.log('getPlaylist failed, trying getAlbum', e);
+      }
+      
       const album = await ytmusic.getAlbum(id);
       // Map album to playlist format
       return NextResponse.json({
@@ -34,7 +39,11 @@ export async function GET(request: Request) {
         }))
       });
     }
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'ZodError') {
+      console.error('getAlbum ZodError:', error.issues);
+      return NextResponse.json({ error: 'ZodError', details: error.issues }, { status: 500 });
+    }
     console.error('Error fetching playlist/album:', error);
     return NextResponse.json({ error: 'Failed to fetch playlist' }, { status: 500 });
   }

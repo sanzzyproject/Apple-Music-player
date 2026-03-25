@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { db } from '@/lib/db';
+import { db, SubscribedArtist } from '@/lib/db';
 import { Track } from '@/lib/store';
 import { TrackItem } from '@/components/TrackItem';
 import { Heart, Plus, ListMusic, Trash2, Play, MoreVertical, Download, TrendingUp, Clock, UploadCloud } from 'lucide-react';
@@ -14,6 +14,7 @@ export default function Library() {
   const router = useRouter();
   const [likedSongs, setLikedSongs] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<any[]>([]);
+  const [subscribedArtists, setSubscribedArtists] = useState<SubscribedArtist[]>([]);
   const [activeTab, setActiveTab] = useState('Daftar putar');
   const [showCreate, setShowCreate] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState('');
@@ -25,8 +26,10 @@ export default function Library() {
   const loadLibrary = async () => {
     const liked = await db.getLikedSongs();
     const pl = await db.getPlaylists();
+    const sa = await db.getSubscribedArtists();
     setLikedSongs(liked);
     setPlaylists(pl);
+    setSubscribedArtists(sa);
   };
 
   useEffect(() => {
@@ -221,6 +224,36 @@ export default function Library() {
             ))}
             {likedSongs.length === 0 && (
               <div className="text-center text-white/50 py-12">Belum ada lagu yang disukai.</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Artis' && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-white mb-4">Artis yang Disubscribe</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {subscribedArtists.map((artist) => (
+              <div 
+                key={artist.artistId} 
+                className="flex flex-col items-center p-4 hover:bg-white/5 rounded-xl cursor-pointer transition-colors"
+                onClick={() => router.push(`/artist/${artist.artistId}`)}
+              >
+                <div className="relative w-24 h-24 rounded-full overflow-hidden mb-3 shadow-lg">
+                  <Image 
+                    src={artist.thumbnails?.[artist.thumbnails.length - 1]?.url || '/placeholder.png'} 
+                    alt={artist.name} 
+                    fill 
+                    sizes="96px" 
+                    className="object-cover" 
+                  />
+                </div>
+                <h3 className="text-white font-medium text-center line-clamp-1">{artist.name}</h3>
+                <p className="text-white/50 text-xs mt-1">Artis</p>
+              </div>
+            ))}
+            {subscribedArtists.length === 0 && (
+              <div className="col-span-full text-center text-white/50 py-12">Belum ada artis yang disubscribe.</div>
             )}
           </div>
         </div>

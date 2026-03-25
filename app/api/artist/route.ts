@@ -21,7 +21,11 @@ export async function GET(request: Request) {
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
       },
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === 'ZodError') {
+      console.error('Artist ZodError:', error.issues);
+      return NextResponse.json({ error: 'ZodError', details: error.issues }, { status: 500 });
+    }
     console.error('Artist error:', error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }

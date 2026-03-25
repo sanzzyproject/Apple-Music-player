@@ -39,7 +39,7 @@ export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
         <div className="text-sm text-gray-400 truncate">{artistName}</div>
       </div>
       <button 
-        className="p-2 text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        className="p-2 text-white/50 hover:text-white transition-colors"
         onClick={(e) => {
           e.stopPropagation();
           setTrackToAdd(track);

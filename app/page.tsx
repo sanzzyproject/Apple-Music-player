@@ -5,9 +5,11 @@ import { Track, usePlayerStore } from '@/lib/store';
 import { Loader2, History, Cast, User, Play, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { HorizontalScroll } from '@/components/HorizontalScroll';
+import { CommunityPlaylistCard } from '@/components/CommunityPlaylistCard';
 import { getHighResImage } from '@/lib/utils';
 import { motion } from 'motion/react';
 import Link from 'next/link';
+import { db } from '@/lib/db';
 
 import { HomeSkeleton } from '@/components/HomeSkeleton';
 
@@ -17,7 +19,7 @@ export default function Home() {
   const [heroTracks, setHeroTracks] = useState<Track[]>([]);
   const [speedDialTracks, setSpeedDialTracks] = useState<Track[]>([]);
   const [quickPicksTracks, setQuickPicksTracks] = useState<Track[]>([]);
-  const [communityTracks, setCommunityTracks] = useState<Track[]>([]);
+  const [communityPlaylists, setCommunityPlaylists] = useState<any[]>([]);
   const [artists, setArtists] = useState<Track[]>([]);
   const [categories, setCategories] = useState<{ title: string; tracks: Track[] }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +27,7 @@ export default function Home() {
   const [filterData, setFilterData] = useState<{ title: string; tracks: Track[] }[]>([]);
   const [loadingFilter, setLoadingFilter] = useState(false);
   const playTrack = usePlayerStore((state) => state.playTrack);
+  const history = usePlayerStore((state) => state.history);
 
   useEffect(() => {
     if (!activeFilter) return;
@@ -56,12 +59,40 @@ export default function Home() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const queries = [
+        const subscribedArtists = await db.getSubscribedArtists();
+        const recentHistory = history.slice(0, 5);
+        
+        const queries: { key: string; title?: string; q: string; type?: string }[] = [
           { key: 'hero', q: 'dave how i met my ex' },
           { key: 'speedDial', q: 'top hits 2024' },
           { key: 'quickPicks', q: 'viral hits indonesia' },
-          { key: 'community', q: 'indie pop hits' },
+          { key: 'community', q: 'chill playlists', type: 'playlist' },
           { key: 'artists', q: 'top indonesian artists' },
+        ];
+
+        // Add personalized queries based on subscribed artists
+        if (subscribedArtists.length > 0) {
+          const randomArtist = subscribedArtists[Math.floor(Math.random() * subscribedArtists.length)];
+          queries.push({ key: 'cat_sub', title: `Dari Artis Favoritmu: ${randomArtist.name}`, q: `${randomArtist.name} best songs` });
+          queries[0].q = `${randomArtist.name} hits`; // Update hero
+          queries[1].q = `More like ${randomArtist.name}`; // Update speedDial
+        }
+
+        // Add personalized queries based on history
+        if (recentHistory.length > 0) {
+          const randomHistory = recentHistory[Math.floor(Math.random() * recentHistory.length)];
+          const artistName = Array.isArray(randomHistory.track.artist) 
+            ? randomHistory.track.artist[0]?.name 
+            : randomHistory.track.artist?.name;
+            
+          if (artistName) {
+            queries.push({ key: 'cat_hist', title: `Karena kamu mendengarkan ${artistName}`, q: `${artistName} similar songs` });
+            queries[2].q = `${artistName} radio`; // Update quickPicks
+          }
+        }
+
+        // Add default categories
+        const defaultCategories = [
           { key: 'cat0', title: 'Trending Now', q: 'lagu indonesia hits terbaru' },
           { key: 'cat1', title: 'New Releases', q: 'lagu pop indonesia rilis terbaru' },
           { key: 'cat2', title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update' },
@@ -72,23 +103,33 @@ export default function Home() {
           { key: 'cat7', title: 'Feel-good rock', q: 'lagu rock indonesia terbaik' },
           { key: 'cat8', title: 'Acoustic Chill', q: 'lagu akustik cafe santai' },
         ];
+        
+        queries.push(...defaultCategories);
 
         const results = await Promise.all(
-          queries.map(async ({ key, title, q }) => {
-            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-            const data = await res.json();
-            return { key, title, data };
+          queries.map(async ({ key, title, q, type }) => {
+            try {
+              const url = type 
+                ? `/api/search?q=${encodeURIComponent(q)}&type=${type}`
+                : `/api/search?q=${encodeURIComponent(q)}`;
+              const res = await fetch(url);
+              if (!res.ok) return { key, title, data: [] };
+              const data = await res.json();
+              return { key, title, data };
+            } catch (e) {
+              return { key, title, data: [] };
+            }
           })
         );
 
         const cats: { title: string; tracks: Track[] }[] = [];
 
         results.forEach(({ key, title, data }) => {
-          if (!data) return;
+          if (!data || data.length === 0) return;
           if (key === 'hero') setHeroTracks(data.slice(0, 3));
           else if (key === 'speedDial') setSpeedDialTracks(data.slice(0, 45));
           else if (key === 'quickPicks') setQuickPicksTracks(data.slice(0, 20));
-          else if (key === 'community') setCommunityTracks(data.slice(0, 20));
+          else if (key === 'community') setCommunityPlaylists(data.slice(0, 10));
           else if (key === 'artists') setArtists(data.slice(0, 6));
           else if (key.startsWith('cat') && title) cats.push({ title, tracks: data.slice(0, 10) });
         });
@@ -102,7 +143,14 @@ export default function Home() {
     };
 
     fetchHomeData();
-  }, []);
+    
+    const handleFocus = () => {
+      fetchHomeData();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [history[0]?.track?.videoId]);
 
   return (
     <main className="min-h-screen pt-6 pb-24">
@@ -285,45 +333,14 @@ export default function Home() {
             </div>
           )}
 
-          {communityTracks.length > 0 && (
+          {communityPlaylists.length > 0 && (
             <div className="px-4">
-              <h2 className="text-2xl font-bold text-white mb-4">From the community</h2>
+              <h2 className="text-2xl font-bold text-[#81B29A] mb-4">From the community</h2>
               <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory scroll-smooth pb-4">
-                {Array.from({ length: Math.ceil(communityTracks.length / 4) }).map((_, i) => {
-                  const chunk = communityTracks.slice(i * 4, i * 4 + 4);
-                  return (
-                    <motion.div 
-                      key={`community-chunk-${i}`}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="w-[85vw] sm:w-[400px] shrink-0 bg-[#1C1C1E]/60 backdrop-blur-md rounded-3xl p-4 border border-white/5 snap-center shadow-xl"
-                    >
-                      <div className="space-y-3">
-                        {chunk.map((track, j) => (
-                          <div 
-                            key={`community-${track.videoId}-${j}`} 
-                            className="flex items-center gap-4 p-2 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 active:scale-95 group"
-                            onClick={() => playTrack(track, communityTracks, 'similar')}
-                          >
-                            <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
-                              <Image src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 200)} alt={track.name} fill sizes="56px" className="object-cover" />
-                              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Play className="w-6 h-6 text-white fill-current" />
-                              </div>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-white font-medium truncate">{track.name}</h3>
-                              <p className="text-white/60 text-sm truncate">
-                                {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  );
+                {communityPlaylists.map((playlist, i) => {
+                  const id = playlist.playlistId || playlist.id || playlist.videoId;
+                  if (!id) return null;
+                  return <CommunityPlaylistCard key={`community-playlist-${id}-${i}`} playlistId={id} />;
                 })}
               </div>
             </div>

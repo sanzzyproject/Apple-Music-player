@@ -22,6 +22,10 @@ export async function GET(request: Request) {
       },
     });
   } catch (error: any) {
+    if (error?.name === 'ZodError') {
+      console.error('UpNext ZodError:', error.issues);
+      return NextResponse.json([]);
+    }
     if (error?.message?.includes('Invalid videoId')) {
       return NextResponse.json([]);
     }

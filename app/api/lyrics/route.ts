@@ -30,6 +30,10 @@ export async function GET(request: Request) {
       },
     });
   } catch (error: any) {
+    if (error?.name === 'ZodError') {
+      console.error('Lyrics ZodError:', error.issues);
+      return NextResponse.json({ lyrics: null });
+    }
     if (error?.message?.includes('Invalid videoId')) {
       return NextResponse.json({ lyrics: null });
     }

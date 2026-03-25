@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { db } from '@/lib/db';
 import { usePlayerStore, Track } from '@/lib/store';
-import { Play, ArrowLeft, MoreHorizontal, Shuffle, Music } from 'lucide-react';
+import { Play, ArrowLeft, MoreHorizontal, Radio, Music } from 'lucide-react';
 import Image from 'next/image';
 import { TrackItem } from '@/components/TrackItem';
 
@@ -72,10 +72,9 @@ export default function PlaylistPage() {
     }
   };
 
-  const handleShuffle = () => {
+  const handleRadio = () => {
     if (playlist.tracks.length > 0) {
-      const shuffled = [...playlist.tracks].sort(() => Math.random() - 0.5);
-      playTrack(shuffled[0], shuffled, 'playlist');
+      playTrack(playlist.tracks[0], [], 'similar');
     }
   };
 
@@ -96,24 +95,27 @@ export default function PlaylistPage() {
           )}
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">{playlist.name}</h1>
-        <p className="text-white/50 mb-6">Playlist • {playlist.tracks.length} lagu</p>
+        <p className="text-white/50 mb-6">{playlist.tracks.length} lagu</p>
 
-        <div className="flex items-center gap-4 w-full max-w-md">
+        <div className="flex items-center gap-4 w-full justify-center">
           <button 
             onClick={handlePlayAll}
             disabled={playlist.tracks.length === 0}
-            className="flex-1 bg-white text-black py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50"
+            className="w-14 h-14 bg-[#81B29A] rounded-full flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50"
           >
-            <Play className="w-5 h-5 fill-current" />
-            Putar
+            <Play className="w-7 h-7 text-black fill-current ml-1" />
           </button>
           <button 
-            onClick={handleShuffle}
+            onClick={handleRadio}
             disabled={playlist.tracks.length === 0}
-            className="flex-1 bg-white/10 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-white/20 transition-colors disabled:opacity-50"
+            className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors disabled:opacity-50"
           >
-            <Shuffle className="w-5 h-5" />
-            Acak
+            <Radio className="w-6 h-6 text-white" />
+          </button>
+          <button 
+            className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+          >
+            <MoreHorizontal className="w-6 h-6 text-white" />
           </button>
         </div>
       </div>
