@@ -9,7 +9,6 @@ import { CommunityPlaylistCard } from '@/components/CommunityPlaylistCard';
 import { getHighResImage } from '@/lib/utils';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { db } from '@/lib/db';
 
 import { HomeSkeleton } from '@/components/HomeSkeleton';
 
@@ -20,7 +19,7 @@ export default function Home() {
   const [speedDialTracks, setSpeedDialTracks] = useState<Track[]>([]);
   const [quickPicksTracks, setQuickPicksTracks] = useState<Track[]>([]);
   const [communityPlaylists, setCommunityPlaylists] = useState<any[]>([]);
-  const [artists, setArtists] = useState<Track[]>([]);
+  const [artists, setArtists] = useState<any[]>([]);
   const [categories, setCategories] = useState<{ title: string; tracks: Track[] }[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -60,37 +59,13 @@ export default function Home() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const subscribedArtists = await db.getSubscribedArtists();
-        const recentHistory = history.slice(0, 5);
-        
         const queries: { key: string; title?: string; q: string; type?: string }[] = [
           { key: 'hero', q: 'dave how i met my ex', type: 'song' },
           { key: 'speedDial', q: 'top hits 2024', type: 'song' },
           { key: 'quickPicks', q: 'viral hits indonesia', type: 'song' },
           { key: 'community', q: 'chill playlists', type: 'playlist' },
-          { key: 'artists', q: 'top indonesian artists', type: 'artist' },
+          { key: 'artists', q: 'artis indonesia populer', type: 'artist' },
         ];
-
-        // Add personalized queries based on subscribed artists
-        if (subscribedArtists.length > 0) {
-          const randomArtist = subscribedArtists[Math.floor(Math.random() * subscribedArtists.length)];
-          queries.push({ key: 'cat_sub', title: `Dari Artis Favoritmu: ${randomArtist.name}`, q: `${randomArtist.name} best songs`, type: 'song' });
-          queries[0].q = `${randomArtist.name} hits`; // Update hero
-          queries[1].q = `More like ${randomArtist.name}`; // Update speedDial
-        }
-
-        // Add personalized queries based on history
-        if (recentHistory.length > 0) {
-          const randomHistory = recentHistory[Math.floor(Math.random() * recentHistory.length)];
-          const artistName = Array.isArray(randomHistory.track.artist) 
-            ? randomHistory.track.artist[0]?.name 
-            : randomHistory.track.artist?.name;
-            
-          if (artistName) {
-            queries.push({ key: 'cat_hist', title: `Karena kamu mendengarkan ${artistName}`, q: `${artistName} similar songs`, type: 'song' });
-            queries[2].q = `${artistName} radio`; // Update quickPicks
-          }
-        }
 
         // Add default categories
         const defaultCategories = [
@@ -137,7 +112,7 @@ export default function Home() {
           else if (key === 'speedDial') setSpeedDialTracks(data.slice(0, 45));
           else if (key === 'quickPicks') setQuickPicksTracks(data.slice(0, 20));
           else if (key === 'community') setCommunityPlaylists(data.slice(0, 10));
-          else if (key === 'artists') setArtists(data.slice(0, 6));
+          else if (key === 'artists') setArtists(data.slice(0, 10));
           else if (key.startsWith('cat') && title) cats.push({ title, tracks: data.slice(0, 10) });
         });
 
@@ -358,28 +333,28 @@ export default function Home() {
               <h2 className="text-xl font-bold text-white mb-4 px-4">Tetap mendengarkan</h2>
               <div className="flex overflow-x-auto no-scrollbar gap-6 px-4 pb-4 snap-x snap-mandatory scroll-smooth">
                 {artists.map((artist, i) => {
-                  const artistName = Array.isArray(artist.artist) ? artist.artist.map(a => a.name).join(', ') : artist.artist?.name || 'Artist';
+                  const artistName = artist.name || 'Artist';
                   return (
-                    <motion.div
-                      key={`artist-${artist.videoId}-${i}`}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="flex flex-col items-center gap-3 cursor-pointer group shrink-0 snap-center hover:scale-105 active:scale-95 transition-transform duration-200"
-                      onClick={() => playTrack(artist, artists, 'similar')}
-                    >
-                      <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg transition-transform duration-300">
-                        <Image src={getHighResImage(artist.thumbnails?.[artist.thumbnails.length - 1]?.url, 400)} alt={artistName} fill sizes="144px" className="object-cover" />
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <Play className="w-8 h-8 text-white fill-current" />
+                    <Link href={`/artist/${artist.artistId}`} key={`artist-${artist.artistId}-${i}`}>
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="flex flex-col items-center gap-3 cursor-pointer group shrink-0 snap-center hover:scale-105 active:scale-95 transition-transform duration-200"
+                      >
+                        <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg transition-transform duration-300">
+                          <Image src={getHighResImage(artist.thumbnails?.[artist.thumbnails.length - 1]?.url, 400)} alt={artistName} fill sizes="144px" className="object-cover" />
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <Play className="w-8 h-8 text-white fill-current" />
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-sm font-medium text-white line-clamp-1">{artistName}</div>
-                        <div className="text-xs text-white/50">Artis</div>
-                      </div>
-                    </motion.div>
+                        <div className="text-center">
+                          <div className="text-sm font-medium text-white line-clamp-1">{artistName}</div>
+                          <div className="text-xs text-white/50">Artis</div>
+                        </div>
+                      </motion.div>
+                    </Link>
                   );
                 })}
               </div>

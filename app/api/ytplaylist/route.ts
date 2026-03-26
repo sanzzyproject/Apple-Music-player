@@ -18,12 +18,25 @@ export async function GET(request: Request) {
       initialized = true;
     }
     try {
-      const playlist = await ytmusic.getPlaylist(id);
+      console.log('Fetching playlist:', id);
+      const playlist = await ytmusic.getPlaylist(id) as any;
+      console.log('Playlist fetched:', playlist.name);
+      let videos = playlist.videos || [];
+      console.log('Initial videos length:', videos.length);
+      if (videos.length === 0) {
+        try {
+          videos = await ytmusic.getPlaylistVideos(id);
+          console.log('Fetched videos length:', videos.length);
+        } catch (e) {
+          console.error('Failed to get playlist videos:', e);
+        }
+      }
       return NextResponse.json({
         ...playlist,
-        videos: (playlist as any).videos || (playlist as any).songs || []
+        videos: videos
       });
     } catch (e: any) {
+      console.error('getPlaylist error:', e);
       if (e?.name === 'ZodError') {
         // Suppress ZodError logs
       } else if (e?.message?.includes('split')) {
