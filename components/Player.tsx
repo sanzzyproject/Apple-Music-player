@@ -83,7 +83,13 @@ export function Player() {
       const duration = await event.target.getDuration();
       setDuration(duration || 0);
     } else if (event.data === YouTube.PlayerState.PAUSED) {
-      setPlaying(false);
+      if (usePlayerStore.getState().isPlaying) {
+        // Browser likely paused it automatically (e.g., app went to background)
+        // Force it to play again to maintain background playback
+        event.target.playVideo();
+      } else {
+        setPlaying(false);
+      }
     } else if (event.data === YouTube.PlayerState.ENDED) {
       playNext();
     }
@@ -103,14 +109,59 @@ export function Player() {
   }, [isPlaying, setProgress]);
 
   useEffect(() => {
+    if (currentTrack && 'mediaSession' in navigator) {
+      const thumbnail = getHighResImage(currentTrack.thumbnails?.[currentTrack.thumbnails.length - 1]?.url, 800);
+      const artistName = Array.isArray(currentTrack.artist) ? currentTrack.artist.map(a => a.name).join(', ') : currentTrack.artist?.name || 'Unknown Artist';
+      
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.name,
+        artist: artistName,
+        album: 'Music App',
+        artwork: [
+          { src: thumbnail, sizes: '512x512', type: 'image/jpeg' }
+        ]
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => {
+        setPlaying(true);
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        setPlaying(false);
+      });
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        playPrev();
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        playNext();
+      });
+    }
+  }, [currentTrack, setPlaying, playNext, playPrev]);
+
+  useEffect(() => {
     if (playerRef.current) {
       if (isPlaying) {
         playerRef.current.playVideo();
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'playing';
+        }
       } else {
         playerRef.current.pauseVideo();
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'paused';
+        }
       }
     }
   }, [isPlaying]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && usePlayerStore.getState().isPlaying && playerRef.current) {
+        playerRef.current.playVideo();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const formatTime = (seconds: number) => {
     if (!seconds || isNaN(seconds)) return '0:00';
@@ -118,6 +169,54 @@ export function Player() {
     const s = Math.floor(seconds % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
+
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const oscillatorRef = useRef<OscillatorNode | null>(null);
+
+  useEffect(() => {
+    const unlockAudio = () => {
+      if (!audioCtxRef.current) {
+        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioContext) {
+          audioCtxRef.current = new AudioContext();
+          const osc = audioCtxRef.current.createOscillator();
+          const gainNode = audioCtxRef.current.createGain();
+          gainNode.gain.value = 0.0001; // Almost silent
+          osc.connect(gainNode);
+          gainNode.connect(audioCtxRef.current.destination);
+          osc.start();
+          oscillatorRef.current = osc;
+
+          if (!usePlayerStore.getState().isPlaying) {
+            audioCtxRef.current.suspend();
+          }
+        }
+      }
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+    };
+
+    document.addEventListener('click', unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
+
+    return () => {
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (audioCtxRef.current) {
+      if (isPlaying) {
+        audioCtxRef.current.resume().catch(() => {});
+      } else {
+        audioCtxRef.current.suspend().catch(() => {});
+      }
+    }
+  }, [isPlaying]);
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = Number(e.target.value);
@@ -135,12 +234,12 @@ export function Player() {
   return (
     <>
       {/* Hidden YouTube Player */}
-      <div className="hidden">
+      <div className="fixed top-[-1000px] left-[-1000px] w-[1px] h-[1px] opacity-0 pointer-events-none">
         <YouTube
           videoId={currentTrack.videoId}
           opts={{
-            height: '0',
-            width: '0',
+            height: '1',
+            width: '1',
             playerVars: {
               autoplay: 1,
               controls: 0,

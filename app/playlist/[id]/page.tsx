@@ -7,6 +7,7 @@ import { usePlayerStore, Track } from '@/lib/store';
 import { Play, ArrowLeft, MoreHorizontal, Radio, Music } from 'lucide-react';
 import Image from 'next/image';
 import { TrackItem } from '@/components/TrackItem';
+import { PlaylistSkeleton } from '@/components/PlaylistSkeleton';
 
 interface Playlist {
   id: string;
@@ -54,7 +55,7 @@ export default function PlaylistPage() {
   }, [params.id]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center text-white">Memuat...</div>;
+    return <PlaylistSkeleton />;
   }
 
   if (!playlist) {

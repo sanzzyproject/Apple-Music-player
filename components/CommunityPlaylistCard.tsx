@@ -41,7 +41,35 @@ export function CommunityPlaylistCard({ playlistId }: { playlistId: string }) {
 
   if (loading) {
     return (
-      <div className="w-[320px] h-[420px] bg-[#1C1C1E] rounded-3xl animate-pulse shrink-0 snap-center" />
+      <div className="w-[320px] bg-[#1C1C1E] rounded-3xl p-5 shrink-0 snap-center flex flex-col animate-pulse">
+        <div className="flex gap-4 mb-6">
+          <div className="w-24 h-24 rounded-2xl bg-white/10 shrink-0" />
+          <div className="flex flex-col justify-center flex-1">
+            <div className="h-5 w-3/4 bg-white/10 rounded-md mb-2" />
+            <div className="h-4 w-1/2 bg-white/10 rounded-md" />
+          </div>
+        </div>
+
+        <div className="flex-1 space-y-4 mb-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-white/10 shrink-0" />
+              <div className="flex flex-col flex-1 gap-2">
+                <div className="h-4 w-full bg-white/10 rounded-md" />
+                <div className="h-3 w-2/3 bg-white/10 rounded-md" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex gap-3">
+            <div className="w-12 h-12 rounded-full bg-white/10" />
+            <div className="w-12 h-12 rounded-full bg-white/10" />
+          </div>
+          <div className="w-12 h-12 rounded-full bg-white/10" />
+        </div>
+      </div>
     );
   }
 

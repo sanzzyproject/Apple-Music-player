@@ -9,6 +9,8 @@ import { TrackItem } from '@/components/TrackItem';
 import { usePlayerStore } from '@/lib/store';
 import { db } from '@/lib/db';
 
+import { ArtistSkeleton } from '@/components/ArtistSkeleton';
+
 export default function ArtistPage() {
   const params = useParams();
   const router = useRouter();
@@ -58,11 +60,7 @@ export default function ArtistPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-white/20 border-t-white rounded-full animate-spin" />
-      </div>
-    );
+    return <ArtistSkeleton />;
   }
 
   if (!artist) {
