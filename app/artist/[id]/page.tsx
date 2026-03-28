@@ -65,7 +65,7 @@ export default function ArtistPage() {
 
   if (!artist) {
     return (
-      <div className="min-h-screen bg-[#0F0F0F] flex flex-col items-center justify-center text-white">
+      <div className="min-h-screen flex flex-col items-center justify-center text-white">
         <p>Artist not found</p>
         <button onClick={() => router.back()} className="mt-4 px-4 py-2 bg-white/10 rounded-full">
           Go Back
@@ -77,7 +77,7 @@ export default function ArtistPage() {
   const headerImage = getHighResImage(artist.thumbnails?.[artist.thumbnails.length - 1]?.url, 1000);
 
   return (
-    <main className="min-h-screen bg-[#0F0F0F] pb-32">
+    <main className="min-h-screen pb-32">
       {/* Header */}
       <div className="relative h-[40vh] min-h-[300px] w-full">
         <Image 
@@ -87,7 +87,7 @@ export default function ArtistPage() {
           className="object-cover opacity-80"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         
         {/* Top Bar */}
         <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-10">
@@ -249,6 +249,40 @@ export default function ArtistPage() {
                   key={`video-${video.videoId}-${index}`} 
                   className="w-64 shrink-0 snap-start group cursor-pointer"
                   onClick={() => playTrack(video, artist.topVideos)}
+                >
+                  <div className="relative aspect-video rounded-lg overflow-hidden mb-3">
+                    <Image 
+                      src={getHighResImage(video.thumbnails?.[video.thumbnails.length - 1]?.url, 400) || '/placeholder.png'} 
+                      alt={video.name} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center text-white backdrop-blur-sm">
+                        <Play className="w-6 h-6 fill-current ml-1" />
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-white font-medium line-clamp-2">{video.name}</h3>
+                  <p className="text-white/50 text-sm truncate">{artist.name}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Live Performances */}
+        {artist.livePerformances && artist.livePerformances.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-white">Live performances</h2>
+            </div>
+            <div className="flex overflow-x-auto no-scrollbar gap-4 snap-x snap-mandatory pb-4">
+              {artist.livePerformances.map((video: any, index: number) => (
+                <div 
+                  key={`live-${video.videoId}-${index}`} 
+                  className="w-64 shrink-0 snap-start group cursor-pointer"
+                  onClick={() => playTrack(video, artist.livePerformances)}
                 >
                   <div className="relative aspect-video rounded-lg overflow-hidden mb-3">
                     <Image 

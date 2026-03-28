@@ -36,12 +36,12 @@ export async function GET(request: Request) {
         videos: videos
       });
     } catch (e: any) {
-      console.error('getPlaylist error:', e);
       if (e?.name === 'ZodError') {
         // Suppress ZodError logs
       } else if (e?.message?.includes('split')) {
         // Suppress known split error for invalid playlist IDs
       } else {
+        console.error('getPlaylist error:', e);
         console.log(`getPlaylist failed for id ${id}, trying getAlbum`);
       }
       
@@ -55,9 +55,9 @@ export async function GET(request: Request) {
         videos: album.songs.map((song: any) => ({
           videoId: song.videoId,
           name: song.name,
-          artist: song.artist,
+          artist: song.artist || [album.artist],
           duration: song.duration,
-          thumbnails: song.thumbnails,
+          thumbnails: song.thumbnails || album.thumbnails,
         }))
       });
     }

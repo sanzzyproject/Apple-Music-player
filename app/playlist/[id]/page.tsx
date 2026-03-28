@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { db } from '@/lib/db';
 import { usePlayerStore, Track } from '@/lib/store';
-import { Play, ArrowLeft, MoreHorizontal, Radio, Music } from 'lucide-react';
+import { Play, ArrowLeft, MoreHorizontal, Radio, Music, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { TrackItem } from '@/components/TrackItem';
 import { PlaylistSkeleton } from '@/components/PlaylistSkeleton';
@@ -21,6 +21,7 @@ export default function PlaylistPage() {
   const router = useRouter();
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
   const playTrack = usePlayerStore((state) => state.playTrack);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function PlaylistPage() {
         const data = await db.getPlaylist(id);
         if (data) {
           setPlaylist(data as Playlist);
+          setIsSaved(true);
         } else {
           // Try fetching from YouTube Music API
           const res = await fetch(`/api/ytplaylist?id=${id}`);
@@ -42,6 +44,7 @@ export default function PlaylistPage() {
               img: ytData.thumbnails?.[ytData.thumbnails.length - 1]?.url || '',
               tracks: ytData.videos || ytData.songs || []
             });
+            setIsSaved(false);
           }
         }
       } catch (error) {
@@ -79,6 +82,24 @@ export default function PlaylistPage() {
     }
   };
 
+  const handleDeletePlaylist = async () => {
+    if (confirm('Apakah Anda yakin ingin menghapus playlist ini?')) {
+      await db.deletePlaylist(playlist.id);
+      router.back();
+    }
+  };
+
+  const handleRemoveSong = async (trackToRemove: Track) => {
+    if (confirm('Hapus lagu ini dari playlist?')) {
+      const updatedTracks = playlist.tracks.filter(t => t.videoId !== trackToRemove.videoId);
+      const updatedPlaylist = { ...playlist, tracks: updatedTracks };
+      await db.addPlaylist(updatedPlaylist);
+      setPlaylist(updatedPlaylist);
+    }
+  };
+
+  const isSelfCreated = /^\d+$/.test(playlist.id);
+
   return (
     <main className="min-h-screen pb-20">
       <div className="sticky top-0 z-10 bg-black/50 backdrop-blur-md px-4 py-4 flex items-center gap-4">
@@ -113,11 +134,15 @@ export default function PlaylistPage() {
           >
             <Radio className="w-6 h-6 text-white" />
           </button>
-          <button 
-            className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
-          >
-            <MoreHorizontal className="w-6 h-6 text-white" />
-          </button>
+          {isSaved && (
+            <button 
+              onClick={handleDeletePlaylist}
+              className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-colors"
+              title="Hapus Playlist"
+            >
+              <Trash2 className="w-6 h-6" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -129,7 +154,12 @@ export default function PlaylistPage() {
         ) : (
           <div className="space-y-1">
             {playlist.tracks.map((track, index) => (
-              <TrackItem key={`${track.videoId}-${index}`} track={track} queue={playlist.tracks} />
+              <TrackItem 
+                key={`${track.videoId}-${index}`} 
+                track={track} 
+                queue={playlist.tracks} 
+                onRemove={isSelfCreated ? handleRemoveSong : undefined}
+              />
             ))}
           </div>
         )}

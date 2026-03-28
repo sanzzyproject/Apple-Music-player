@@ -15,15 +15,23 @@ export async function GET(request: Request) {
       await ytmusic.initialize();
       initialized = true;
     }
-    const song = await ytmusic.getSong(id) as any;
-    if (song && song.lyricsId) {
-      const lyrics = await ytmusic.getLyrics(song.lyricsId);
-      return NextResponse.json({ lyrics }, {
-        headers: {
-          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-        },
-      });
+    
+    try {
+      const lyrics = await ytmusic.getLyrics(id);
+      
+      if (lyrics) {
+        return NextResponse.json({ lyrics }, {
+          headers: {
+            'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+          },
+        });
+      }
+    } catch (e: any) {
+      if (e.message !== 'Invalid videoId') {
+        console.error('Error fetching lyrics:', e);
+      }
     }
+    
     return NextResponse.json({ lyrics: null }, {
       headers: {
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',

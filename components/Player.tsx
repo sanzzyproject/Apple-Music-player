@@ -350,13 +350,18 @@ export function Player() {
               </div>
 
               {/* Content Area */}
-              <div className="flex-1 flex flex-col justify-center min-h-0">
+              <div className="flex-1 flex flex-col justify-center min-h-0 relative">
+                {showLyrics && (
+                  <div className="absolute inset-[-50px] -z-10 overflow-hidden opacity-40 pointer-events-none">
+                    <Image src={thumbnail} alt="Background" fill className="object-cover blur-[80px] scale-110" />
+                  </div>
+                )}
                 {showLyrics ? (
-                  <div className="flex-1 overflow-y-auto no-scrollbar pb-8">
+                  <div className="flex-1 overflow-y-auto no-scrollbar pb-8 z-10">
                     {lyrics ? (
-                      <div className="text-2xl font-bold leading-relaxed text-white/90 space-y-6 text-center">
+                      <div className="text-2xl font-bold leading-relaxed text-white/90 space-y-6 text-center px-4">
                         {lyrics.map((line, i) => (
-                          <p key={i} className="whitespace-pre-wrap">{line.text}</p>
+                          <p key={i} className="whitespace-pre-wrap drop-shadow-lg">{line.text}</p>
                         ))}
                       </div>
                     ) : (

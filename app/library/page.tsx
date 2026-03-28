@@ -196,7 +196,7 @@ export default function Library() {
                   e.stopPropagation();
                   handleDeletePlaylist(pl.id);
                 }}
-                className="p-2 text-white/50 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
+                className="p-2 text-white/50 hover:text-red-500 transition-all"
               >
                 <Trash2 className="w-5 h-5" />
               </button>

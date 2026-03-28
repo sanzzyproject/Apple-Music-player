@@ -1,11 +1,11 @@
 'use client';
 
 import { Track, usePlayerStore } from '@/lib/store';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
 
-export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
+export function TrackItem({ track, queue, onRemove }: { track: Track; queue?: Track[]; onRemove?: (track: Track) => void }) {
   const playTrack = usePlayerStore((state) => state.playTrack);
   const currentTrack = usePlayerStore((state) => state.currentTrack);
   const isPlaying = usePlayerStore((state) => state.isPlaying);
@@ -38,15 +38,28 @@ export function TrackItem({ track, queue }: { track: Track; queue?: Track[] }) {
         </div>
         <div className="text-sm text-gray-400 truncate">{artistName}</div>
       </div>
-      <button 
-        className="p-2 text-white/50 hover:text-white transition-colors"
-        onClick={(e) => {
-          e.stopPropagation();
-          setTrackToAdd(track);
-        }}
-      >
-        <MoreHorizontal className="w-5 h-5" />
-      </button>
+      <div className="flex items-center">
+        {onRemove && (
+          <button 
+            className="p-2 text-white/50 hover:text-red-500 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemove(track);
+            }}
+          >
+            <Trash2 className="w-5 h-5" />
+          </button>
+        )}
+        <button 
+          className="p-2 text-white/50 hover:text-white transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            setTrackToAdd(track);
+          }}
+        >
+          <MoreHorizontal className="w-5 h-5" />
+        </button>
+      </div>
     </div>
   );
 }
