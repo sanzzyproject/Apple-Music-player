@@ -10,7 +10,7 @@
           },
           {
             "key": "browse_id",
-            "value": "MPLYt_0XNX5s8uBvI"
+            "value": "MPLYt_wUbiMNbaE6O"
           },
           {
             "key": "browse_id_prefix",
@@ -39,7 +39,7 @@
           },
           {
             "key": "GetBrowseTrackLyricsPage_rid",
-            "value": "0x7d1382b91a75783c"
+            "value": "0x230f0179f6521423"
           }
         ]
       },
@@ -67,7 +67,7 @@
           }
         ]
       },
-      "trackingParams": "CAEQljsiEwiAoqvexsWTAxUEplYBHQggFMU=",
+      "trackingParams": "CAEQljsiEwiXy6_9xsWTAxUUk1YBHaheAyM=",
       "subtext": {
         "messageSubtextRenderer": {
           "text": {
@@ -81,5 +81,5 @@
       }
     }
   },
-  "trackingParams": "CAAQhGciEwiAoqvexsWTAxUEplYBHQggFMU="
+  "trackingParams": "CAAQhGciEwiXy6_9xsWTAxUUk1YBHaheAyM="
 }

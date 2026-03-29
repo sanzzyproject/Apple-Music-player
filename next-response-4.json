@@ -18,7 +18,7 @@
           },
           {
             "key": "GetWatchNext_rid",
-            "value": "0x3a2bb1f2bfa8d74b"
+            "value": "0xbd3758e3792dc946"
           }
         ]
       },
@@ -64,35 +64,18 @@
                               "title": {
                                 "runs": [
                                   {
-                                    "text": "Despacito - Pop Version"
+                                    "text": "Bohemian Rhapsody"
                                   }
                                 ]
                               },
                               "longBylineText": {
                                 "runs": [
                                   {
-                                    "text": "Luis Fonsi",
+                                    "text": "Queen",
                                     "navigationEndpoint": {
-                                      "clickTrackingParams": "CBsQyCAYACITCP3Y09DGxZMDFeORRgQdjBoPq8oBBFpMjwQ=",
+                                      "clickTrackingParams": "CBsQyCAYACITCMOioJLHxZMDFUG1uQUdzEUZCcoBBEqprho=",
                                       "browseEndpoint": {
-                                        "browseId": "UCk91oFc2hY2CdHirU93baLg",
-                                        "browseEndpointContextSupportedConfigs": {
-                                          "browseEndpointContextMusicConfig": {
-                                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
-                                  {
-                                    "text": " & "
-                                  },
-                                  {
-                                    "text": "Daddy Yankee",
-                                    "navigationEndpoint": {
-                                      "clickTrackingParams": "CBsQyCAYACITCP3Y09DGxZMDFeORRgQdjBoPq8oBBFpMjwQ=",
-                                      "browseEndpoint": {
-                                        "browseId": "UCXRloA7YFgCfd6sU2_Y12cA",
+                                        "browseId": "UCEPMVbUzImPl4p8k4LkGevA",
                                         "browseEndpointContextSupportedConfigs": {
                                           "browseEndpointContextMusicConfig": {
                                             "pageType": "MUSIC_PAGE_TYPE_ARTIST"
@@ -105,70 +88,96 @@
                                     "text": " • "
                                   },
                                   {
-                                    "text": "8.9B views"
+                                    "text": "Bohemian Rhapsody (The Original Soundtrack)",
+                                    "navigationEndpoint": {
+                                      "clickTrackingParams": "CBsQyCAYACITCMOioJLHxZMDFUG1uQUdzEUZCcoBBEqprho=",
+                                      "browseEndpoint": {
+                                        "browseId": "MPREb_lBAWMJdpu9Y",
+                                        "browseEndpointContextSupportedConfigs": {
+                                          "browseEndpointContextMusicConfig": {
+                                            "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                                          }
+                                        }
+                                      }
+                                    }
                                   },
                                   {
                                     "text": " • "
                                   },
                                   {
-                                    "text": "55M likes"
+                                    "text": "2018"
                                   }
                                 ]
                               },
                               "thumbnail": {
                                 "thumbnails": [
                                   {
-                                    "url": "https://i.ytimg.com/vi/kJQP7kiw5Fk/sddefault.jpg?sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg&rs=AMzJL3lhnp7e7T2HppCiK_WU8ajGNDELfQ",
-                                    "width": 400,
-                                    "height": 225
+                                    "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w60-h60-l90-rj",
+                                    "width": 60,
+                                    "height": 60
                                   },
                                   {
-                                    "url": "https://i.ytimg.com/vi/kJQP7kiw5Fk/hq720.jpg?sqp=-oaymwEXCKAGEMIDIAQqCwjVARCqCBh4INgESFo&rs=AMzJL3mctitu3tLXNhvgZu1qFikUWfms8w",
-                                    "width": 800,
-                                    "height": 450
+                                    "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w120-h120-l90-rj",
+                                    "width": 120,
+                                    "height": 120
                                   },
                                   {
-                                    "url": "https://i.ytimg.com/vi/kJQP7kiw5Fk/hq720.jpg?sqp=-oaymwEXCNUGEOADIAQqCwjVARCqCBh4INgESFo&rs=AMzJL3mYDJnMrD1f0j2AfWi9znLDpwSQEQ",
-                                    "width": 853,
-                                    "height": 480
+                                    "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w180-h180-l90-rj",
+                                    "width": 180,
+                                    "height": 180
+                                  },
+                                  {
+                                    "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w226-h226-l90-rj",
+                                    "width": 226,
+                                    "height": 226
+                                  },
+                                  {
+                                    "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w302-h302-l90-rj",
+                                    "width": 302,
+                                    "height": 302
+                                  },
+                                  {
+                                    "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w544-h544-l90-rj",
+                                    "width": 544,
+                                    "height": 544
                                   }
                                 ]
                               },
                               "lengthText": {
                                 "runs": [
                                   {
-                                    "text": "4:42"
+                                    "text": "5:55"
                                   }
                                 ],
                                 "accessibility": {
                                   "accessibilityData": {
-                                    "label": "4 minutes, 42 seconds"
+                                    "label": "5 minutes, 55 seconds"
                                   }
                                 }
                               },
                               "selected": true,
                               "navigationEndpoint": {
-                                "clickTrackingParams": "CBsQyCAYACITCP3Y09DGxZMDFeORRgQdjBoPqzIDQkZhSNnIw8Xk_YPKkAGaAQUIDBD4HcoBBFpMjwQ=",
+                                "clickTrackingParams": "CBsQyCAYACITCMOioJLHxZMDFUG1uQUdzEUZCTIDQkZhSPzJ0Zeq9vSuygGaAQUIDBD4HcoBBEqprho=",
                                 "watchEndpoint": {
-                                  "videoId": "kJQP7kiw5Fk",
-                                  "params": "OAHyAQIIAeoEC2tKUVA3a2l3NUZr",
+                                  "videoId": "yl3TsqL0ZPw",
+                                  "params": "OAHyAQIIAeoEC3lsM1RzcUwwWlB3",
                                   "watchEndpointMusicSupportedConfigs": {
                                     "watchEndpointMusicConfig": {
                                       "hasPersistentPlaylistPanel": true,
-                                      "musicVideoType": "MUSIC_VIDEO_TYPE_OMV"
+                                      "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
                                     }
                                   }
                                 }
                               },
-                              "videoId": "kJQP7kiw5Fk",
+                              "videoId": "yl3TsqL0ZPw",
                               "shortBylineText": {
                                 "runs": [
                                   {
-                                    "text": "Luis Fonsi & Daddy Yankee"
+                                    "text": "Queen"
                                   }
                                 ]
                               },
-                              "trackingParams": "CBsQyCAYACITCP3Y09DGxZMDFeORRgQdjBoPqw==",
+                              "trackingParams": "CBsQyCAYACITCMOioJLHxZMDFUG1uQUdzEUZCQ==",
                               "menu": {
                                 "menuRenderer": {
                                   "items": [
@@ -185,24 +194,24 @@
                                           "iconType": "MIX"
                                         },
                                         "navigationEndpoint": {
-                                          "clickTrackingParams": "CCsQm_MFGAAiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CC0Qm_MFGAAiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "watchEndpoint": {
-                                            "videoId": "kJQP7kiw5Fk",
-                                            "playlistId": "RDAMVMkJQP7kiw5Fk",
+                                            "videoId": "yl3TsqL0ZPw",
+                                            "playlistId": "RDAMVMyl3TsqL0ZPw",
                                             "params": "wAEB",
                                             "loggingContext": {
                                               "vssLoggingContext": {
-                                                "serializedContextData": "GhFSREFNVk1rSlFQN2tpdzVGaw%3D%3D"
+                                                "serializedContextData": "GhFSREFNVk15bDNUc3FMMFpQdw%3D%3D"
                                               }
                                             },
                                             "watchEndpointMusicSupportedConfigs": {
                                               "watchEndpointMusicConfig": {
-                                                "musicVideoType": "MUSIC_VIDEO_TYPE_OMV"
+                                                "musicVideoType": "MUSIC_VIDEO_TYPE_ATV"
                                               }
                                             }
                                           }
                                         },
-                                        "trackingParams": "CCsQm_MFGAAiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CC0Qm_MFGAAiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -218,21 +227,21 @@
                                           "iconType": "QUEUE_PLAY_NEXT"
                                         },
                                         "serviceEndpoint": {
-                                          "clickTrackingParams": "CCkQvu4FGAEiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCsQvu4FGAEiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "queueAddEndpoint": {
                                             "queueTarget": {
-                                              "videoId": "kJQP7kiw5Fk",
+                                              "videoId": "yl3TsqL0ZPw",
                                               "onEmptyQueue": {
-                                                "clickTrackingParams": "CCkQvu4FGAEiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                "clickTrackingParams": "CCsQvu4FGAEiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                 "watchEndpoint": {
-                                                  "videoId": "kJQP7kiw5Fk"
+                                                  "videoId": "yl3TsqL0ZPw"
                                                 }
                                               }
                                             },
                                             "queueInsertPosition": "INSERT_AFTER_CURRENT_VIDEO",
                                             "commands": [
                                               {
-                                                "clickTrackingParams": "CCkQvu4FGAEiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                "clickTrackingParams": "CCsQvu4FGAEiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                 "addToToastAction": {
                                                   "item": {
                                                     "notificationTextRenderer": {
@@ -243,7 +252,7 @@
                                                           }
                                                         ]
                                                       },
-                                                      "trackingParams": "CCoQyscDIhMI_djT0MbFkwMV45FGBB2MGg-r"
+                                                      "trackingParams": "CCwQyscDIhMIw6KgksfFkwMVQbW5BR3MRRkJ"
                                                     }
                                                   }
                                                 }
@@ -251,7 +260,7 @@
                                             ]
                                           }
                                         },
-                                        "trackingParams": "CCkQvu4FGAEiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CCsQvu4FGAEiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -267,21 +276,21 @@
                                           "iconType": "ADD_TO_REMOTE_QUEUE"
                                         },
                                         "serviceEndpoint": {
-                                          "clickTrackingParams": "CCcQ--8FGAIiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCkQ--8FGAIiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "queueAddEndpoint": {
                                             "queueTarget": {
-                                              "videoId": "kJQP7kiw5Fk",
+                                              "videoId": "yl3TsqL0ZPw",
                                               "onEmptyQueue": {
-                                                "clickTrackingParams": "CCcQ--8FGAIiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                "clickTrackingParams": "CCkQ--8FGAIiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                 "watchEndpoint": {
-                                                  "videoId": "kJQP7kiw5Fk"
+                                                  "videoId": "yl3TsqL0ZPw"
                                                 }
                                               }
                                             },
                                             "queueInsertPosition": "INSERT_AT_END",
                                             "commands": [
                                               {
-                                                "clickTrackingParams": "CCcQ--8FGAIiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                "clickTrackingParams": "CCkQ--8FGAIiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                 "addToToastAction": {
                                                   "item": {
                                                     "notificationTextRenderer": {
@@ -292,7 +301,7 @@
                                                           }
                                                         ]
                                                       },
-                                                      "trackingParams": "CCgQyscDIhMI_djT0MbFkwMV45FGBB2MGg-r"
+                                                      "trackingParams": "CCoQyscDIhMIw6KgksfFkwMVQbW5BR3MRRkJ"
                                                     }
                                                   }
                                                 }
@@ -300,7 +309,7 @@
                                             ]
                                           }
                                         },
-                                        "trackingParams": "CCcQ--8FGAIiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CCkQ--8FGAIiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -316,7 +325,7 @@
                                           "iconType": "FAVORITE"
                                         },
                                         "defaultServiceEndpoint": {
-                                          "clickTrackingParams": "CCUQjJ8GGAMiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCcQjJ8GGAMiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "modalEndpoint": {
                                             "modal": {
                                               "modalWithTitleAndButtonRenderer": {
@@ -346,12 +355,12 @@
                                                       ]
                                                     },
                                                     "navigationEndpoint": {
-                                                      "clickTrackingParams": "CCYQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                      "clickTrackingParams": "CCgQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                       "signInEndpoint": {
                                                         "hack": true
                                                       }
                                                     },
-                                                    "trackingParams": "CCYQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                                    "trackingParams": "CCgQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                                   }
                                                 }
                                               }
@@ -368,25 +377,25 @@
                                         "toggledIcon": {
                                           "iconType": "UNFAVORITE"
                                         },
-                                        "trackingParams": "CCUQjJ8GGAMiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CCcQjJ8GGAMiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
                                       "menuServiceItemDownloadRenderer": {
                                         "serviceEndpoint": {
-                                          "clickTrackingParams": "CCQQ0aoFGAQiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCYQ0aoFGAQiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "offlineVideoEndpoint": {
-                                            "videoId": "kJQP7kiw5Fk",
+                                            "videoId": "yl3TsqL0ZPw",
                                             "onAddCommand": {
-                                              "clickTrackingParams": "CCQQ0aoFGAQiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                              "clickTrackingParams": "CCYQ0aoFGAQiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                               "getDownloadActionCommand": {
-                                                "videoId": "kJQP7kiw5Fk",
+                                                "videoId": "yl3TsqL0ZPw",
                                                 "params": "CAI%3D"
                                               }
                                             }
                                           }
                                         },
-                                        "trackingParams": "CCQQ0aoFGAQiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                                        "trackingParams": "CCYQ0aoFGAQiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                                         "badgeIcon": {
                                           "iconType": "PREMIUM_STANDALONE_CAIRO"
                                         }
@@ -405,7 +414,7 @@
                                           "iconType": "ADD_TO_PLAYLIST"
                                         },
                                         "navigationEndpoint": {
-                                          "clickTrackingParams": "CCIQw5QGGAUiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCQQw5QGGAUiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "modalEndpoint": {
                                             "modal": {
                                               "modalWithTitleAndButtonRenderer": {
@@ -435,19 +444,19 @@
                                                       ]
                                                     },
                                                     "navigationEndpoint": {
-                                                      "clickTrackingParams": "CCMQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                      "clickTrackingParams": "CCUQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                       "signInEndpoint": {
                                                         "hack": true
                                                       }
                                                     },
-                                                    "trackingParams": "CCMQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                                    "trackingParams": "CCUQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                                   }
                                                 }
                                               }
                                             }
                                           }
                                         },
-                                        "trackingParams": "CCIQw5QGGAUiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CCQQw5QGGAUiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -463,12 +472,12 @@
                                           "iconType": "REMOVE"
                                         },
                                         "serviceEndpoint": {
-                                          "clickTrackingParams": "CCAQ4_sFGAYiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCIQ4_sFGAYiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "removeFromQueueEndpoint": {
-                                            "videoId": "kJQP7kiw5Fk",
+                                            "videoId": "yl3TsqL0ZPw",
                                             "commands": [
                                               {
-                                                "clickTrackingParams": "CCAQ4_sFGAYiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                "clickTrackingParams": "CCIQ4_sFGAYiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                 "addToToastAction": {
                                                   "item": {
                                                     "notificationTextRenderer": {
@@ -479,7 +488,7 @@
                                                           }
                                                         ]
                                                       },
-                                                      "trackingParams": "CCEQyscDIhMI_djT0MbFkwMV45FGBB2MGg-r"
+                                                      "trackingParams": "CCMQyscDIhMIw6KgksfFkwMVQbW5BR3MRRkJ"
                                                     }
                                                   }
                                                 }
@@ -487,7 +496,33 @@
                                             ]
                                           }
                                         },
-                                        "trackingParams": "CCAQ4_sFGAYiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CCIQ4_sFGAYiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
+                                      }
+                                    },
+                                    {
+                                      "menuNavigationItemRenderer": {
+                                        "text": {
+                                          "runs": [
+                                            {
+                                              "text": "Go to album"
+                                            }
+                                          ]
+                                        },
+                                        "icon": {
+                                          "iconType": "ALBUM"
+                                        },
+                                        "navigationEndpoint": {
+                                          "clickTrackingParams": "CCEQj_sFGAciEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
+                                          "browseEndpoint": {
+                                            "browseId": "MPREb_lBAWMJdpu9Y",
+                                            "browseEndpointContextSupportedConfigs": {
+                                              "browseEndpointContextMusicConfig": {
+                                                "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "trackingParams": "CCEQj_sFGAciEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -503,9 +538,9 @@
                                           "iconType": "ARTIST"
                                         },
                                         "navigationEndpoint": {
-                                          "clickTrackingParams": "CB8QkPsFGAciEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CCAQkPsFGAgiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "browseEndpoint": {
-                                            "browseId": "UCk91oFc2hY2CdHirU93baLg",
+                                            "browseId": "UCEPMVbUzImPl4p8k4LkGevA",
                                             "browseEndpointContextSupportedConfigs": {
                                               "browseEndpointContextMusicConfig": {
                                                 "pageType": "MUSIC_PAGE_TYPE_ARTIST"
@@ -513,7 +548,33 @@
                                             }
                                           }
                                         },
-                                        "trackingParams": "CB8QkPsFGAciEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CCAQkPsFGAgiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
+                                      }
+                                    },
+                                    {
+                                      "menuNavigationItemRenderer": {
+                                        "text": {
+                                          "runs": [
+                                            {
+                                              "text": "View song credits"
+                                            }
+                                          ]
+                                        },
+                                        "icon": {
+                                          "iconType": "PEOPLE_GROUP"
+                                        },
+                                        "navigationEndpoint": {
+                                          "clickTrackingParams": "CB8Qr6MKGAkiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
+                                          "browseEndpoint": {
+                                            "browseId": "MPTCyl3TsqL0ZPw",
+                                            "browseEndpointContextSupportedConfigs": {
+                                              "browseEndpointContextMusicConfig": {
+                                                "pageType": "MUSIC_PAGE_TYPE_TRACK_CREDITS"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "trackingParams": "CB8Qr6MKGAkiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -529,13 +590,13 @@
                                           "iconType": "SHARE"
                                         },
                                         "navigationEndpoint": {
-                                          "clickTrackingParams": "CB4QkfsFGAgiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CB4QkfsFGAoiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "shareEntityEndpoint": {
-                                            "serializedShareEntity": "CgtrSlFQN2tpdzVGaw%3D%3D",
+                                            "serializedShareEntity": "Cgt5bDNUc3FMMFpQdw%3D%3D",
                                             "sharePanelType": "SHARE_PANEL_TYPE_UNIFIED_SHARE_PANEL"
                                           }
                                         },
-                                        "trackingParams": "CB4QkfsFGAgiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CB4QkfsFGAoiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     },
                                     {
@@ -551,7 +612,7 @@
                                           "iconType": "FLAG"
                                         },
                                         "serviceEndpoint": {
-                                          "clickTrackingParams": "CBwQjfYJGAkiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                          "clickTrackingParams": "CBwQjfYJGAsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                           "modalEndpoint": {
                                             "modal": {
                                               "modalWithTitleAndButtonRenderer": {
@@ -581,23 +642,23 @@
                                                       ]
                                                     },
                                                     "navigationEndpoint": {
-                                                      "clickTrackingParams": "CB0Q8FsiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                                      "clickTrackingParams": "CB0Q8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                                       "signInEndpoint": {
                                                         "hack": true
                                                       }
                                                     },
-                                                    "trackingParams": "CB0Q8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                                    "trackingParams": "CB0Q8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                                   }
                                                 }
                                               }
                                             }
                                           }
                                         },
-                                        "trackingParams": "CBwQjfYJGAkiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                        "trackingParams": "CBwQjfYJGAsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                       }
                                     }
                                   ],
-                                  "trackingParams": "CBsQyCAYACITCP3Y09DGxZMDFeORRgQdjBoPqw==",
+                                  "trackingParams": "CBsQyCAYACITCMOioJLHxZMDFUG1uQUdzEUZCQ==",
                                   "accessibility": {
                                     "accessibilityData": {
                                       "label": "Action menu"
@@ -607,10 +668,10 @@
                               },
                               "canReorder": true,
                               "queueNavigationEndpoint": {
-                                "clickTrackingParams": "CBsQyCAYACITCP3Y09DGxZMDFeORRgQdjBoPq8oBBFpMjwQ=",
+                                "clickTrackingParams": "CBsQyCAYACITCMOioJLHxZMDFUG1uQUdzEUZCcoBBEqprho=",
                                 "queueAddEndpoint": {
                                   "queueTarget": {
-                                    "videoId": "kJQP7kiw5Fk"
+                                    "videoId": "yl3TsqL0ZPw"
                                   },
                                   "queueInsertPosition": "INSERT_AT_END",
                                   "params": "Q0FJJTNE"
@@ -623,13 +684,13 @@
                               "content": {
                                 "automixPlaylistVideoRenderer": {
                                   "navigationEndpoint": {
-                                    "clickTrackingParams": "CBoQ_20iEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                    "clickTrackingParams": "CBoQ_20iEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                     "watchPlaylistEndpoint": {
-                                      "playlistId": "RDAMVMkJQP7kiw5Fk",
-                                      "params": "wAEB8gECeAHqBAtrSlFQN2tpdzVGaw%3D%3D"
+                                      "playlistId": "RDAMVMyl3TsqL0ZPw",
+                                      "params": "wAEB8gECeAHqBAt5bDNUc3FMMFpQdw%3D%3D"
                                     }
                                   },
-                                  "trackingParams": "CBoQ_20iEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                                  "trackingParams": "CBoQ_20iEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                                   "automixMode": "AUTOMIX_MODE_DEFAULT_ON"
                                 }
                               }
@@ -637,14 +698,14 @@
                           }
                         ],
                         "isInfinite": false,
-                        "trackingParams": "CBgQxyAiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                        "trackingParams": "CBgQxyAiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                         "shuffleToggleButton": {
                           "toggleButtonRenderer": {
                             "defaultIcon": {
                               "iconType": "MUSIC_SHUFFLE"
                             },
                             "defaultServiceEndpoint": {
-                              "clickTrackingParams": "CBkQmE0iEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                              "clickTrackingParams": "CBkQmE0iEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                               "watchPlaylistEndpoint": {
                                 "params": "wAEB8gECKAE%3D"
                               }
@@ -653,12 +714,12 @@
                               "iconType": "MUSIC_SHUFFLE"
                             },
                             "toggledServiceEndpoint": {
-                              "clickTrackingParams": "CBkQmE0iEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                              "clickTrackingParams": "CBkQmE0iEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                               "watchPlaylistEndpoint": {
                                 "params": "wAEB"
                               }
                             },
-                            "trackingParams": "CBkQmE0iEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                            "trackingParams": "CBkQmE0iEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                           }
                         }
                       }
@@ -677,7 +738,7 @@
                         "subtitle": {
                           "runs": [
                             {
-                              "text": "Despacito - Pop Version Mix"
+                              "text": "Bohemian Rhapsody Mix"
                             }
                           ]
                         },
@@ -695,7 +756,7 @@
                                 ]
                               },
                               "navigationEndpoint": {
-                                "clickTrackingParams": "CBYQ0-cHGAAiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                "clickTrackingParams": "CBYQ0-cHGAAiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                 "modalEndpoint": {
                                   "modal": {
                                     "modalWithTitleAndButtonRenderer": {
@@ -725,12 +786,12 @@
                                             ]
                                           },
                                           "navigationEndpoint": {
-                                            "clickTrackingParams": "CBcQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                                            "clickTrackingParams": "CBcQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                                             "signInEndpoint": {
                                               "hack": true
                                             }
                                           },
-                                          "trackingParams": "CBcQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                                          "trackingParams": "CBcQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                                         }
                                       }
                                     }
@@ -738,7 +799,7 @@
                                 },
                                 "saveQueueToPlaylistCommand": {}
                               },
-                              "trackingParams": "CBYQ0-cHGAAiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                              "trackingParams": "CBYQ0-cHGAAiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                               "icon": {
                                 "iconType": "ADD_TO_PLAYLIST"
                               },
@@ -752,20 +813,20 @@
                             }
                           }
                         ],
-                        "trackingParams": "CBUQ0ecHIhMI_djT0MbFkwMV45FGBB2MGg-r"
+                        "trackingParams": "CBUQ0ecHIhMIw6KgksfFkwMVQbW5BR3MRRkJ"
                       }
                     }
                   }
                 },
-                "trackingParams": "CBQQn7QFGAQiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                "trackingParams": "CBQQn7QFGAYiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
               }
             },
             {
               "tabRenderer": {
                 "endpoint": {
-                  "clickTrackingParams": "CBMQk80FGAUiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CBMQpLQFGAciEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "browseEndpoint": {
-                    "browseId": "MPLYt_0XNX5s8uBvI",
+                    "browseId": "MPLYt_lBAWMJdpu9Y-7",
                     "browseEndpointContextSupportedConfigs": {
                       "browseEndpointContextMusicConfig": {
                         "pageType": "MUSIC_PAGE_TYPE_TRACK_LYRICS"
@@ -774,16 +835,15 @@
                   }
                 },
                 "title": "Lyrics",
-                "trackingParams": "CBMQk80FGAUiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
-                "unselectable": true
+                "trackingParams": "CBMQpLQFGAciEwjDoqCSx8WTAxVBtbkFHcxFGQk="
               }
             },
             {
               "tabRenderer": {
                 "endpoint": {
-                  "clickTrackingParams": "CBIQlM0FGAYiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CBIQlM0FGAgiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "browseEndpoint": {
-                    "browseId": "MPTRt_0XNX5s8uBvI",
+                    "browseId": "MPTRt_lBAWMJdpu9Y-7",
                     "browseEndpointContextSupportedConfigs": {
                       "browseEndpointContextMusicConfig": {
                         "pageType": "MUSIC_PAGE_TYPE_TRACK_RELATED"
@@ -792,7 +852,7 @@
                   }
                 },
                 "title": "Related",
-                "trackingParams": "CBIQlM0FGAYiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                "trackingParams": "CBIQlM0FGAgiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
               }
             }
           ]
@@ -801,27 +861,26 @@
     }
   },
   "currentVideoEndpoint": {
-    "clickTrackingParams": "CAAQg2ciEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+    "clickTrackingParams": "CAAQg2ciEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
     "watchEndpoint": {
-      "videoId": "kJQP7kiw5Fk",
-      "playerParams": "0gcJCQQBg6NKuzgg",
+      "videoId": "yl3TsqL0ZPw",
       "ustreamerConfig": "GgIIBQ=="
     }
   },
-  "trackingParams": "CAAQg2ciEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+  "trackingParams": "CAAQg2ciEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
   "playerOverlays": {
     "playerOverlayRenderer": {
       "actions": [
         {
           "likeButtonRenderer": {
             "target": {
-              "videoId": "kJQP7kiw5Fk"
+              "videoId": "yl3TsqL0ZPw"
             },
             "likeStatus": "INDIFFERENT",
-            "trackingParams": "CA8QpUEYACITCP3Y09DGxZMDFeORRgQdjBoPqw==",
+            "trackingParams": "CA8QpUEYACITCMOioJLHxZMDFUG1uQUdzEUZCQ==",
             "likesAllowed": true,
             "dislikeNavigationEndpoint": {
-              "clickTrackingParams": "CA8QpUEYACITCP3Y09DGxZMDFeORRgQdjBoPq8oBBFpMjwQ=",
+              "clickTrackingParams": "CA8QpUEYACITCMOioJLHxZMDFUG1uQUdzEUZCcoBBEqprho=",
               "modalEndpoint": {
                 "modal": {
                   "modalWithTitleAndButtonRenderer": {
@@ -851,12 +910,12 @@
                           ]
                         },
                         "navigationEndpoint": {
-                          "clickTrackingParams": "CBEQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                          "clickTrackingParams": "CBEQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                           "signInEndpoint": {
                             "hack": true
                           }
                         },
-                        "trackingParams": "CBEQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                        "trackingParams": "CBEQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                       }
                     }
                   }
@@ -864,7 +923,7 @@
               }
             },
             "likeCommand": {
-              "clickTrackingParams": "CA8QpUEYACITCP3Y09DGxZMDFeORRgQdjBoPq8oBBFpMjwQ=",
+              "clickTrackingParams": "CA8QpUEYACITCMOioJLHxZMDFUG1uQUdzEUZCcoBBEqprho=",
               "modalEndpoint": {
                 "modal": {
                   "modalWithTitleAndButtonRenderer": {
@@ -894,12 +953,12 @@
                           ]
                         },
                         "navigationEndpoint": {
-                          "clickTrackingParams": "CBAQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                          "clickTrackingParams": "CBAQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                           "signInEndpoint": {
                             "hack": true
                           }
                         },
-                        "trackingParams": "CBAQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+                        "trackingParams": "CBAQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
                       }
                     }
                   }
@@ -911,22 +970,34 @@
       ],
       "browserMediaSession": {
         "browserMediaSessionRenderer": {
+          "album": {
+            "runs": [
+              {
+                "text": "Bohemian Rhapsody (The Original Soundtrack)"
+              }
+            ]
+          },
           "thumbnailDetails": {
             "thumbnails": [
               {
-                "url": "https://i.ytimg.com/vi/kJQP7kiw5Fk/sddefault.jpg?sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg&rs=AMzJL3lhnp7e7T2HppCiK_WU8ajGNDELfQ",
-                "width": 400,
-                "height": 225
+                "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w60-h60-l90-rj",
+                "width": 60,
+                "height": 60
               },
               {
-                "url": "https://i.ytimg.com/vi/kJQP7kiw5Fk/hq720.jpg?sqp=-oaymwEXCKAGEMIDIAQqCwjVARCqCBh4INgESFo&rs=AMzJL3mctitu3tLXNhvgZu1qFikUWfms8w",
-                "width": 800,
-                "height": 450
+                "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w120-h120-l90-rj",
+                "width": 120,
+                "height": 120
               },
               {
-                "url": "https://i.ytimg.com/vi/kJQP7kiw5Fk/hq720.jpg?sqp=-oaymwEXCNUGEOADIAQqCwjVARCqCBh4INgESFo&rs=AMzJL3mYDJnMrD1f0j2AfWi9znLDpwSQEQ",
-                "width": 853,
-                "height": 480
+                "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w226-h226-l90-rj",
+                "width": 226,
+                "height": 226
+              },
+              {
+                "url": "https://lh3.googleusercontent.com/jRsNoO2SWEPNj9YpAAK_TpUx4izOiAl1XUBWwFDSNosxGj7c8SfsRYtL0n_5QOsGEEhjLG_01Pp-T9g=w544-h544-l90-rj",
+                "width": 544,
+                "height": 544
               }
             ]
           }
@@ -948,11 +1019,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CA4Q7ZMBGAAiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CA4Q7ZMBGAAiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CA4Q7ZMBGAAiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CA4Q7ZMBGAAiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQASyYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQASyYAQGoAQM%3D"
                   }
                 }
               }
@@ -966,11 +1037,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CA0Q7ZMBGAEiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CA0Q7ZMBGAEiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CA0Q7ZMBGAEiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CA0Q7ZMBGAEiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQATaYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQATaYAQGoAQM%3D"
                   }
                 }
               }
@@ -984,11 +1055,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAwQ7ZMBGAIiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAwQ7ZMBGAIiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAwQ7ZMBGAIiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAwQ7ZMBGAIiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQARSYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQARSYAQGoAQM%3D"
                   }
                 }
               }
@@ -1002,11 +1073,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAsQ7ZMBGAMiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAsQ7ZMBGAMiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAsQ7ZMBGAMiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAsQ7ZMBGAMiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQARGYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQARGYAQGoAQM%3D"
                   }
                 }
               }
@@ -1020,11 +1091,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAoQ7ZMBGAQiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAoQ7ZMBGAQiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAoQ7ZMBGAQiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAoQ7ZMBGAQiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQAQ2YAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQAQ2YAQGoAQM%3D"
                   }
                 }
               }
@@ -1038,11 +1109,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAkQ7ZMBGAUiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAkQ7ZMBGAUiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAkQ7ZMBGAUiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAkQ7ZMBGAUiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQAUGYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQAUGYAQGoAQM%3D"
                   }
                 }
               }
@@ -1056,11 +1127,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAgQ7ZMBGAYiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAgQ7ZMBGAYiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAgQ7ZMBGAYiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAgQ7ZMBGAYiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQAQyYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQAQyYAQGoAQM%3D"
                   }
                 }
               }
@@ -1074,11 +1145,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAcQ7ZMBGAciEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAcQ7ZMBGAciEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAcQ7ZMBGAciEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAcQ7ZMBGAciEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQAUWYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQAUWYAQGoAQM%3D"
                   }
                 }
               }
@@ -1092,11 +1163,11 @@
                     }
                   ]
                 },
-                "trackingParams": "CAYQ7ZMBGAgiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAYQ7ZMBGAgiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAYQ7ZMBGAgiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAYQ7ZMBGAgiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQATWYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQATWYAQGoAQM%3D"
                   }
                 }
               }
@@ -1110,20 +1181,20 @@
                     }
                   ]
                 },
-                "trackingParams": "CAUQ7ZMBGAkiEwj92NPQxsWTAxXjkUYEHYwaD6s=",
+                "trackingParams": "CAUQ7ZMBGAkiEwjDoqCSx8WTAxVBtbkFHcxFGQk=",
                 "submitEndpoint": {
-                  "clickTrackingParams": "CAUQ7ZMBGAkiEwj92NPQxsWTAxXjkUYEHYwaD6vKAQRaTI8E",
+                  "clickTrackingParams": "CAUQ7ZMBGAkiEwjDoqCSx8WTAxVBtbkFHcxFGQnKAQRKqa4a",
                   "flagEndpoint": {
-                    "flagAction": "EAciDwoLa0pRUDdraXc1RmtQBTILa0pRUDdraXc1RmuQATGYAQGoAQM%3D"
+                    "flagAction": "EAciDwoLeWwzVHNxTDBaUHdQBTILeWwzVHNxTDBaUHeQATGYAQGoAQM%3D"
                   }
                 }
               }
             }
           ],
-          "trackingParams": "CAQQ9EoiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+          "trackingParams": "CAQQ9EoiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
         }
       },
-      "trackingParams": "CAEQ55sBIhMI_djT0MbFkwMV45FGBB2MGg-r",
+      "trackingParams": "CAEQ55sBIhMIw6KgksfFkwMVQbW5BR3MRRkJ",
       "title": {
         "runs": [
           {
@@ -1142,7 +1213,7 @@
               }
             ]
           },
-          "trackingParams": "CAMQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+          "trackingParams": "CAMQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
         }
       },
       "cancelButton": {
@@ -1156,7 +1227,7 @@
               }
             ]
           },
-          "trackingParams": "CAIQ8FsiEwj92NPQxsWTAxXjkUYEHYwaD6s="
+          "trackingParams": "CAIQ8FsiEwjDoqCSx8WTAxVBtbkFHcxFGQk="
         }
       },
       "footer": {
@@ -1167,7 +1238,7 @@
           {
             "text": "these directions",
             "navigationEndpoint": {
-              "clickTrackingParams": "CAEQ55sBIhMI_djT0MbFkwMV45FGBB2MGg-rygEEWkyPBA==",
+              "clickTrackingParams": "CAEQ55sBIhMIw6KgksfFkwMVQbW5BR3MRRkJygEESqmuGg==",
               "urlEndpoint": {
                 "url": "//support.google.com/youtube/answer/2807622?hl=en"
               }
@@ -1180,5 +1251,5 @@
       }
     }
   },
-  "queueContextParams": "CAEaEVJEQU1WTWtKUVA3a2l3NUZrIMbu09DGxZMDMgtrSlFQN2tpdzVGa0oLa0pRUDdraXc1RmtQAFoECAAQAXgB"
+  "queueContextParams": "CAEaEVJEQU1WTXlsM1RzcUwwWlB3IOXEoJLHxZMDMgt5bDNUc3FMMFpQd0oLeWwzVHNxTDBaUHdQAFoECAAQAXgB"
 }

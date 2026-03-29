@@ -6,6 +6,7 @@ import { db } from '@/lib/db';
 import { X, Plus, Music } from 'lucide-react';
 import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
+import { MarqueeText } from './MarqueeText';
 
 interface Playlist {
   id: string;
@@ -95,10 +96,11 @@ export function AddToPlaylistModal() {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-white font-medium truncate">{trackToAdd.name}</div>
-            <div className="text-white/60 text-sm truncate">
-              {Array.isArray(trackToAdd.artist) ? trackToAdd.artist.map(a => a.name).join(', ') : trackToAdd.artist?.name}
-            </div>
+            <MarqueeText text={trackToAdd.name} className="text-white font-medium" />
+            <MarqueeText 
+              text={Array.isArray(trackToAdd.artist) ? trackToAdd.artist.map(a => a.name).join(', ') : trackToAdd.artist?.name} 
+              className="text-white/60 text-sm" 
+            />
           </div>
         </div>
 
@@ -162,7 +164,7 @@ export function AddToPlaylistModal() {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-white font-medium truncate">{playlist.name}</div>
+                      <MarqueeText text={playlist.name} className="text-white font-medium" />
                       <div className="text-white/50 text-sm">{playlist.tracks.length} lagu</div>
                     </div>
                   </button>

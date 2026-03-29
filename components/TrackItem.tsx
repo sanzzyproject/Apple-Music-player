@@ -4,6 +4,7 @@ import { Track, usePlayerStore } from '@/lib/store';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
+import { MarqueeText } from './MarqueeText';
 
 export function TrackItem({ track, queue, onRemove }: { track: Track; queue?: Track[]; onRemove?: (track: Track) => void }) {
   const playTrack = usePlayerStore((state) => state.playTrack);
@@ -33,10 +34,8 @@ export function TrackItem({ track, queue, onRemove }: { track: Track; queue?: Tr
         )}
       </div>
       <div className="ml-4 flex-1 min-w-0 border-b border-white/5 pb-3 group-hover:border-transparent transition-colors">
-        <div className={`font-medium truncate ${isCurrent ? 'text-[#FA243C]' : 'text-white'}`}>
-          {track.name}
-        </div>
-        <div className="text-sm text-gray-400 truncate">{artistName}</div>
+        <MarqueeText text={track.name} className={`font-medium ${isCurrent ? 'text-[#FA243C]' : 'text-white'}`} />
+        <MarqueeText text={artistName} className="text-sm text-gray-400 mt-0.5" />
       </div>
       <div className="flex items-center">
         {onRemove && (

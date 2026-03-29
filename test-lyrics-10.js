@@ -4,8 +4,11 @@ async function test() {
   const ytmusic = new YTMusic();
   await ytmusic.initialize();
   try {
-    const lyrics = await ytmusic.getLyrics('kJQP7kiw5Fk'); // Despacito
+    const lyrics = await ytmusic.getLyrics('yl3TsqL0ZPw');
     console.log("Lyrics length:", lyrics ? lyrics.length : null);
+    if (lyrics) {
+        console.log("First line:", lyrics[0]);
+    }
   } catch (e) {
     console.error("Error:", e.message);
   }

@@ -6,6 +6,7 @@ import { usePlayerStore } from '@/lib/store';
 import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+import { MarqueeText } from '@/components/MarqueeText';
 
 export default function HistoryPage() {
   const router = useRouter();
@@ -56,10 +57,11 @@ export default function HistoryPage() {
           <Image src={thumbnail} alt={track.name} fill sizes="56px" className="object-cover" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-white font-medium truncate text-base">{track.name}</h3>
-          <p className="text-white/60 text-sm truncate">
-            {artistName}{formatDuration(track.duration)}
-          </p>
+          <MarqueeText text={track.name} className="text-white font-medium text-base" />
+          <MarqueeText 
+            text={`${artistName}${formatDuration(track.duration)}`} 
+            className="text-white/60 text-sm" 
+          />
         </div>
         <button className="p-2 text-white/60 hover:text-white transition-colors">
           <MoreVertical className="w-5 h-5" />

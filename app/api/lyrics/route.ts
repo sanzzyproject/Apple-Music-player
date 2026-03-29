@@ -17,14 +17,42 @@ export async function GET(request: Request) {
     }
     
     try {
-      const lyrics = await ytmusic.getLyrics(id);
+      // 1. Fetch the watch playlist using the video ID
+      const watchPlaylistData = await (ytmusic as any).constructRequest('next', { videoId: id });
       
-      if (lyrics) {
-        return NextResponse.json({ lyrics }, {
-          headers: {
-            'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-          },
-        });
+      // 2. Get the lyrics ID from the watch playlist
+      let lyricsId = null;
+      const tabs = watchPlaylistData?.contents?.singleColumnMusicWatchNextResultsRenderer?.tabbedRenderer?.watchNextTabbedResultsRenderer?.tabs;
+      
+      if (tabs) {
+        for (const tab of tabs) {
+          const tabRenderer = tab.tabRenderer;
+          if (tabRenderer?.endpoint?.browseEndpoint?.browseEndpointContextSupportedConfigs?.browseEndpointContextMusicConfig?.pageType === "MUSIC_PAGE_TYPE_TRACK_LYRICS") {
+            lyricsId = tabRenderer.endpoint.browseEndpoint.browseId;
+            break;
+          }
+        }
+      }
+
+      // 3. Use that lyrics ID to fetch the lyrics
+      if (lyricsId) {
+        const lyricsData = await (ytmusic as any).constructRequest('browse', { browseId: lyricsId });
+        
+        const runs = lyricsData?.contents?.sectionListRenderer?.contents?.[0]?.musicDescriptionShelfRenderer?.description?.runs;
+        let lyricsText = null;
+        
+        if (runs) {
+          lyricsText = runs.map((r: any) => r.text).join('');
+        }
+        
+        if (lyricsText && !lyricsText.includes('Lyrics not available')) {
+          const lyrics = lyricsText.replaceAll('\r', '').split('\n').filter((v: string) => !!v);
+          return NextResponse.json({ lyrics }, {
+            headers: {
+              'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+            },
+          });
+        }
       }
     } catch (e: any) {
       if (e.message !== 'Invalid videoId') {

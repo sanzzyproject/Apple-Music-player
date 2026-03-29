@@ -6,6 +6,7 @@ import { Loader2, History, Cast, User, Play, MoreVertical } from 'lucide-react';
 import Image from 'next/image';
 import { HorizontalScroll } from '@/components/HorizontalScroll';
 import { CommunityPlaylistCard } from '@/components/CommunityPlaylistCard';
+import { MarqueeText } from '@/components/MarqueeText';
 import { getHighResImage } from '@/lib/utils';
 import { motion } from 'motion/react';
 import Link from 'next/link';
@@ -211,13 +212,14 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   <div className="absolute top-4 left-4 right-4">
-                    <h2 className="text-2xl font-bold text-white drop-shadow-lg">{track.name}</h2>
-                    <p className="text-white/80 font-medium drop-shadow-md">
-                      {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name}
-                    </p>
+                    <MarqueeText text={track.name} className="text-2xl font-bold text-white drop-shadow-lg" />
+                    <MarqueeText 
+                      text={Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name} 
+                      className="text-white/80 font-medium drop-shadow-md" 
+                    />
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                    <p className="text-sm text-white/60 truncate pr-4">Sounds like Raindance • Dave, Tems</p>
+                    <MarqueeText text="Sounds like Raindance • Dave, Tems" className="text-sm text-white/60 pr-4" />
                     <div className="w-12 h-12 bg-[#FA243C] rounded-full flex items-center justify-center shadow-lg shadow-[#FA243C]/30 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                       <Play className="w-6 h-6 text-white ml-1 fill-current" />
                     </div>
@@ -251,7 +253,7 @@ export default function Home() {
                           <Image src={getHighResImage(track.thumbnails?.[track.thumbnails.length - 1]?.url, 200)} alt={track.name} fill sizes="64px" className="object-cover" />
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
                           <div className="absolute bottom-2 left-2 right-2">
-                            <p className="text-white text-xs font-medium truncate drop-shadow-md">{track.name}</p>
+                            <MarqueeText text={track.name} className="text-white text-xs font-medium drop-shadow-md" />
                           </div>
                         </div>
                       ))}
@@ -298,10 +300,11 @@ export default function Home() {
                             </div>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-white font-medium truncate text-base">{track.name}</h3>
-                            <p className="text-white/60 text-sm truncate">
-                              {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name}
-                            </p>
+                            <MarqueeText text={track.name} className="text-white font-medium text-base" />
+                            <MarqueeText 
+                              text={Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name} 
+                              className="text-white/60 text-sm" 
+                            />
                           </div>
                           <button className="p-2 text-white/60 hover:text-white transition-colors">
                             <MoreVertical className="w-5 h-5" />
@@ -349,8 +352,8 @@ export default function Home() {
                             <Play className="w-8 h-8 text-white fill-current" />
                           </div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-sm font-medium text-white line-clamp-1">{artistName}</div>
+                        <div className="text-center w-full">
+                          <MarqueeText text={artistName} className="text-sm font-medium text-white" />
                           <div className="text-xs text-white/50">Artis</div>
                         </div>
                       </motion.div>

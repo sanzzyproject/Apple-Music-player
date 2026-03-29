@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { MarqueeText } from './MarqueeText';
 
 export function ArtistItem({ artist }: { artist: any }) {
   const router = useRouter();
@@ -17,10 +18,8 @@ export function ArtistItem({ artist }: { artist: any }) {
         {thumbnail && <Image src={thumbnail} alt={artist.name} fill sizes="48px" className="object-cover" />}
       </div>
       <div className="ml-4 flex-1 min-w-0 border-b border-white/5 pb-3 group-hover:border-transparent transition-colors">
-        <div className="font-medium truncate text-white">
-          {artist.name}
-        </div>
-        <div className="text-sm text-gray-400 truncate">Artist</div>
+        <MarqueeText text={artist.name} className="font-medium text-white" />
+        <MarqueeText text="Artist" className="text-sm text-gray-400 mt-0.5" />
       </div>
     </div>
   );

@@ -4,13 +4,12 @@ async function test() {
   const ytmusic = new YTMusic();
   await ytmusic.initialize();
   try {
-    const artist = await ytmusic.getArtist('UCVacQ2t5GUZ2t_J3Ia9BynA');
-    console.log("Featured On items:");
-    artist.featuredOn.forEach(item => {
-      console.log(`- ${item.name} (ID: ${item.playlistId})`);
-    });
+    const data = await ytmusic['constructRequest']("browse", { browseId: 'MPLYt_0XNX5s8uBvI' });
+    const fs = require('fs');
+    fs.writeFileSync('lyrics-response.json', JSON.stringify(data, null, 2));
+    console.log("Saved lyrics-response.json");
   } catch (e) {
-    console.error("Error:", e);
+    console.error("Error:", e.message);
   }
 }
 test();

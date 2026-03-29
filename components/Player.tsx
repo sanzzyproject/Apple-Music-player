@@ -10,6 +10,8 @@ import { cn, getHighResImage } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { MarqueeText } from './MarqueeText';
+
 export function Player() {
   const router = useRouter();
   const currentTrack = usePlayerStore((state) => state.currentTrack);
@@ -288,11 +290,16 @@ export function Player() {
                 </div>
 
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
-                  <div className="text-white text-sm font-semibold truncate">{currentTrack.name}</div>
-                  <div className="text-white/60 text-xs truncate flex items-center gap-1">
-                    {currentTrack.isExplicit && <span className="bg-white/20 text-[8px] px-1 rounded-sm text-white">E</span>}
-                    {artistName}
-                  </div>
+                  <MarqueeText text={currentTrack.name} className="text-white text-sm font-semibold" />
+                  <MarqueeText 
+                    text={
+                      <>
+                        {currentTrack.isExplicit && <span className="bg-white/20 text-[8px] px-1 rounded-sm text-white">E</span>}
+                        {artistName}
+                      </>
+                    } 
+                    className="text-white/60 text-xs" 
+                  />
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -398,8 +405,8 @@ export function Player() {
                       transition={{ duration: 0.3 }}
                       className="min-w-0 flex-1 pr-4"
                     >
-                      <h2 className="text-2xl font-bold text-white truncate">{currentTrack.name}</h2>
-                      <p className="text-lg text-white/60 truncate">{artistName}</p>
+                      <MarqueeText text={currentTrack.name} className="text-2xl font-bold text-white mb-1" />
+                      <MarqueeText text={artistName} className="text-lg text-white/60" />
                     </motion.div>
                   </AnimatePresence>
                   <div className="flex items-center gap-4">

@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import YTMusic from 'ytmusic-api';
 import AlbumClient from './AlbumClient';
 import AlbumTrackClient from './AlbumTrackClient';
+import { MarqueeText } from '@/components/MarqueeText';
 
 async function getAlbumDetails(id: string) {
   try {
@@ -45,11 +46,11 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
   return (
     <main className="min-h-screen pb-24 bg-black">
       <div className="sticky top-0 z-10 bg-black/50 backdrop-blur-md pt-6 pb-4 px-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/" className="text-white hover:bg-white/10 p-2 rounded-full transition-colors">
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <Link href="/" className="text-white hover:bg-white/10 p-2 rounded-full transition-colors shrink-0">
             <ArrowLeft className="w-6 h-6" />
           </Link>
-          <h1 className="text-xl font-bold text-white truncate">{album.name}</h1>
+          <MarqueeText text={album.name} className="text-xl font-bold text-white" />
         </div>
       </div>
 

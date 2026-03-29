@@ -8,6 +8,7 @@ import { Play, ArrowLeft, MoreHorizontal, Radio, Music, Trash2 } from 'lucide-re
 import Image from 'next/image';
 import { TrackItem } from '@/components/TrackItem';
 import { PlaylistSkeleton } from '@/components/PlaylistSkeleton';
+import { MarqueeText } from '@/components/MarqueeText';
 
 interface Playlist {
   id: string;
@@ -116,7 +117,9 @@ export default function PlaylistPage() {
             <Music className="w-20 h-20 text-white/20" />
           )}
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">{playlist.name}</h1>
+        <div className="w-full max-w-sm mb-2">
+          <MarqueeText text={playlist.name} className="text-2xl sm:text-3xl font-bold text-white text-center" />
+        </div>
         <p className="text-white/50 mb-6">{playlist.tracks.length} lagu</p>
 
         <div className="flex items-center gap-4 w-full justify-center">

@@ -2,6 +2,7 @@
 
 import { MoreVertical } from 'lucide-react';
 import { usePlayerStore } from '@/lib/store';
+import { MarqueeText } from '@/components/MarqueeText';
 
 export default function AlbumTrackClient({ track, index, album, artistName }: { track: any, index: number, album: any, artistName: string }) {
   const playTrack = usePlayerStore((state) => state.playTrack);
@@ -15,10 +16,11 @@ export default function AlbumTrackClient({ track, index, album, artistName }: { 
         {index + 1}
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="text-white font-medium truncate text-base">{track.name}</h3>
-        <p className="text-white/60 text-sm truncate">
-          {artistName}{track.duration ? ` • ${Math.floor(track.duration / 60)}:${Math.floor(track.duration % 60).toString().padStart(2, '0')}` : ''}
-        </p>
+        <MarqueeText text={track.name} className="text-white font-medium text-base" />
+        <MarqueeText 
+          text={`${artistName}${track.duration ? ` • ${Math.floor(track.duration / 60)}:${Math.floor(track.duration % 60).toString().padStart(2, '0')}` : ''}`} 
+          className="text-white/60 text-sm" 
+        />
       </div>
       <button className="p-2 text-white/60 hover:text-white transition-colors">
         <MoreVertical className="w-5 h-5" />

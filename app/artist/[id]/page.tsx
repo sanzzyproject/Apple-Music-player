@@ -8,6 +8,7 @@ import { getHighResImage } from '@/lib/utils';
 import { TrackItem } from '@/components/TrackItem';
 import { usePlayerStore } from '@/lib/store';
 import { db } from '@/lib/db';
+import { MarqueeText } from '@/components/MarqueeText';
 
 import { ArtistSkeleton } from '@/components/ArtistSkeleton';
 
@@ -189,8 +190,8 @@ export default function ArtistPage() {
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-white font-medium truncate">{album.name}</h3>
-                  <p className="text-white/50 text-sm truncate">{album.year}</p>
+                  <MarqueeText text={album.name} className="text-white font-medium" />
+                  <MarqueeText text={album.year} className="text-white/50 text-sm" />
                 </div>
               ))}
             </div>
@@ -226,8 +227,8 @@ export default function ArtistPage() {
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-white font-medium truncate">{single.name}</h3>
-                  <p className="text-white/50 text-sm truncate">{single.year}</p>
+                  <MarqueeText text={single.name} className="text-white font-medium" />
+                  <MarqueeText text={single.year} className="text-white/50 text-sm" />
                 </div>
               ))}
             </div>
@@ -263,8 +264,8 @@ export default function ArtistPage() {
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-white font-medium line-clamp-2">{video.name}</h3>
-                  <p className="text-white/50 text-sm truncate">{artist.name}</p>
+                  <MarqueeText text={video.name} className="text-white font-medium" />
+                  <MarqueeText text={artist.name} className="text-white/50 text-sm" />
                 </div>
               ))}
             </div>
@@ -297,8 +298,8 @@ export default function ArtistPage() {
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-white font-medium line-clamp-2">{video.name}</h3>
-                  <p className="text-white/50 text-sm truncate">{artist.name}</p>
+                  <MarqueeText text={video.name} className="text-white font-medium" />
+                  <MarqueeText text={artist.name} className="text-white/50 text-sm" />
                 </div>
               ))}
             </div>
@@ -329,8 +330,8 @@ export default function ArtistPage() {
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-white font-medium truncate">{playlist.name}</h3>
-                  <p className="text-white/50 text-sm truncate">Playlist</p>
+                  <MarqueeText text={playlist.name} className="text-white font-medium" />
+                  <MarqueeText text="Playlist" className="text-white/50 text-sm" />
                 </div>
               ))}
             </div>
@@ -358,7 +359,7 @@ export default function ArtistPage() {
                       />
                     )}
                   </div>
-                  <h3 className="text-white font-medium line-clamp-2">{similar.name}</h3>
+                  <MarqueeText text={similar.name} className="text-white font-medium" />
                 </div>
               ))}
             </div>

@@ -4,10 +4,13 @@ async function test() {
   const ytmusic = new YTMusic();
   await ytmusic.initialize();
   try {
-    const artist = await ytmusic.getArtist('UCVacQ2t5GUZ2t_J3Ia9BynA');
-    console.log(Object.keys(artist));
+    const lyrics = await ytmusic.getLyrics('fJ9rUzIMcZQ');
+    console.log("Lyrics length:", lyrics ? lyrics.length : null);
+    if (lyrics) {
+        console.log("First line:", lyrics[0]);
+    }
   } catch (e) {
-    console.error("Error:", e);
+    console.error("Error:", e.message);
   }
 }
 test();

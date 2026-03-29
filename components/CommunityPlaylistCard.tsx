@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { usePlayerStore, Track } from '@/lib/store';
 import { db } from '@/lib/db';
+import { MarqueeText } from './MarqueeText';
 
 interface PlaylistData {
   playlistId: string;
@@ -142,8 +143,8 @@ export function CommunityPlaylistCard({ playlistId }: { playlistId: string }) {
             />
           )}
         </div>
-        <div className="flex flex-col justify-center">
-          <h3 className="text-white font-bold text-lg line-clamp-2 leading-tight mb-1">{playlist.name}</h3>
+        <div className="flex flex-col justify-center min-w-0 flex-1">
+          <MarqueeText text={playlist.name} className="text-white font-bold text-lg leading-tight mb-1" />
           <p className="text-white/50 text-sm">{playlist.videos?.length || 0} lagu</p>
         </div>
       </div>
@@ -160,11 +161,12 @@ export function CommunityPlaylistCard({ playlistId }: { playlistId: string }) {
                 className="object-cover" 
               />
             </div>
-            <div className="flex flex-col overflow-hidden">
-              <p className="text-white text-[15px] font-medium line-clamp-1">{track.name}</p>
-              <p className="text-white/50 text-sm line-clamp-1">
-                {Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name || 'Unknown Artist'}
-              </p>
+            <div className="flex flex-col overflow-hidden min-w-0 flex-1">
+              <MarqueeText text={track.name} className="text-white text-[15px] font-medium" />
+              <MarqueeText 
+                text={Array.isArray(track.artist) ? track.artist.map(a => a.name).join(', ') : track.artist?.name || 'Unknown Artist'} 
+                className="text-white/50 text-sm" 
+              />
             </div>
           </div>
         ))}

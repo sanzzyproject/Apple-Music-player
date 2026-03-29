@@ -4,20 +4,12 @@ async function test() {
   const ytmusic = new YTMusic();
   await ytmusic.initialize();
   try {
-    const artist = await ytmusic.getArtist('UCVacQ2t5GUZ2t_J3Ia9BynA');
-    artist.featuredOn.forEach(item => {
-      if (item.playlistId === artist.artistId) {
-        // It's a video!
-        const thumbnailUrl = item.thumbnails[0].url;
-        const match = thumbnailUrl.match(/\/vi\/([a-zA-Z0-9-_]{11})\//);
-        if (match) {
-          const videoId = match[1];
-          console.log(`Found videoId ${videoId} for ${item.name}`);
-        }
-      }
-    });
+    const data = await ytmusic['constructRequest']("next", { videoId: 'kJQP7kiw5Fk' });
+    const fs = require('fs');
+    fs.writeFileSync('next-response.json', JSON.stringify(data, null, 2));
+    console.log("Saved next-response.json");
   } catch (e) {
-    console.error("Error:", e);
+    console.error("Error:", e.message);
   }
 }
 test();

@@ -9,6 +9,7 @@ import { Heart, Plus, ListMusic, Trash2, Play, MoreVertical, Download, TrendingU
 import Image from 'next/image';
 import { usePlayerStore } from '@/lib/store';
 import { motion } from 'motion/react';
+import { MarqueeText } from '@/components/MarqueeText';
 
 export default function Library() {
   const router = useRouter();
@@ -188,7 +189,7 @@ export default function Library() {
                 </div>
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-white font-medium truncate">{pl.name}</h3>
+                <MarqueeText text={pl.name} className="text-white font-medium" />
                 <p className="text-white/50 text-sm">{pl.tracks.length} lagu</p>
               </div>
               <button
@@ -248,7 +249,7 @@ export default function Library() {
                     className="object-cover" 
                   />
                 </div>
-                <h3 className="text-white font-medium text-center line-clamp-1">{artist.name}</h3>
+                <MarqueeText text={artist.name} className="text-white font-medium text-center" />
                 <p className="text-white/50 text-xs mt-1">Artis</p>
               </div>
             ))}

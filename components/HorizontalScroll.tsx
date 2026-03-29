@@ -4,6 +4,7 @@ import { Track, usePlayerStore } from '@/lib/store';
 import Image from 'next/image';
 import { getHighResImage } from '@/lib/utils';
 import { motion } from 'motion/react';
+import { MarqueeText } from './MarqueeText';
 
 export function HorizontalScroll({ title, tracks }: { title: string; tracks: Track[] }) {
   const playTrack = usePlayerStore((state) => state.playTrack);
@@ -36,8 +37,8 @@ export function HorizontalScroll({ title, tracks }: { title: string; tracks: Tra
                   </div>
                 </div>
               </div>
-              <div className="text-sm font-medium text-white line-clamp-2 leading-tight">{track.name}</div>
-              <div className="text-xs text-gray-400 truncate mt-1">{artistName}</div>
+              <MarqueeText text={track.name} className="text-sm font-medium text-white leading-tight" />
+              <MarqueeText text={artistName} className="text-xs text-gray-400 mt-1" />
             </motion.div>
           );
         })}

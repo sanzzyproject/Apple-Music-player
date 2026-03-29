@@ -4,10 +4,10 @@ async function test() {
   const ytmusic = new YTMusic();
   await ytmusic.initialize();
   try {
-    const data = await ytmusic['constructRequest']("next", { videoId: 'fJ9rUzIMcZQ' });
+    const data = await ytmusic['constructRequest']("browse", { browseId: 'MPLYt_lBAWMJdpu9Y-7' });
     const fs = require('fs');
-    fs.writeFileSync('next-response-2.json', JSON.stringify(data, null, 2));
-    console.log("Saved next-response-2.json");
+    fs.writeFileSync('lyrics-response-4.json', JSON.stringify(data, null, 2));
+    console.log("Saved lyrics-response-4.json");
   } catch (e) {
     console.error("Error:", e.message);
   }
