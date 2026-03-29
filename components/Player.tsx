@@ -5,7 +5,7 @@ import { usePlayerStore } from '@/lib/store';
 import { db } from '@/lib/db';
 import YouTube from 'react-youtube';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Maximize2, MoreVertical, Cast, ListPlus, User } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Heart, ChevronDown, ListMusic, Mic2, Shuffle, Repeat, Repeat1, Maximize2, MoreVertical, Cast, ListPlus, User } from 'lucide-react';
 import { cn, getHighResImage } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -28,6 +28,10 @@ export function Player() {
   const playPrev = usePlayerStore((state) => state.playPrev);
   const setTrackToAdd = usePlayerStore((state) => state.setTrackToAdd);
   const dominantColor = usePlayerStore((state) => state.dominantColor);
+  const isShuffle = usePlayerStore((state) => state.isShuffle);
+  const repeatMode = usePlayerStore((state) => state.repeatMode);
+  const toggleShuffle = usePlayerStore((state) => state.toggleShuffle);
+  const toggleRepeat = usePlayerStore((state) => state.toggleRepeat);
 
   const [isLiked, setIsLiked] = useState(false);
   const [lyrics, setLyrics] = useState<{ text: string }[] | null>(null);
@@ -93,7 +97,13 @@ export function Player() {
         setPlaying(false);
       }
     } else if (event.data === YouTube.PlayerState.ENDED) {
-      playNext();
+      const { repeatMode } = usePlayerStore.getState();
+      if (repeatMode === 'one') {
+        event.target.seekTo(0);
+        event.target.playVideo();
+      } else {
+        playNext();
+      }
     }
   }, [setPlaying, setDuration, playNext]);
 
@@ -437,7 +447,10 @@ export function Player() {
 
                 {/* Playback Controls */}
                 <div className="flex justify-between items-center mb-8 px-2">
-                  <button className="text-white/80 hover:text-white transition">
+                  <button 
+                    onClick={toggleShuffle}
+                    className={cn("transition", isShuffle ? "text-[#A78BFA]" : "text-white/80 hover:text-white")}
+                  >
                     <Shuffle className="w-6 h-6" />
                   </button>
                   <button onClick={playPrev} className="text-white hover:text-white transition">
@@ -452,8 +465,11 @@ export function Player() {
                   <button onClick={playNext} className="text-white hover:text-white transition">
                     <SkipForward className="w-10 h-10 fill-current" />
                   </button>
-                  <button className="text-white/80 hover:text-white transition">
-                    <Repeat className="w-6 h-6" />
+                  <button 
+                    onClick={toggleRepeat}
+                    className={cn("transition relative", repeatMode !== 'off' ? "text-[#A78BFA]" : "text-white/80 hover:text-white")}
+                  >
+                    {repeatMode === 'one' ? <Repeat1 className="w-6 h-6" /> : <Repeat className="w-6 h-6" />}
                   </button>
                 </div>
 

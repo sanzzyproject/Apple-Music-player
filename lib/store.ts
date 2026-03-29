@@ -30,6 +30,10 @@ interface PlayerState {
   playCounts: Record<string, number>;
   dominantColor: string | null;
   
+  originalQueue: Track[];
+  isShuffle: boolean;
+  repeatMode: 'off' | 'all' | 'one';
+  
   playTrack: (track: Track, queue?: Track[], context?: 'playlist' | 'similar') => void;
   playNext: () => Promise<void>;
   playPrev: () => void;
@@ -42,6 +46,8 @@ interface PlayerState {
   addToQueue: (track: Track) => void;
   setTrackToAdd: (track: Track | null) => void;
   setDominantColor: (color: string | null) => void;
+  toggleShuffle: () => void;
+  toggleRepeat: () => void;
 }
 
 export const usePlayerStore = create<PlayerState>()(
@@ -60,6 +66,10 @@ export const usePlayerStore = create<PlayerState>()(
       history: [],
       playCounts: {},
       dominantColor: null,
+      
+      originalQueue: [],
+      isShuffle: false,
+      repeatMode: 'off',
 
       playTrack: (rawTrack, rawQueue, context = 'similar') => {
         const track = {
@@ -70,7 +80,7 @@ export const usePlayerStore = create<PlayerState>()(
           duration: rawTrack.duration,
           isExplicit: rawTrack.isExplicit,
         };
-        const queue = rawQueue ? rawQueue.map(t => ({
+        let queue = rawQueue ? rawQueue.map(t => ({
           videoId: t.videoId,
           name: t.name,
           artist: t.artist,
@@ -88,11 +98,29 @@ export const usePlayerStore = create<PlayerState>()(
         const newPlayCounts = { ...state.playCounts };
         newPlayCounts[track.videoId] = (newPlayCounts[track.videoId] || 0) + 1;
 
+        let newQueue = queue || [track];
+        let newIndex = newQueue.findIndex((t) => t.videoId === track.videoId);
+        if (newIndex === -1) newIndex = 0;
+
+        const originalQueue = [...newQueue];
+
+        if (state.isShuffle && newQueue.length > 1) {
+          const current = newQueue[newIndex];
+          const others = newQueue.filter((_, i) => i !== newIndex);
+          for (let i = others.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [others[i], others[j]] = [others[j], others[i]];
+          }
+          newQueue = [current, ...others];
+          newIndex = 0;
+        }
+
         set({
           currentTrack: track,
           isPlaying: true,
-          queue: queue || [track],
-          queueIndex: queue ? queue.findIndex((t) => t.videoId === track.videoId) : 0,
+          queue: newQueue,
+          originalQueue: originalQueue,
+          queueIndex: newIndex,
           progress: 0,
           playContext: context,
           history: newHistory,
@@ -101,9 +129,29 @@ export const usePlayerStore = create<PlayerState>()(
       },
 
       playNext: async () => {
-        const { queue, queueIndex, playContext, currentTrack } = get();
+        const { queue, queueIndex, playContext, currentTrack, repeatMode } = get();
         if (queueIndex < queue.length - 1) {
           const nextIndex = queueIndex + 1;
+          const nextTrack = queue[nextIndex];
+          
+          const state = get();
+          const newHistoryItem = { track: nextTrack, playedAt: Date.now() };
+          const filteredHistory = state.history.filter(h => h.track.videoId !== nextTrack.videoId);
+          const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 500);
+          
+          const newPlayCounts = { ...state.playCounts };
+          newPlayCounts[nextTrack.videoId] = (newPlayCounts[nextTrack.videoId] || 0) + 1;
+
+          set({
+            currentTrack: nextTrack,
+            queueIndex: nextIndex,
+            isPlaying: true,
+            progress: 0,
+            history: newHistory,
+            playCounts: newPlayCounts,
+          });
+        } else if (repeatMode === 'all' && queue.length > 0) {
+          const nextIndex = 0;
           const nextTrack = queue[nextIndex];
           
           const state = get();
@@ -140,8 +188,19 @@ export const usePlayerStore = create<PlayerState>()(
                   const newPlayCounts = { ...state.playCounts };
                   newPlayCounts[nextTrack.videoId] = (newPlayCounts[nextTrack.videoId] || 0) + 1;
 
+                  let finalNextTracks = nextTracks;
+                  if (state.isShuffle) {
+                    const others = nextTracks.slice(1);
+                    for (let i = others.length - 1; i > 0; i--) {
+                      const j = Math.floor(Math.random() * (i + 1));
+                      [others[i], others[j]] = [others[j], others[i]];
+                    }
+                    finalNextTracks = [nextTrack, ...others];
+                  }
+
                   set({
-                    queue: [...queue, ...nextTracks],
+                    queue: [...queue, ...finalNextTracks],
+                    originalQueue: state.originalQueue.length > 0 ? [...state.originalQueue, ...nextTracks] : [],
                     currentTrack: nextTrack,
                     queueIndex: queueIndex + 1,
                     isPlaying: true,
@@ -161,7 +220,7 @@ export const usePlayerStore = create<PlayerState>()(
       },
 
       playPrev: () => {
-        const { queue, queueIndex, progress } = get();
+        const { queue, queueIndex, progress, repeatMode } = get();
         if (progress > 3) {
           set({ progress: 0 });
           return;
@@ -186,6 +245,28 @@ export const usePlayerStore = create<PlayerState>()(
             history: newHistory,
             playCounts: newPlayCounts,
           });
+        } else if (repeatMode === 'all' && queue.length > 0) {
+          const prevIndex = queue.length - 1;
+          const prevTrack = queue[prevIndex];
+          
+          const state = get();
+          const newHistoryItem = { track: prevTrack, playedAt: Date.now() };
+          const filteredHistory = state.history.filter(h => h.track.videoId !== prevTrack.videoId);
+          const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 500);
+          
+          const newPlayCounts = { ...state.playCounts };
+          newPlayCounts[prevTrack.videoId] = (newPlayCounts[prevTrack.videoId] || 0) + 1;
+
+          set({
+            currentTrack: prevTrack,
+            queueIndex: prevIndex,
+            isPlaying: true,
+            progress: 0,
+            history: newHistory,
+            playCounts: newPlayCounts,
+          });
+        } else {
+          set({ progress: 0 });
         }
       },
 
@@ -218,13 +299,48 @@ export const usePlayerStore = create<PlayerState>()(
         set({ trackToAdd: track });
       },
       setDominantColor: (color) => set({ dominantColor: color }),
+      toggleShuffle: () => {
+        const state = get();
+        const newIsShuffle = !state.isShuffle;
+        if (newIsShuffle) {
+          const current = state.queue[state.queueIndex];
+          const others = state.queue.filter((_, i) => i !== state.queueIndex);
+          for (let i = others.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [others[i], others[j]] = [others[j], others[i]];
+          }
+          const newQueue = [current, ...others];
+          set({
+            isShuffle: true,
+            originalQueue: state.queue,
+            queue: newQueue,
+            queueIndex: 0
+          });
+        } else {
+          const current = state.queue[state.queueIndex];
+          const newQueue = state.originalQueue.length > 0 ? state.originalQueue : state.queue;
+          let newIndex = newQueue.findIndex(t => t.videoId === current?.videoId);
+          if (newIndex === -1) newIndex = 0;
+          set({
+            isShuffle: false,
+            queue: newQueue,
+            queueIndex: newIndex
+          });
+        }
+      },
+      toggleRepeat: () => set((state) => {
+        const nextMode = state.repeatMode === 'off' ? 'all' : state.repeatMode === 'all' ? 'one' : 'off';
+        return { repeatMode: nextMode };
+      }),
     }),
     {
       name: 'player-storage',
       partialize: (state) => ({ 
         history: state.history, 
         playCounts: state.playCounts,
-        volume: state.volume
+        volume: state.volume,
+        isShuffle: state.isShuffle,
+        repeatMode: state.repeatMode
       }),
     }
   )
