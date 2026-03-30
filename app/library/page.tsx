@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { db, SubscribedArtist } from '@/lib/db';
+import { db, SubscribedArtist, SavedAlbum } from '@/lib/db';
 import { Track } from '@/lib/store';
 import { TrackItem } from '@/components/TrackItem';
 import { Heart, Plus, ListMusic, Trash2, Play, MoreVertical, Download, TrendingUp, Clock, UploadCloud } from 'lucide-react';
@@ -15,6 +15,7 @@ export default function Library() {
   const router = useRouter();
   const [likedSongs, setLikedSongs] = useState<Track[]>([]);
   const [playlists, setPlaylists] = useState<any[]>([]);
+  const [savedAlbums, setSavedAlbums] = useState<SavedAlbum[]>([]);
   const [subscribedArtists, setSubscribedArtists] = useState<SubscribedArtist[]>([]);
   const [activeTab, setActiveTab] = useState('Daftar putar');
   const [showCreate, setShowCreate] = useState(false);
@@ -28,9 +29,11 @@ export default function Library() {
     const liked = await db.getLikedSongs();
     const pl = await db.getPlaylists();
     const sa = await db.getSubscribedArtists();
+    const albums = await db.getSavedAlbums();
     setLikedSongs(liked);
     setPlaylists(pl);
     setSubscribedArtists(sa);
+    setSavedAlbums(albums);
   };
 
   useEffect(() => {
@@ -225,6 +228,36 @@ export default function Library() {
             ))}
             {likedSongs.length === 0 && (
               <div className="text-center text-white/50 py-12">Belum ada lagu yang disukai.</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Album' && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-white mb-4">Album Disimpan</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {savedAlbums.map((album) => (
+              <div 
+                key={album.albumId} 
+                className="flex flex-col items-center p-4 hover:bg-white/5 rounded-xl cursor-pointer transition-colors"
+                onClick={() => router.push(`/album/${album.albumId}`)}
+              >
+                <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
+                  <Image 
+                    src={album.thumbnails?.[album.thumbnails.length - 1]?.url || '/placeholder.png'} 
+                    alt={album.name} 
+                    fill 
+                    sizes="(max-width: 640px) 50vw, 200px" 
+                    className="object-cover" 
+                  />
+                </div>
+                <MarqueeText text={album.name} className="text-white font-medium text-center w-full" />
+                <p className="text-white/50 text-xs mt-1 text-center w-full truncate">{album.artist}</p>
+              </div>
+            ))}
+            {savedAlbums.length === 0 && (
+              <div className="col-span-full text-center text-white/50 py-12">Belum ada album yang disimpan.</div>
             )}
           </div>
         </div>

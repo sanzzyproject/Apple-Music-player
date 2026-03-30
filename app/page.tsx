@@ -76,6 +76,8 @@ export default function Home() {
           { key: 'similar0', title: 'Serupa dengan Ryuuuchiee', q: 'Ryuuuchiee', type: 'all' },
           { key: 'similar1', title: 'Serupa dengan Tems', q: 'Tems', type: 'all' },
           { key: 'similar2', title: 'Serupa dengan Hindia', q: 'Hindia', type: 'all' },
+          { key: 'similar3', title: 'Serupa dengan Nadin Amizah', q: 'Nadin Amizah', type: 'all' },
+          { key: 'similar4', title: 'Serupa dengan Pamungkas', q: 'Pamungkas', type: 'all' },
           { key: 'cat2', title: 'Top 50 Indonesia', q: 'top 50 indonesia playlist update', type: 'song' },
           { key: 'cat3', title: 'Viral on TikTok', q: 'lagu fyp tiktok viral', type: 'song' },
           { key: 'cat4', title: 'For Eid Getaways', q: 'lagu lebaran idul fitri', type: 'song' },

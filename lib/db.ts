@@ -1,6 +1,14 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { Track } from './store';
 
+export interface SavedAlbum {
+  albumId: string;
+  name: string;
+  artist: string;
+  thumbnails: { url: string; width: number; height: number }[];
+  savedAt: number;
+}
+
 export interface SubscribedArtist {
   artistId: string;
   name: string;
@@ -31,6 +39,10 @@ interface SannMusicDB extends DBSchema {
     key: string;
     value: SubscribedArtist;
   };
+  saved_albums: {
+    key: string;
+    value: SavedAlbum;
+  };
   recent_searches: {
     key: string;
     value: RecentSearch;
@@ -40,7 +52,7 @@ interface SannMusicDB extends DBSchema {
 let dbPromise: Promise<IDBPDatabase<SannMusicDB>>;
 
 if (typeof window !== 'undefined') {
-  dbPromise = openDB<SannMusicDB>('SannMusicDB', 3, {
+  dbPromise = openDB<SannMusicDB>('SannMusicDB', 4, {
     upgrade(db, oldVersion, newVersion, transaction) {
       if (!db.objectStoreNames.contains('playlists')) {
         db.createObjectStore('playlists', { keyPath: 'id' });
@@ -50,6 +62,9 @@ if (typeof window !== 'undefined') {
       }
       if (!db.objectStoreNames.contains('subscribed_artists')) {
         db.createObjectStore('subscribed_artists', { keyPath: 'artistId' });
+      }
+      if (!db.objectStoreNames.contains('saved_albums')) {
+        db.createObjectStore('saved_albums', { keyPath: 'albumId' });
       }
       if (!db.objectStoreNames.contains('recent_searches')) {
         db.createObjectStore('recent_searches', { keyPath: 'query' });
@@ -108,6 +123,23 @@ export const db = {
     const db = await dbPromise;
     const artist = await db.get('subscribed_artists', artistId);
     return !!artist;
+  },
+  async getSavedAlbums() {
+    const db = await dbPromise;
+    return db.getAll('saved_albums');
+  },
+  async addSavedAlbum(album: SavedAlbum) {
+    const db = await dbPromise;
+    return db.put('saved_albums', album);
+  },
+  async removeSavedAlbum(albumId: string) {
+    const db = await dbPromise;
+    return db.delete('saved_albums', albumId);
+  },
+  async isAlbumSaved(albumId: string) {
+    const db = await dbPromise;
+    const album = await db.get('saved_albums', albumId);
+    return !!album;
   },
   async getRecentSearches() {
     const db = await dbPromise;

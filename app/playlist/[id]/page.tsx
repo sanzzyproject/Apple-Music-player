@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { db } from '@/lib/db';
 import { usePlayerStore, Track } from '@/lib/store';
-import { Play, ArrowLeft, MoreHorizontal, Radio, Music, Trash2 } from 'lucide-react';
+import { Play, ArrowLeft, MoreHorizontal, Radio, Music, Trash2, BookmarkPlus, BookmarkCheck } from 'lucide-react';
 import Image from 'next/image';
 import { TrackItem } from '@/components/TrackItem';
 import { PlaylistSkeleton } from '@/components/PlaylistSkeleton';
@@ -99,6 +99,18 @@ export default function PlaylistPage() {
     }
   };
 
+  const handleSavePlaylist = async () => {
+    if (isSaved) {
+      if (confirm('Apakah Anda yakin ingin menghapus playlist ini dari koleksi?')) {
+        await db.deletePlaylist(playlist.id);
+        setIsSaved(false);
+      }
+    } else {
+      await db.addPlaylist(playlist);
+      setIsSaved(true);
+    }
+  };
+
   const isSelfCreated = /^\d+$/.test(playlist.id);
 
   return (
@@ -137,7 +149,16 @@ export default function PlaylistPage() {
           >
             <Radio className="w-6 h-6 text-white" />
           </button>
-          {isSaved && (
+          {!isSelfCreated && (
+            <button 
+              onClick={handleSavePlaylist}
+              className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+              title={isSaved ? "Hapus dari Koleksi" : "Simpan ke Koleksi"}
+            >
+              {isSaved ? <BookmarkCheck className="w-6 h-6 text-[#81B29A]" /> : <BookmarkPlus className="w-6 h-6 text-white" />}
+            </button>
+          )}
+          {isSelfCreated && isSaved && (
             <button 
               onClick={handleDeletePlaylist}
               className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-colors"
