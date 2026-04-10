@@ -1,20 +1,100 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+🎧 Tamp Mail / Music Web App
 
-# Run and deploy your AI Studio app
+«Simple. Clean. Functional.
+Built for learning, building, and sharing — not for stealing.»
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/031eace2-6be4-4ea8-b36a-d5c0c68270a6
+🚀 About This Project
 
-## Run Locally
+Project ini dibuat menggunakan Next.js sebagai framework utama dan memanfaatkan library ytmusicapi untuk mengambil data musik secara dinamis.
 
-**Prerequisites:**  Node.js
+Tujuan utama project ini:
 
+- Eksplorasi pembuatan web music app
+- Belajar integrasi API (YouTube Music)
+- Menyediakan pengalaman streaming sederhana berbasis web
+- Dibuat khusus untuk developer yang ingin belajar & berkembang
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+
+⚙️ Tech Stack
+
+- Next.js → Frontend + SSR
+- TypeScript → Type safety
+- ytmusicapi → Fetch data music dari YouTube Music
+- IndexedDB (optional) → Penyimpanan offline (PWA support)
+
+---
+
+🔥 Features
+
+- 🔍 Search lagu / artis
+- 🎵 Streaming music
+- 📥 (Optional) Download & offline mode (PWA)
+- ⚡ Fast & lightweight UI
+- 📱 Mobile friendly
+
+---
+
+📦 Installation
+
+git clone https://github.com/username/repository-name.git
+cd repository-name
+npm install
+npm run dev
+
+---
+
+⚠️ Important Note (Read This!)
+
+Project ini OPEN SOURCE, tapi bukan berarti bebas digunakan tanpa etika.
+
+❗ Rules:
+
+- ✔️ Boleh fork & modifikasi
+- ✔️ Boleh dipelajari & dikembangkan
+- ✔️ Boleh dijadikan referensi project pribadi
+
+❌ Tidak diperbolehkan:
+
+- Reupload / jual ulang tanpa perubahan signifikan
+- Claim sebagai karya sendiri (tanpa credit)
+- Copy-paste mentah untuk kepentingan komersial
+
+---
+
+🤝 Respect the Creator
+
+Kalau kamu fork atau pakai project ini:
+
+- 💬 Kasih credit (minimal mention repo asli)
+- ⭐ Star repo ini sebagai bentuk apresiasi
+- 🔄 Share improvement kamu (optional tapi keren)
+
+---
+
+🧠 Philosophy
+
+«"Code itu untuk dibagikan, tapi bukan untuk dicuri."»
+
+Project ini dibuat dengan effort & waktu.
+Kalau kamu terbantu, hargai dengan cara yang benar.
+
+---
+
+📌 License
+
+Disarankan menggunakan salah satu:
+
+- MIT License (bebas tapi tetap ada credit)
+- Atau custom license sesuai kebutuhan
+
+---
+
+✨ Final Words
+
+Kalau kamu cuma copy tanpa ngerti, kamu gak berkembang.
+Kalau kamu belajar & improve, kamu bakal jauh lebih jago.
+
+Happy coding 🚀
