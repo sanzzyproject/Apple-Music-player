@@ -39,7 +39,7 @@ Tujuan utama project ini:
 
 📦 Installation
 
-git clone https://github.com/username/repository-name.git
+git clone https://github.com/sanzzyproject/Apple-Music-player
 cd repository-name
 npm install
 npm run dev
