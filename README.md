@@ -51,3 +51,78 @@ git clone https://github.com/sanzzyproject/Apple-Music-player
 cd repository-name
 npm install
 npm run dev
+```
+
+## ⚠️ Important Note (Read This!)
+
+Project ini **OPEN SOURCE**, tapi bukan berarti bebas digunakan tanpa etika.
+
+### ❗ Rules:
+
+#### ✔️ Boleh:
+- Fork & modifikasi  
+- Dipelajari & dikembangkan  
+- Dijadikan referensi project pribadi  
+
+#### ❌ Tidak diperbolehkan:
+- Reupload / jual ulang tanpa perubahan signifikan  
+- Claim sebagai karya sendiri (tanpa credit)  
+- Copy-paste mentah untuk kepentingan komersial  
+
+---
+
+## 💼 Commercial Use & Full License
+
+Jika kamu ingin:
+
+- Menggunakan source code untuk kebutuhan **komersial**
+- Menjual ulang source code
+- Mengedit secara bebas tanpa batasan
+- Menggunakan tanpa kewajiban memberikan credit
+
+Silakan dapatkan versi **Full License** melalui link berikut:
+
+🔗 https://lynk.id/sannnx/mow6ergxdke3
+
+Dengan membeli lisensi, kamu mendapatkan:
+- ✅ Hak penggunaan komersial  
+- ✅ Kebebasan modifikasi penuh  
+- ✅ Izin distribusi / penjualan ulang  
+- ✅ Akses source code tanpa batasan etika open-source  
+
+---
+
+## 🤝 Respect the Creator
+
+Kalau kamu fork atau pakai project ini:
+
+- 💬 Kasih credit (minimal mention repo asli)  
+- ⭐ Star repo ini sebagai bentuk apresiasi  
+- 🔄 Share improvement kamu (optional tapi keren)  
+
+---
+
+## 🧠 Philosophy
+
+> **"Code itu untuk dibagikan, tapi bukan untuk dicuri."**
+
+Project ini dibuat dengan effort & waktu.  
+Kalau kamu terbantu, hargai dengan cara yang benar.
+
+---
+
+## 📌 License
+
+Disarankan menggunakan salah satu:
+
+- MIT License (bebas tapi tetap ada credit)  
+- Atau custom license sesuai kebutuhan  
+
+---
+
+## ✨ Final Words
+
+Kalau kamu cuma copy tanpa ngerti, kamu gak berkembang.  
+Kalau kamu belajar & improve, kamu bakal jauh lebih jago.  
+
+**Happy coding 🚀**
